@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(state: state),
+      home: const MyHomePage(state: state, child: MyHomePageBuilder()),
     );
   }
 }
@@ -83,9 +83,10 @@ class IncrementCounterReducer {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.state});
+  const MyHomePage({super.key, required this.state, required this.child});
 
   final MyAppState state;
+  final Widget child;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState(state);
@@ -103,14 +104,24 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) => InheritedReducableState(
         value: ReduceableState(_state, reduce),
-        child: MyHomePageLayout(
-          props: MyHomePageProps(
-            title: _state.title,
-            counterText: '${_state.counter}',
-            onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
-          ),
-        ),
+        child: widget.child,
       );
+}
+
+class MyHomePageBuilder extends StatelessWidget {
+  const MyHomePageBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final reduceableState = InheritedReducableState.of<MyAppState>(context);
+    final props = MyHomePageProps(
+      title: reduceableState.state.title,
+      counterText: '${reduceableState.state.counter}',
+      onIncrementPressed: () =>
+          reduceableState.reduce(IncrementCounterReducer(), null),
+    );
+    return MyHomePageLayout(props: props);
+  }
 }
 
 class MyHomePageLayout extends StatelessWidget {
