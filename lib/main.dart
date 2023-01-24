@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(state: state, child: MyHomePageBuilder()),
+      home: const StateProvider(state: state, child: MyHomePageBuilder()),
     );
   }
 }
@@ -82,22 +82,22 @@ class IncrementCounterReducer {
       state.copyWith(counter: state.counter + 1);
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.state, required this.child});
+class StateProvider<S> extends StatefulWidget {
+  const StateProvider({super.key, required this.state, required this.child});
 
-  final MyAppState state;
+  final S state;
   final Widget child;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState(state);
+  State<StateProvider> createState() => _StateProviderState<S>(state);
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  _MyHomePageState(MyAppState state) : _state = state;
+class _StateProviderState<S> extends State<StateProvider<S>> {
+  _StateProviderState(S state) : _state = state;
 
-  MyAppState _state;
+  S _state;
 
-  void reduce<V>(Reducer<MyAppState, V> reducer, V value) {
+  void reduce<V>(Reducer<S, V> reducer, V value) {
     setState(() => _state = reducer(_state, value));
   }
 
