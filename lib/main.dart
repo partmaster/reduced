@@ -36,6 +36,46 @@ class MyAppState {
 }
 
 typedef Reducer<S, V> = S Function(S, V);
+typedef Reduce<S> = void Function<V>(Reducer<S, V>, V);
+
+class MyHomePageProps {
+  final String title;
+  final String counterText;
+  final VoidCallback onIncrementPressed;
+
+  MyHomePageProps({
+    required this.title,
+    required this.counterText,
+    required this.onIncrementPressed,
+  });
+}
+
+class ReduceableState<S> {
+  ReduceableState(this.state, this.reduce);
+
+  final S state;
+  final Reduce<S> reduce;
+}
+
+class InheritedReducableState<S> extends InheritedWidget {
+  const InheritedReducableState({
+    super.key,
+    required super.child,
+    required this.value,
+  });
+
+  final ReduceableState<S> value;
+
+  static ReduceableState<T> of<T>(BuildContext context) {
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<InheritedReducableState<T>>();
+    return inherited!.value;
+  }
+
+  @override
+  bool updateShouldNotify(InheritedReducableState oldWidget) =>
+      value != oldWidget.value;
+}
 
 class IncrementCounterReducer {
   MyAppState call(MyAppState state, void _) =>
@@ -51,18 +91,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState(state);
 }
 
-class MyHomePageProps {
-  final String title;
-  final String counterText;
-  final VoidCallback onIncrementPressed;
-
-  MyHomePageProps({
-    required this.title,
-    required this.counterText,
-    required this.onIncrementPressed,
-  });
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState(MyAppState state) : _state = state;
 
@@ -73,11 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) => MyHomePageLayout(
-        props: MyHomePageProps(
-          title: _state.title,
-          counterText: '${_state.counter}',
-          onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
+  Widget build(BuildContext context) => InheritedReducableState(
+        value: ReduceableState(_state, reduce),
+        child: MyHomePageLayout(
+          props: MyHomePageProps(
+            title: _state.title,
+            counterText: '${_state.counter}',
+            onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
+          ),
         ),
       );
 }
