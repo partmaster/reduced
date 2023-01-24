@@ -11,12 +11,12 @@ class MyHomePageBuilder extends StatelessWidget {
     final reduceableState =
         InheritedReducableState.of<MyAppState>(context);
     final props = MyHomePagePropsConverter.convert(reduceableState);
-    return MyHomePageLayout(props: props);
+    return MyHomePageRenderer(props: props);
   }
 }
 
-class MyHomePageLayout extends StatelessWidget {
-  const MyHomePageLayout({
+class MyHomePageRenderer extends StatelessWidget {
+  const MyHomePageRenderer({
     Key? key,
     required this.props,
   }) : super(key: key);
@@ -57,12 +57,12 @@ class MyCounterWidgetBuilder extends StatelessWidget {
     final reduceableState =
         InheritedReducableState.of<MyAppState>(context);
     final props = MyCounterWidgetPropsConverter.convert(reduceableState);
-    return MyCounterWidgetLayout(props: props);
+    return MyCounterWidgetRenderer(props: props);
   }
 }
 
-class MyCounterWidgetLayout extends StatelessWidget {
-  const MyCounterWidgetLayout({
+class MyCounterWidgetRenderer extends StatelessWidget {
+  const MyCounterWidgetRenderer({
     Key? key,
     required this.props,
   }) : super(key: key);
