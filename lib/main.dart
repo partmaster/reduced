@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  const state = MyAppState(
+    title: 'Flutter Demo Home Page',
+    counter: 0,
+  );
+  const app = MyApp();
+  const provider = StateProvider(state: state, child: app);
+  runApp(provider);
 }
 
 class MyApp extends StatelessWidget {
@@ -9,16 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const state = MyAppState(
-      title: 'Flutter Demo Home Page',
-      counter: 0,
-    );
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const StateProvider(state: state, child: MyHomePageBuilder()),
+      home: const MyHomePageBuilder(),
     );
   }
 }
