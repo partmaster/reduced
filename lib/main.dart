@@ -9,31 +9,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = MyAppState(title: 'Flutter Demo Home Page', counter: 0,);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(state: state),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyAppState {
+  const MyAppState({required this.title, required this.counter});
 
   final String title;
+  final int counter;
+
+  MyAppState copyWith({String? title, int? counter}) => MyAppState(
+        title: title ?? this.title,
+        counter: counter ?? this.counter,
+      );
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.state});
+
+  final MyAppState state;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(state);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  _MyHomePageState(MyAppState state) : _state = state;
+  MyAppState _state;
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
+      _state = _state.copyWith(counter: _state.counter + 1);
     });
   }
 
@@ -41,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(_state.title),
       ),
       body: Center(
         child: Column(
@@ -51,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '${_state.counter}',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
