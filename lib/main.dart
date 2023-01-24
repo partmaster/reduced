@@ -9,13 +9,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = MyAppState(title: 'Flutter Demo Home Page', counter: 0,);
+    const state = MyAppState(
+      title: 'Flutter Demo Home Page',
+      counter: 0,
+    );
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(state: state),
+      home: const MyHomePage(state: state),
     );
   }
 }
@@ -32,6 +35,13 @@ class MyAppState {
       );
 }
 
+typedef Reducer<S, V> = S Function(S, V);
+
+class IncrementCounterReducer {
+  MyAppState call(MyAppState state, void _) =>
+      state.copyWith(counter: state.counter + 1);
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.state});
 
@@ -45,10 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState(MyAppState state) : _state = state;
   MyAppState _state;
 
-  void _incrementCounter() {
-    setState(() {
-      _state = _state.copyWith(counter: _state.counter + 1);
-    });
+  void reduce<V>(Reducer<MyAppState, V> reducer, V value) {
+    setState(() => _state = reducer(_state, value));
   }
 
   @override
@@ -72,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => reduce(IncrementCounterReducer(), null),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
