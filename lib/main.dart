@@ -51,8 +51,21 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState(state);
 }
 
+class MyHomePageProps {
+  final String title;
+  final String counterText;
+  final VoidCallback onIncrementPressed;
+
+  MyHomePageProps({
+    required this.title,
+    required this.counterText,
+    required this.onIncrementPressed,
+  });
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState(MyAppState state) : _state = state;
+
   MyAppState _state;
 
   void reduce<V>(Reducer<MyAppState, V> reducer, V value) {
@@ -61,9 +74,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final props = MyHomePageProps(
+      title: _state.title,
+      counterText: '${_state.counter}',
+      onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
+    );
     return Scaffold(
       appBar: AppBar(
-        title: Text(_state.title),
+        title: Text(props.title),
       ),
       body: Center(
         child: Column(
@@ -73,14 +91,14 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '${_state.counter}',
+              props.counterText,
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => reduce(IncrementCounterReducer(), null),
+        onPressed: props.onIncrementPressed,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
