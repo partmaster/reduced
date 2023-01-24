@@ -50,6 +50,16 @@ class MyHomePageProps {
   });
 }
 
+class MyHomePagePropsConverter {
+  static MyHomePageProps convert(ReduceableState<MyAppState> reduceableState) =>
+      MyHomePageProps(
+        title: reduceableState.state.title,
+        counterText: '${reduceableState.state.counter}',
+        onIncrementPressed: () =>
+            reduceableState.reduce(IncrementCounterReducer(), null),
+      );
+}
+
 class ReduceableState<S> {
   ReduceableState(this.state, this.reduce);
 
@@ -114,12 +124,7 @@ class MyHomePageBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reduceableState = InheritedReducableState.of<MyAppState>(context);
-    final props = MyHomePageProps(
-      title: reduceableState.state.title,
-      counterText: '${reduceableState.state.counter}',
-      onIncrementPressed: () =>
-          reduceableState.reduce(IncrementCounterReducer(), null),
-    );
+    final props = MyHomePagePropsConverter.convert(reduceableState);
     return MyHomePageLayout(props: props);
   }
 }
