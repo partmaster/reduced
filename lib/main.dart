@@ -73,12 +73,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  Widget build(BuildContext context) => MyHomePageLayout(
+        props: MyHomePageProps(
+          title: _state.title,
+          counterText: '${_state.counter}',
+          onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
+        ),
+      );
+}
+
+class MyHomePageLayout extends StatelessWidget {
+  const MyHomePageLayout({
+    Key? key,
+    required this.props,
+  }) : super(key: key);
+
+  final MyHomePageProps props;
+
+  @override
   Widget build(BuildContext context) {
-    final props = MyHomePageProps(
-      title: _state.title,
-      counterText: '${_state.counter}',
-      onIncrementPressed: () => reduce(IncrementCounterReducer(), null),
-    );
     return Scaffold(
       appBar: AppBar(
         title: Text(props.title),
