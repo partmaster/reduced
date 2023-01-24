@@ -20,8 +20,8 @@ class InheritedReducableState<S> extends InheritedWidget {
   final ReduceableState<S> value;
 
   static ReduceableState<T> of<T>(BuildContext context) {
-    final inherited = context
-        .dependOnInheritedWidgetOfExactType<InheritedReducableState<T>>();
+    final inherited = context.dependOnInheritedWidgetOfExactType<
+        InheritedReducableState<T>>();
     return inherited!.value;
   }
 
@@ -31,7 +31,11 @@ class InheritedReducableState<S> extends InheritedWidget {
 }
 
 class StateProvider<S> extends StatefulWidget {
-  const StateProvider({super.key, required this.state, required this.child});
+  const StateProvider({
+    super.key,
+    required this.state,
+    required this.child,
+  });
 
   final S state;
   final Widget child;

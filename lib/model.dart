@@ -14,29 +14,43 @@ class MyAppState {
       );
 }
 
+class IncrementCounterReducer {
+  MyAppState call(MyAppState state, void _) =>
+      state.copyWith(counter: state.counter + 1);
+}
+
 class MyHomePageProps {
   final String title;
-  final String counterText;
   final VoidCallback onIncrementPressed;
 
   MyHomePageProps({
     required this.title,
-    required this.counterText,
     required this.onIncrementPressed,
   });
 }
 
 class MyHomePagePropsConverter {
-  static MyHomePageProps convert(ReduceableState<MyAppState> reduceableState) =>
+  static MyHomePageProps convert(
+          ReduceableState<MyAppState> reduceableState) =>
       MyHomePageProps(
         title: reduceableState.state.title,
-        counterText: '${reduceableState.state.counter}',
         onIncrementPressed: () =>
             reduceableState.reduce(IncrementCounterReducer(), null),
       );
 }
 
-class IncrementCounterReducer {
-  MyAppState call(MyAppState state, void _) =>
-      state.copyWith(counter: state.counter + 1);
+class MyCounterWidgetProps {
+  final String counterText;
+
+  MyCounterWidgetProps({
+    required this.counterText,
+  });
+}
+
+class MyCounterWidgetPropsConverter {
+  static MyCounterWidgetProps convert(
+          ReduceableState<MyAppState> reduceableState) =>
+      MyCounterWidgetProps(
+        counterText: '${reduceableState.state.counter}',
+      );
 }

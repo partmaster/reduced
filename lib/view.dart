@@ -8,7 +8,8 @@ class MyHomePageBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reduceableState = InheritedReducableState.of<MyAppState>(context);
+    final reduceableState =
+        InheritedReducableState.of<MyAppState>(context);
     final props = MyHomePagePropsConverter.convert(reduceableState);
     return MyHomePageLayout(props: props);
   }
@@ -31,14 +32,11 @@ class MyHomePageLayout extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
+          children: const <Widget>[
+            Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              props.counterText,
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            MyCounterWidgetBuilder(),
           ],
         ),
       ),
@@ -47,6 +45,35 @@ class MyHomePageLayout extends StatelessWidget {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class MyCounterWidgetBuilder extends StatelessWidget {
+  const MyCounterWidgetBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final reduceableState =
+        InheritedReducableState.of<MyAppState>(context);
+    final props = MyCounterWidgetPropsConverter.convert(reduceableState);
+    return MyCounterWidgetLayout(props: props);
+  }
+}
+
+class MyCounterWidgetLayout extends StatelessWidget {
+  const MyCounterWidgetLayout({
+    Key? key,
+    required this.props,
+  }) : super(key: key);
+
+  final MyCounterWidgetProps props;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      props.counterText,
+      style: Theme.of(context).textTheme.headline4,
     );
   }
 }
