@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'model.dart';
-import 'stateful.dart';
+import 'binder.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,16 +13,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePageBuilder(),
+      home: const MyHomePageBinder(),
     );
   }
 }
 
-class MyHomePageRenderer extends StatelessWidget {
-  const MyHomePageRenderer({
-    Key? key,
-    required this.props,
-  }) : super(key: key);
+class MyHomePageBuilder extends StatelessWidget {
+  const MyHomePageBuilder({super.key, required this.props});
 
   final MyHomePageProps props;
 
@@ -39,7 +36,7 @@ class MyHomePageRenderer extends StatelessWidget {
             Text(
               'You have pushed the button this many times:',
             ),
-            MyCounterWidgetBuilder(),
+            MyCounterWidgetBinder(),
           ],
         ),
       ),
@@ -52,11 +49,8 @@ class MyHomePageRenderer extends StatelessWidget {
   }
 }
 
-class MyCounterWidgetRenderer extends StatelessWidget {
-  const MyCounterWidgetRenderer({
-    Key? key,
-    required this.props,
-  }) : super(key: key);
+class MyCounterWidgetBuilder extends StatelessWidget {
+  const MyCounterWidgetBuilder({super.key, required this.props});
 
   final MyCounterWidgetProps props;
 
