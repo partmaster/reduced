@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-import 'model.dart';
+import '../model.dart';
 import 'stateful_util.dart';
-import 'builder.dart';
+import '../builder.dart';
 
 class MyAppStateProvider extends StatelessWidget {
   const MyAppStateProvider({Key? key, required this.child})

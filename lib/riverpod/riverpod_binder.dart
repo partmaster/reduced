@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'model.dart';
-import 'reduceable_state.dart';
-import 'builder.dart';
+import '../model.dart';
+import '../reduceable_state.dart';
+import '../builder.dart';
 
 class MyAppStateNotifier extends StateNotifier<MyAppState> {
   MyAppStateNotifier()
@@ -12,8 +12,7 @@ class MyAppStateNotifier extends StateNotifier<MyAppState> {
           counter: 0,
         ));
 
-  void reduce<V>(Reducer<MyAppState, V> reducer, V value) =>
-      state = reducer(state, value);
+  void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
 }
 
 final appStateProvider =
@@ -35,7 +34,7 @@ class MyAppStateProvider extends StatelessWidget {
   }
 }
 
-extension ReduceableStateOnWidgetRef on WidgetRef {
+extension _ReduceableStateOnWidgetRef on WidgetRef {
   ReduceableState<MyAppState> get reduceableState {
     final notifier = watch(appStateProvider.notifier);
     final state = watch(appStateProvider);
@@ -43,14 +42,12 @@ extension ReduceableStateOnWidgetRef on WidgetRef {
   }
 }
 
-class MyHomePageBinder extends StatelessWidget {
+class MyHomePageBinder extends ConsumerWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => Consumer(
-        builder: (context, ref, _) => MyHomePageBuilder(
-          props: MyHomePageProps.fromState(ref.reduceableState),
-        ),
+  Widget build(context, ref) => MyHomePageBuilder(
+        props: MyHomePageProps.fromState(ref.reduceableState),
       );
 }
 

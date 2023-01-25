@@ -1,6 +1,8 @@
+abstract class Reducer<S> {
+  S call(S state);
+}
 
-typedef Reducer<S, V> = S Function(S, V);
-typedef Reduce<S> = void Function<V>(Reducer<S, V>, V);
+typedef Reduce<S> = void Function(Reducer<S>);
 
 class ReduceableState<S> {
   ReduceableState(this.state, this.reduce);
@@ -8,4 +10,3 @@ class ReduceableState<S> {
   final S state;
   final Reduce<S> reduce;
 }
-

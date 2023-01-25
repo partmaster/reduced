@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'reduceable_state.dart';
+import '../reduceable_state.dart';
 
 typedef ReduceableStateWidgetBuilder<S> = Widget Function(
   ReduceableState<S> value,
@@ -17,8 +17,8 @@ class InheritedValueWidget<P> extends InheritedWidget {
   final P value;
 
   static T of<T>(BuildContext context) {
-    final inherited = context
-        .dependOnInheritedWidgetOfExactType<InheritedValueWidget<T>>();
+    final inherited = context.dependOnInheritedWidgetOfExactType<
+        InheritedValueWidget<T>>();
     return inherited!.value;
   }
 
@@ -48,9 +48,8 @@ class _StateProviderState<S> extends State<StateProvider<S>> {
 
   S _state;
 
-  void reduce<V>(Reducer<S, V> reducer, V value) {
-    setState(() => _state = reducer(_state, value));
-  }
+  void reduce(Reducer<S> reducer) =>
+      setState(() => _state = reducer(_state));
 
   @override
   Widget build(BuildContext context) => widget.builder(

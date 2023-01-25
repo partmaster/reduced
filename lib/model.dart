@@ -14,8 +14,9 @@ class MyAppState {
       );
 }
 
-class IncrementCounterReducer {
-  MyAppState call(MyAppState state, void _) =>
+class IncrementCounterReducer extends Reducer<MyAppState> {
+  @override
+  MyAppState call(MyAppState state) =>
       state.copyWith(counter: state.counter + 1);
 }
 
@@ -34,7 +35,7 @@ class MyHomePageProps {
       MyHomePageProps(
         title: reduceableState.state.title,
         onIncrementPressed: () =>
-            reduceableState.reduce(IncrementCounterReducer(), null),
+            reduceableState.reduce(IncrementCounterReducer()),
       );
 }
 
