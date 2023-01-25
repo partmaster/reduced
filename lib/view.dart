@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'model.dart';
-import 'util.dart';
+import 'stateful.dart';
 
-class MyHomePageBuilder extends StatelessWidget {
-  const MyHomePageBuilder({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final reduceableState =
-        InheritedReducableState.of<MyAppState>(context);
-    final props = MyHomePagePropsConverter.convert(reduceableState);
-    return MyHomePageRenderer(props: props);
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePageBuilder(),
+    );
   }
 }
 
@@ -46,18 +49,6 @@ class MyHomePageRenderer extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-class MyCounterWidgetBuilder extends StatelessWidget {
-  const MyCounterWidgetBuilder({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final reduceableState =
-        InheritedReducableState.of<MyAppState>(context);
-    final props = MyCounterWidgetPropsConverter.convert(reduceableState);
-    return MyCounterWidgetRenderer(props: props);
   }
 }
 

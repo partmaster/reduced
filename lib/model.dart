@@ -1,6 +1,6 @@
 import 'dart:ui' show VoidCallback;
 
-import 'util.dart';
+import 'reduceable_state.dart';
 
 class MyAppState {
   const MyAppState({required this.title, required this.counter});
@@ -27,11 +27,10 @@ class MyHomePageProps {
     required this.title,
     required this.onIncrementPressed,
   });
-}
 
-class MyHomePagePropsConverter {
-  static MyHomePageProps convert(
-          ReduceableState<MyAppState> reduceableState) =>
+  factory MyHomePageProps.fromState(
+    ReduceableState<MyAppState> reduceableState,
+  ) =>
       MyHomePageProps(
         title: reduceableState.state.title,
         onIncrementPressed: () =>
@@ -45,11 +44,10 @@ class MyCounterWidgetProps {
   MyCounterWidgetProps({
     required this.counterText,
   });
-}
 
-class MyCounterWidgetPropsConverter {
-  static MyCounterWidgetProps convert(
-          ReduceableState<MyAppState> reduceableState) =>
+  factory MyCounterWidgetProps.fromState(
+    ReduceableState<MyAppState> reduceableState,
+  ) =>
       MyCounterWidgetProps(
         counterText: '${reduceableState.state.counter}',
       );
