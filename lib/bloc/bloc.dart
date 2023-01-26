@@ -8,7 +8,10 @@ import '../reduceable.dart';
 class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
   MyAppStateBloc()
       : super(
-          const MyAppState(title: 'bloc', counter: 0),
+          const MyAppState(
+            title: 'Flutter Demo Home Page',
+            counter: 0,
+          ),
         ) {
     on<Reducer<MyAppState>>((event, emit) => emit(event(state)));
   }

@@ -8,7 +8,7 @@ import '../reduceable.dart';
 class MyAppStateNotifier extends StateNotifier<MyAppState> {
   MyAppStateNotifier()
       : super(const MyAppState(
-          title: 'riverpod',
+          title: 'Flutter Demo Home Page',
           counter: 0,
         ));
 
