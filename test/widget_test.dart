@@ -22,6 +22,15 @@ void main() {
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
+    final homePageFinder0 = find.byType(MyHomePageBuilder);
+    expect(homePageFinder0, findsOneWidget);
+    final homePage0 = homePageFinder0.evaluate().single.widget;
+
+    final counterWidgetFinder0 = find.byType(MyCounterWidgetBuilder);
+    expect(counterWidgetFinder0, findsOneWidget);
+    final counterWidget0 =
+        counterWidgetFinder0.evaluate().single.widget;
+
     // Tap the '+' icon and trigger a frame.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
@@ -29,5 +38,27 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+
+    final homePageFinder1 = find.byType(MyHomePageBuilder);
+    expect(homePageFinder1, findsOneWidget);
+    final homePage1 = homePageFinder1.evaluate().single.widget;
+
+    final counterWidgetFinder1 = find.byType(MyCounterWidgetBuilder);
+    expect(counterWidgetFinder1, findsOneWidget);
+    final counterWidget1 =
+        counterWidgetFinder1.evaluate().single.widget;
+
+    expect(
+      identical(counterWidget0, counterWidget1),
+      isFalse,
+      reason:
+          'counterWidget was not rebuild $counterWidget0, $counterWidget1',
+    );
+
+    expect(
+      identical(homePage0, homePage1),
+      isTrue,
+      reason: 'homePage was rebuild $homePage0, $homePage1',
+    );
   });
 }
