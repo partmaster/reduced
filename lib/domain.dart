@@ -1,4 +1,3 @@
-```dart
 // domain.dart
 
 import 'dart:ui' show VoidCallback;
@@ -48,4 +47,3 @@ class IncrementCounterReducer extends Reducer<MyAppState> {
   MyAppState call(state) =>
       state.copyWith(counter: state.counter + 1);
 }
-```

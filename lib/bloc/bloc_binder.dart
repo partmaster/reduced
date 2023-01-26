@@ -1,13 +1,15 @@
+// bloc_binder.dart
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model.dart';
+import '../domain.dart';
 import '../builder.dart';
+import '../reduceable.dart';
 import 'bloc.dart';
 
-class MyAppStateProvider extends StatelessWidget {
-  const MyAppStateProvider({Key? key, required this.child})
-      : super(key: key);
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
 
   final MyAppState state = const MyAppState(
     title: 'Flutter Demo Home Page',
@@ -16,8 +18,8 @@ class MyAppStateProvider extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-        create: (_) => CounterBlocs(),
+  Widget build(context) => BlocProvider(
+        create: (_) => MyAppStateBloc(),
         child: child,
       );
 }
@@ -26,29 +28,39 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => BlocBuilder<CounterBlocs, MyAppState>(
-        builder: (context, state) => MyHomePageBuilder(
-          props: MyHomePageProps.fromState(
-            context.counterBlocs.reduceableState,
-          ),
+  Widget build(context) =>
+      BlocSelector<MyAppStateBloc, MyAppState, MyHomePageProps>(
+        selector: (state) => MyHomePageProps.reduceable(
+          context.appStateBloc.reduceable,
+        ),
+        builder: (context, props) => MyHomePageBuilder(
+          props: props,
         ),
       );
 }
 
+//
+// </br>
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => BlocBuilder<CounterBlocs, MyAppState>(
-        builder: (context, state) => MyCounterWidgetBuilder(
-          props: MyCounterWidgetProps.fromState(
-            context.counterBlocs.reduceableState,
-          ),
+  Widget build(context) =>
+      BlocSelector<MyAppStateBloc, MyAppState, MyCounterWidgetProps>(
+        selector: (state) => MyCounterWidgetProps.reduceable(
+          context.appStateBloc.reduceable,
+        ),
+        builder: (context, props) => MyCounterWidgetBuilder(
+          props: props,
         ),
       );
 }
 
-extension _CounterBlocsOnContext on BuildContext {
-  CounterBlocs get counterBlocs =>
-      BlocProvider.of<CounterBlocs>(this);
+extension _MyAppStateBlocOnBuildContext on BuildContext {
+  MyAppStateBloc get appStateBloc =>
+      BlocProvider.of<MyAppStateBloc>(this);
+}
+
+extension _ReduceableOnMyAppStateBloc on MyAppStateBloc {
+  Reduceable<MyAppState> get reduceable => Reduceable(state, add);
 }

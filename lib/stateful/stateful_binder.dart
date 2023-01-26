@@ -1,27 +1,28 @@
+// stateful_binder.dart
+
 import 'package:flutter/widgets.dart';
 
-import '../model.dart';
-import 'stateful_util.dart';
+import '../domain.dart';
 import '../builder.dart';
+import 'stateful.dart';
 
-class MyAppStateProvider extends StatelessWidget {
-  const MyAppStateProvider({Key? key, required this.child})
-      : super(key: key);
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
 
   final MyAppState state = const MyAppState(
-    title: 'Flutter Demo Home Page',
+    title: 'stateful',
     counter: 0,
   );
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => StateProvider(
+  Widget build(context) => StateProvider(
         state: state,
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePageProps.fromState(value),
+          value: MyHomePageProps.reduceable(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetProps.fromState(value),
+            value: MyCounterWidgetProps.reduceable(value),
             child: child,
           ),
         ),
@@ -37,11 +38,14 @@ class MyHomePageBinder extends StatelessWidget {
       );
 }
 
+//
+//
+// </br>
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(BuildContext context) => MyCounterWidgetBuilder(
+  Widget build(context) => MyCounterWidgetBuilder(
         props: InheritedValueWidget.of<MyCounterWidgetProps>(context),
       );
 }

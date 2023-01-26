@@ -1,45 +1,19 @@
+// riverpod_binder.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model.dart';
-import '../reduceable_state.dart';
+import '../domain.dart';
 import '../builder.dart';
+import 'riverpod.dart';
 
-class MyAppStateNotifier extends StateNotifier<MyAppState> {
-  MyAppStateNotifier()
-      : super(const MyAppState(
-          title: 'Flutter Demo Home Page',
-          counter: 0,
-        ));
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.app});
 
-  void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
-}
-
-final appStateProvider =
-    StateNotifierProvider<MyAppStateNotifier, MyAppState>(
-  (ref) => MyAppStateNotifier(),
-);
-
-class MyAppStateProvider extends StatelessWidget {
-  const MyAppStateProvider({
-    Key? key,
-    required this.app,
-  }) : super(key: key);
-
-  final MyApp app;
+  final MyAppBuilder app;
 
   @override
-  Widget build(BuildContext context) {
-    return ProviderScope(child: app);
-  }
-}
-
-extension _ReduceableStateOnWidgetRef on WidgetRef {
-  ReduceableState<MyAppState> get reduceableState {
-    final notifier = watch(appStateProvider.notifier);
-    final state = watch(appStateProvider);
-    return ReduceableState(state, notifier.reduce);
-  }
+  Widget build(context) => ProviderScope(child: app);
 }
 
 class MyHomePageBinder extends ConsumerWidget {
@@ -47,7 +21,7 @@ class MyHomePageBinder extends ConsumerWidget {
 
   @override
   Widget build(context, ref) => MyHomePageBuilder(
-        props: MyHomePageProps.fromState(ref.reduceableState),
+        props: MyHomePageProps.reduceable(ref.reduceable),
       );
 }
 
@@ -56,6 +30,6 @@ class MyCounterWidgetBinder extends ConsumerWidget {
 
   @override
   Widget build(context, ref) => MyCounterWidgetBuilder(
-        props: MyCounterWidgetProps.fromState(ref.reduceableState),
+        props: MyCounterWidgetProps.reduceable(ref.reduceable),
       );
 }
