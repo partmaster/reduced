@@ -12,6 +12,10 @@ class MyAppStateNotifier extends StateNotifier<MyAppState> {
           counter: 0,
         ));
 
+  late final reduceable = Reduceable(getState, reduce);
+
+  MyAppState getState() => super.state;
+
   void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
 }
 
@@ -20,9 +24,32 @@ final appStateProvider =
   (ref) => MyAppStateNotifier(),
 );
 
-extension ReduceableOnWidgetRef on WidgetRef {
-  Reduceable<MyAppState> get reduceable => Reduceable(
-        watch(appStateProvider),
-        watch(appStateProvider.notifier).reduce,
-      );
-}
+final counterWidgetPropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyCounterWidgetProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);
+
+//
+//
+//
+// </br>
+final homePagePropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyHomePageProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);

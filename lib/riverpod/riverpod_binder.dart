@@ -3,17 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../domain.dart';
 import '../builder.dart';
 import 'riverpod.dart';
 
 class MyAppStateBinder extends StatelessWidget {
-  const MyAppStateBinder({super.key, required this.app});
+  const MyAppStateBinder({super.key, required this.child});
 
-  final MyAppBuilder app;
+  final MyAppBuilder child;
 
   @override
-  Widget build(context) => ProviderScope(child: app);
+  Widget build(context) => ProviderScope(child: child);
 }
 
 class MyHomePageBinder extends ConsumerWidget {
@@ -21,7 +20,7 @@ class MyHomePageBinder extends ConsumerWidget {
 
   @override
   Widget build(context, ref) => MyHomePageBuilder(
-        props: MyHomePageProps.reduceable(ref.reduceable),
+        props: ref.watch(homePagePropsProvider),
       );
 }
 
@@ -30,6 +29,6 @@ class MyCounterWidgetBinder extends ConsumerWidget {
 
   @override
   Widget build(context, ref) => MyCounterWidgetBuilder(
-        props: MyCounterWidgetProps.reduceable(ref.reduceable),
+        props: ref.watch(counterWidgetPropsProvider),
       );
 }

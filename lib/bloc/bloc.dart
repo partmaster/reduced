@@ -12,4 +12,5 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
         ) {
     on<Reducer<MyAppState>>((event, emit) => emit(event(state)));
   }
+  MyAppState getState() => state;
 }

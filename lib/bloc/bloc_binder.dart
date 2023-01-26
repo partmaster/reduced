@@ -62,5 +62,5 @@ extension _MyAppStateBlocOnBuildContext on BuildContext {
 }
 
 extension _ReduceableOnMyAppStateBloc on MyAppStateBloc {
-  Reduceable<MyAppState> get reduceable => Reduceable(state, add);
+  Reduceable<MyAppState> get reduceable => Reduceable(getState, add);
 }

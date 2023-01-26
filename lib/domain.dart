@@ -1,6 +1,6 @@
 // domain.dart
 
-import 'dart:ui' show VoidCallback;
+import 'package:quiver/core.dart';
 
 import 'reduceable.dart';
 
@@ -14,11 +14,20 @@ class MyAppState {
         title: title ?? this.title,
         counter: counter ?? this.counter,
       );
+
+  @override
+  int get hashCode => hash2(title, counter);
+
+  @override
+  bool operator ==(Object other) =>
+      other is MyAppState &&
+      title == other.title &&
+      counter == other.counter;
 }
 
 class MyHomePageProps {
   final String title;
-  final VoidCallback onIncrementPressed;
+  final Callable<void> onIncrementPressed;
 
   MyHomePageProps({
     required this.title,
@@ -27,8 +36,19 @@ class MyHomePageProps {
 
   MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
       : title = reduceable.state.title,
-        onIncrementPressed =
-            (() => reduceable.reduce(IncrementCounterReducer()));
+        onIncrementPressed = VoidCallable(
+          reduceable,
+          IncrementCounterReducer(),
+        );
+
+  @override
+  int get hashCode => hash2(title, onIncrementPressed);
+
+  @override
+  bool operator ==(Object other) =>
+      other is MyHomePageProps &&
+      title == other.title &&
+      onIncrementPressed == other.onIncrementPressed;
 }
 
 class MyCounterWidgetProps {
@@ -40,9 +60,22 @@ class MyCounterWidgetProps {
 
   MyCounterWidgetProps.reduceable(Reduceable<MyAppState> reduceable)
       : counterText = '${reduceable.state.counter}';
+
+  @override
+  int get hashCode => counterText.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      other is MyCounterWidgetProps &&
+      counterText == other.counterText;
 }
 
 class IncrementCounterReducer extends Reducer<MyAppState> {
+  IncrementCounterReducer._();
+  factory IncrementCounterReducer() => instance;
+
+  static final instance = IncrementCounterReducer._();
+
   @override
   MyAppState call(state) =>
       state.copyWith(counter: state.counter + 1);

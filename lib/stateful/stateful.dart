@@ -30,17 +30,18 @@ class _StateProviderState<S> extends State<StateProvider<S>> {
 
   S _state;
 
+  S getState() => _state;
+
   void reduce(Reducer<S> reducer) =>
       setState(() => _state = reducer(_state));
 
   @override
   Widget build(BuildContext context) => widget.builder(
-        Reduceable(_state, reduce),
+        Reduceable(getState, reduce),
         widget.child,
       );
 }
 
-// </br>
 class InheritedValueWidget<V> extends InheritedWidget {
   const InheritedValueWidget({
     super.key,
