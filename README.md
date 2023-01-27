@@ -1,51 +1,42 @@
 ```dart
-// domain.dart
+// riverpod_binder.dart
 
-import 'dart:ui' show VoidCallback;
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'reduceable.dart';
+import '../domain.dart';
+import '../builder.dart';
+import 'riverpod.dart';
 
-class MyAppState {
-  const MyAppState({required this.title, required this.counter});
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({
+    Key? key,
+    required this.app,
+  }) : super(key: key);
 
-  final String title;
-  final int counter;
+  final MyAppBuilder app;
 
-  MyAppState copyWith({String? title, int? counter}) => MyAppState(
-        title: title ?? this.title,
-        counter: counter ?? this.counter,
+  @override
+  Widget build(BuildContext context) {
+    return ProviderScope(child: app);
+  }
+}
+
+class MyHomePageBinder extends ConsumerWidget {
+  const MyHomePageBinder({super.key});
+
+  @override
+  Widget build(context, ref) => MyHomePageBuilder(
+        props: MyHomePageProps.reduceable(ref.reduceable),
       );
 }
 
-class MyHomePageProps {
-  final String title;
-  final VoidCallback onIncrementPressed;
+class MyCounterWidgetBinder extends ConsumerWidget {
+  const MyCounterWidgetBinder({super.key});
 
-  MyHomePageProps({
-    required this.title,
-    required this.onIncrementPressed,
-  });
-
-  MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
-      : title = reduceable.state.title,
-        onIncrementPressed =
-            (() => reduceable.reduce(IncrementCounterReducer()));
-}
-
-class MyCounterWidgetProps {
-  final String counterText;
-
-  MyCounterWidgetProps({
-    required this.counterText,
-  });
-
-  MyCounterWidgetProps.reduceable(Reduceable<MyAppState> reduceable)
-      : counterText = '${reduceable.state.counter}';
-}
-
-class IncrementCounterReducer extends Reducer<MyAppState> {
   @override
-  MyAppState call(state) =>
-      state.copyWith(counter: state.counter + 1);
+  Widget build(context, ref) => MyCounterWidgetBuilder(
+        props: MyCounterWidgetProps.reduceable(ref.reduceable),
+      );
 }
 ```
