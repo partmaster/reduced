@@ -1,5 +1,7 @@
 # Flutter-App Code-Struktur
 
+Hier wird eine Code-Struktur vorgestellt, die durch die Anwendung von Entwurfsmustern [^1] die Trennung der Verantwortlichkeiten [^2] im Code von App-Projekten mit Flutter [^3] befördert. 
+
 ## Einleitung
 
 Source Code scheint dem 2. Gesetz der Thermodynamik zu folgen und zur Aufrechterhaltung der Ordnung der ständigen Zuführung von äußerer Energie zu bedürfen. 
@@ -8,7 +10,7 @@ Viele Flutter-Frameworks wurden und werden entwickelt, um eine saubere Code-Stru
 Bei einem unreflektierten Einsatz solcher Frameworks besteht die Gefahr, dass sie neben ihrer eigentlichen Aufgabe, der Trennung der Verantwortlichkeiten, die Fachlogik und die UI infiltrieren.
 Weil es so viele Frameworks gibt (in der offiziellen Flutter-Dokumentation sind aktuell 13 Frameworks gelistet [^1])  und die Entwicklung nicht abgeschlossen ist, kann dies besonders für langlebige App-Projekte zum Problem werden.
 </br>
-Im Folgenden wird eine Code-Struktur für Flutter-Apps vorgestellt, die solche unerwünschten Infiltrationen vermeidet und so die Qualität von Fachlogik- und UI-Code zu verbessert. Dabei geht es ausdrücklich nicht um die Einführung eines weiteren Frameworks sondern um die abgestimmte Anwendung von zwei Software-Pattern, Humble Object Pattern [^2] und State Reducer Pattern [^3] auf Flutter-App-Code. 
+Im Folgenden wird eine Code-Struktur für Flutter-Apps vorgestellt, die solche unerwünschten Infiltrationen vermeidet und so die Qualität von Fachlogik- und UI-Code zu verbessert. Dabei geht es ausdrücklich nicht um die Einführung eines weiteren Frameworks sondern um die abgestimmte Anwendung von zwei Software-Mustern, Humble Object Pattern [^2] und State Reducer Pattern [^3], auf den Flutter-App-Code. 
 </br>
 Flutter beschreibt sich selbst gern mit dem Spruch "Alles ist ein Widget" [^4]. Damit ist gemeint, dass alle Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft mit einer kleinen Kehrseite: Wenn man nicht aufpasst, vermischen sich in den zusammengesteckten Widget-Bäumen schnell die Verantwortlichkeiten. 
 
@@ -91,23 +93,101 @@ Hinzu kommen Konverter, die aus einem Reduceable und Reducern die verschiedenen 
 
 # Umsetzungsbeispiel
 
-Nun soll die vorgestellte Code-Struktur an einem praktischen Beispiel illustriert werden. Als Vorlage wird das wohlbekannte Flutter-Counter-App-Projekt verwendet. In diesem Projekt spielt die Klasse _MyHomePageState die zentrale Rolle, und trägt die verschiedensten Verantwortungen:
+Nun soll die vorgestellte Code-Struktur an einem praktischen Beispiel illustriert werden. 
 
-1. App-Zustands-Speicherung
+## Ausgangslage
 
-2. Bereitstellung von Operationen für App-Zustands-Änderungen
+Als Vorlage wird das wohlbekannte Flutter-Counter-App-Projekt verwendet. In diesem Projekt spielt die Klasse _MyHomePageState die zentrale Rolle:
 
-3. Widget-Benachrichtigung nach App-Zustands-Änderungen
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
 
-4. Konvertierung des App-Zustands in Anzeige-Properties
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
 
-5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungens-Operationen
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+Die Klasse _MyHomePageState und trägt die verschiedensten Verantwortungen. Hier einige Beispiele:
 
-6. Layout
+1\. Layout
 
-7. Rendering 
+```dart
+          mainAxisAlignment: MainAxisAlignment.center,
+```
 
-8. Gestenerkennng
+2\. Rendering 
+
+```dart
+              style: Theme.of(context).textTheme.headline4,
+```
+
+3\. Gestenerkennng
+
+```dart
+        onPressed:
+```
+
+4\. App-Zustands-Speicherung
+
+```dart
+  int _counter = 0;
+```
+
+5\. Bereitstellung von Operationen für App-Zustands-Änderungen
+
+```dart
+  void _incrementCounter() {
+```
+
+6\. Widget-Benachrichtigung nach App-Zustands-Änderungen
+
+```dart
+    setState(() {
+```
+
+7\. Konvertierung des App-Zustands in Anzeige-Properties
+
+```dart
+              '$_counter',
+```
+
+8\. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungens-Operationen
+
+```dart
+        onPressed: _incrementCounter,
+```
+
 
 # Referenzen
 
