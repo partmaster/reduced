@@ -9,35 +9,38 @@ typedef ReduceableWidgetBuilder<S> = Widget Function(
   Widget child,
 );
 
-class StateProvider<S> extends StatefulWidget {
-  const StateProvider({
+class AppStateBinder<S> extends StatefulWidget {
+  const AppStateBinder({
     super.key,
-    required this.state,
+    required this.initialState,
     required this.child,
     required this.builder,
   });
 
-  final S state;
+  final S initialState;
   final Widget child;
   final ReduceableWidgetBuilder<S> builder;
 
   @override
-  State<StateProvider> createState() => _StateProviderState<S>(state);
+  State<AppStateBinder> createState() =>
+      _AppStateBinderState<S>(initialState);
 }
 
-class _StateProviderState<S> extends State<StateProvider<S>> {
-  _StateProviderState(S state) : _state = state;
+class _AppStateBinderState<S> extends State<AppStateBinder<S>> {
+  _AppStateBinderState(S initialState) : _state = initialState;
 
   S _state;
 
   S getState() => _state;
+
+  late final reduceable = Reduceable(getState, reduce);
 
   void reduce(Reducer<S> reducer) =>
       setState(() => _state = reducer(_state));
 
   @override
   Widget build(BuildContext context) => widget.builder(
-        Reduceable(getState, reduce),
+        reduceable,
         widget.child,
       );
 }

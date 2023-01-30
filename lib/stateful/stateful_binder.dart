@@ -10,14 +10,14 @@ class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
   final MyAppState state = const MyAppState(
-    title: 'stateful',
+    title: 'Flutter Demo Home Page',
     counter: 0,
   );
   final Widget child;
 
   @override
-  Widget build(context) => StateProvider(
-        state: state,
+  Widget build(context) => AppStateBinder(
+        initialState: state,
         child: child,
         builder: (value, child) => InheritedValueWidget(
           value: MyHomePageProps.reduceable(value),
