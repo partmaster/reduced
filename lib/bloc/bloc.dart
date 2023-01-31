@@ -1,5 +1,6 @@
 // bloc.dart
 
+import 'package:flutter/widgets.dart' show BuildContext;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../domain.dart';
@@ -15,5 +16,14 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
         ) {
     on<Reducer<MyAppState>>((event, emit) => emit(event(state)));
   }
+
   MyAppState getState() => state;
+
+  late final reduceable = Reduceable(getState, add);
+
+}
+
+extension MyAppStateBlocOnBuildContext on BuildContext {
+  MyAppStateBloc get appStateBloc =>
+      BlocProvider.of<MyAppStateBloc>(this);
 }

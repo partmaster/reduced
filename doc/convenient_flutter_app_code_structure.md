@@ -8,7 +8,9 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 Hier wird eine Code-Struktur vorgestellt, die durch die Anwendung von Entwurfsmustern [^1] die Trennung der Verantwortlichkeiten [^2] im Code von App-Projekten mit Flutter [^3] befördert. 
 Für die Code-Struktur werden die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reduceable verwendet, die im Folgenden erklärt werden.
-Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Mittel StatefulWidget und InheritedWidget eingesetzt werden. 
+Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Mittel StatefulWidget und InheritedWidget eingesetzt werden.
+</br> 
+Wer eine Anleitung für eine saubere Code-Strukur sucht oder eine App-Zustands-Verwaltungs-Lösung einsetzen, aber sich nicht unbedingt ewig daran binden will, für den könnte der Artikel interessant sein. 
 
 ## Einleitung
 
@@ -207,8 +209,9 @@ Die Klasse _MyHomePageState und trägt die verschiedensten Verantwortungen. Hier
 
 ### Props
 
-Wir beginnen mit den Props, einer Klasse mit allen in der build-Methode zur Erstellung des Widget-Baums benötigten Properties. Die Property-Namen in der Props-Klasse werden so gewählt, dass eine leichte Zuordnung zu den Properties im Widget-Baum, denen sie zugewiesen werden sollen, möglich ist.
-Für die oben gezeigte Klasse _MyHomePageState könnte die zugehörige Props-Klasse so aussehen:
+Wir wollen nun die Code-Struktur von _MyHomePageState verbessern und beginnen mit der Definition einer neuen Klasse, der Props. Die Props sind eine Datenklasse für eine korrespondierende Widget-Klasse, die alle in der build-Methode der Widget-Klasse zur Erstellung des Widget-Baums benötigten Properties enthält. Die Property-Namen in der Props-Klasse werden so gewählt, dass eine leichte Zuordnung zu den Properties im Widget-Baum, denen sie zugewiesen werden sollen, möglich ist.
+</br>
+Für die Klasse _MyHomePageState könnte die zugehörige Props-Klasse so aussehen:
 
 ```dart
 class MyHomePageProps {
@@ -273,8 +276,8 @@ class VoidCallable<S> extends Callable<void> {
 
 ### Builder
 
-Die Builder-Klasse ist für den Bau des Widget-Baums aus Layout-, Rendering- und Gestenerkennungs-Widgets verantwortlich. Dazu verwendet sie ein Property von der korrespondierenden Props-Klasse, das ihr im Konstruktor übergeben wird.
-Mit Hilfe der vorkonfektionierten Properties in den Props lässt sich nun leicht eine stateless Builder-Klasse für den Widget-Baum definieren.
+Die Builder-Klasse ist für den Bau des Widget-Baums aus Layout-, Rendering- und Gestenerkennungs-Widgets verantwortlich. Dazu verwendet sie eine Instanz vom Typ der korrespondierenden Props-Klasse, die ihr im Konstruktor übergeben wird.
+Mit Hilfe der vorkonfektionierten Properties in den Props lässt sich nun leicht aus der _MyHomePageState-Klasse eine stateless Builder-Klasse für den Widget-Baum extrahieren.
 
 ```dart
 class MyHomePageBuilder extends StatelessWidget {
@@ -311,7 +314,7 @@ class MyHomePageBuilder extends StatelessWidget {
 ```
 ### Binder
 
-Die Binder-Klasse ist für die Binding an den App-Zustand verantwortlich. Sie muss dafür sorgen, dass bei einer Änderung des App-Zustandes neue Props erzeugt werden und mit diesen Props eine neue Instanz der Builder-Klasse gebaut wird. Wie sie das umsetzt, hängt vom verwendeten App-Zustands-Verwaltungs-Framework ab. Für das Beipiel nutzen wir für den Anfang kein externes Framework wie Riverpod oder Bloc, sondern nur StatefulWidget und InheritedWidget. Die in der build-Methode von MyHomePageBinder verwendete InheritedValueWidget-Klasse, eine Ableitung der InheritedWidget-Klasse, wird im Abschnitt *App-Zustandsverwaltung* vorgestellt.  
+Zu jeder Builder-Klasse gibt es eine korrespondierende Binder-Klasse. Die Binder-Klasse ist für die Bindung an den App-Zustand verantwortlich. Sie muss dafür sorgen, dass bei einer Änderung des App-Zustandes neue Props erzeugt werden und mit diesen Props eine neue Instanz der Builder-Klasse gebaut wird. Wie sie das umsetzt, hängt vom verwendeten App-Zustands-Verwaltungs-Framework ab. Für das Beipiel nutzen wir für den Anfang kein externes Framework wie Riverpod oder Bloc, sondern nur StatefulWidget und InheritedWidget. Die in der build-Methode von MyHomePageBinder verwendete InheritedValueWidget-Klasse, eine Ableitung der InheritedWidget-Klasse, wird im Abschnitt *App-Zustandsverwaltung* vorgestellt.  
 
 ```dart
 class MyHomePageBinder extends StatelessWidget {
@@ -357,8 +360,8 @@ class MyAppState {
 Die Klasse _MyHomePageState aus dem Flutter-Counter-App-Projekt hat für Änderungen am App-Zustand nur die eine Methode `incrementCounter`. Da es sich hier um App-Logik in einer Klasse mit UI-Aufgaben handelt, wird der Code in eine neue Klasse `IncrementCounterReducer` ausgelagert. Von der Basisklasse `Reducer` wird für alle Reducer-Implementierungen die reducer-Methode `call` mit der Signatur `S call(S)` vorgegeben. Als konkrete App-Logik wird in der Methode `call` in der Klasse `IncrementCounterReducer` das Property `counter` im AppState inkrementiert. 
 </br>
 Einige AppState-Verwaltungs-Frameworks entkoppeln die UI von der direkten Zuordnung eines Ereignisses (meist eine erkannte Geste) zu einer App-Logik-Operation, indem die UI Event-Instanzen versendet, um eine Anforderung über eine Operation am AppState auszulösen. 
-In solchen Frameworks mit Event-Klassen können die Reducer-Instanzen als Events verwendet werden. Es gibt in der hier vorgestellten Code-Struktur trotzdem kein Kopplungsproblem, weil wir diese Entkopplung schon durch die Callback-Properties in den Props-Klassen erreichen. 
-Wegen der potenziellen Verwendung als Events müssen die Reducer-Instanzen Wertsemantik haben. Wenn sichergestellt ist, dass es für eine Reducer-Klasse nur eine Instanz gibt, genügen die geerbten hashCode und operator== Methoden.
+In solchen Frameworks mit Event-Klassen können die Reducer-Instanzen als Events verwendet werden. Es gibt in der hier vorgestellten Code-Struktur trotzdem kein Kopplungsproblem zwischen UI und App-Logik, weil diese Entkopplung schon durch die Callback-Properties in den Props-Klassen erreicht werden. 
+Wegen der potenziellen Verwendung als Events müssen die Reducer-Instanzen Wertsemantik haben. Wenn sichergestellt ist, dass es für eine Reducer-Klasse nur eine Instanz gibt, genügen statt Wertsemantik die geerbten hashCode und operator== Methoden.
 
 ```dart
 class IncrementCounterReducer extends Reducer<MyAppState> {
@@ -515,9 +518,329 @@ t.b.d.
 
 ### Skalierung
 
-t.b.d.
+Beim bisher erreichten Stand der Umgestaltung der Flutter-Counter-App hat sich eines gegenüber dem Original nicht geändert: Bei jeder Änderung des App-Zustandes wird der Widget-Baum der gesamten App-Seite neu gebaut. 
+Für komplexere Apps kann dies zu einem Performance-Problem werden. Darum ist es essenziell, bei Änderungen des App-Zustandes nur die Teil-Bäume der App-Seite neu zu bauen, die tatsächlich von der Änderung betroffen sind. 
+Im Widget-Baum der Flutter-Counter-App-Seite ist die AppBar vom Property `title` abhängig, der FloatingActionButton vom Property `onIncrementPressed` und ein Text-Widget vom Property `counterText`.
+Wir wollen nun die App so refaktorisieren, dass bei Änderungen des Properties `counterText` nur noch das betroffene Text-Widget neu erzeugt wird und die anderen Widgets des Widget-Baums der App-Seite weiter 
+genutzt werden.
 
-### Portierung
+1. Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText` in eine neue Klasse `MyCounterWidgetProps` und definieren den benannten Konstruktor `MyCounterWidgetProps.reduceable`.
+
+```dart
+class MyHomePageProps {
+  final String title;
+  final Callable<void> onIncrementPressed;
+
+  MyHomePageProps({
+    required this.title,
+    required this.onIncrementPressed,
+  });
+
+  MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
+      : title = reduceable.state.title,
+        onIncrementPressed = VoidCallable(
+          reduceable,
+          IncrementCounterReducer(),
+        );
+
+  @override
+  int get hashCode => hash2(title, onIncrementPressed);
+
+  @override
+  bool operator ==(Object other) =>
+      other is MyHomePageProps &&
+      title == other.title &&
+      onIncrementPressed == other.onIncrementPressed;
+}
+
+class MyCounterWidgetProps {
+  final String counterText;
+
+  MyCounterWidgetProps({
+    required this.counterText,
+  });
+
+  MyCounterWidgetProps.reduceable(Reduceable<MyAppState> reduceable)
+      : counterText = '${reduceable.state.counter}';
+
+  @override
+  int get hashCode => counterText.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      other is MyCounterWidgetProps &&
+      counterText == other.counterText;
+}
+```
+
+2. In der Klasse `MyAppStateBinder` fügen wir ein `InheritedValueWidget` mit einem Template-Parameter vom Typ `MyCounterWidgetProps` ein.
+
+```dart
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final MyAppState state = const MyAppState(
+    title: 'Flutter Demo Home Page',
+    counter: 0,
+  );
+  final Widget child;
+
+  @override
+  Widget build(context) => AppStateBinder(
+        initialState: state,
+        child: child,
+        builder: (value, child) => InheritedValueWidget(
+          value: MyHomePageProps.reduceable(value),
+          child: InheritedValueWidget(
+            value: MyCounterWidgetProps.reduceable(value),
+            child: child,
+          ),
+        ),
+      );
+}
+```
+
+3. Aus der build-Methode der Klasse `MyHomePageBuilder` extrahieren wir das relevante Text-Widget in eine neue Klasse `MyCounterWidgetBuilder` und verwenden die Klasse `MyCounterWidgetProps` als Konstruktor-Parameter.
+
+```dart
+class MyCounterWidgetBuilder extends StatelessWidget {
+  const MyCounterWidgetBuilder({super.key, required this.props});
+
+  final MyCounterWidgetProps props;
+
+  @override
+  Widget build(context) => Text(
+        props.counterText,
+        style: Theme.of(context).textTheme.headline4,
+      );
+}
+```
+
+4. Nach dem Muster von `MyHomePageBinder` erzeugen wir eine neue Klasse `MyCounterWidgetBinder` und holen ins in deren build-Methode vom `InheritedValueWidget` die `MyCounterWidgetProps` und bauen damit den `MyCounterWidgetBuilder`.
+
+```dart
+class MyCounterWidgetBinder extends StatelessWidget {
+  const MyCounterWidgetBinder({super.key});
+
+  @override
+  Widget build(context) => MyCounterWidgetBuilder(
+        props: InheritedValueWidget.of<MyCounterWidgetProps>(context),
+      );
+}
+```
+
+5. Schließlich ersetzen wir in build-Methode der Klasse `MyHomePageBuilder` das Text-Widget durch `MyCounterWidgetBuilder`.
+
+```dart
+class MyHomePageBuilder extends StatelessWidget {
+  const MyHomePageBuilder({super.key, required this.props});
+
+  final MyHomePageProps props;
+
+  @override
+  Widget build(context) => Scaffold(
+        appBar: AppBar(
+          title: Text(props.title),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              Text(
+                'You have pushed the button this many times:',
+              ),
+              MyCounterWidgetBinder(),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: props.onIncrementPressed,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+      );
+}
+```
+
+Damit ist die Einführung und Nutzung einer neuen Builder-Binder-Props-Klassen-Kombination abgeschlossen und kann genutzt werden. 
+
+### Portierung auf Riverpod
+
+Zum Abschluss des Artikels soll die App von der selbstgebauten App-Zustands-Verwaltung nacheinander auf die bekannten App-Zustands-Verwaltungs-Frameworks Riverpod und Bloc portiert werden. Wir beginnen mit der Portierung auf Riverpod.
+
+Dazu legen wir im Ordner `lib`einen Unterordner `riverpod` an und darin die Dateien `riverpod.dart` und `riverpod_binder.dart`.
+
+In der Datei `riverpod.dart` definieren wir die Klasse `MyAppStateNotifier` und die finale Variable `appStateProvider` für den App-Zustand.
+
+```dart
+class MyAppStateNotifier extends StateNotifier<MyAppState> {
+  MyAppStateNotifier()
+      : super(const MyAppState(
+          title: 'Flutter Demo Home Page',
+          counter: 0,
+        ));
+
+  late final reduceable = Reduceable(getState, reduce);
+
+  MyAppState getState() => super.state;
+
+  void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
+}
+
+final appStateProvider =
+    StateNotifierProvider<MyAppStateNotifier, MyAppState>(
+  (ref) => MyAppStateNotifier(),
+);
+```
+
+In der Datei `riverpod.dart` definieren außerdem die finalen Variablen `homePagePropsProvider` und `counterWidgetPropsProvider` zur Bereitstellung der Props.
+
+```dart
+final counterWidgetPropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyCounterWidgetProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);
+
+final homePagePropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyHomePageProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);
+```
+
+In der Datei `riverpod_binder.dart` duplizieren wir alle Klassen aus `stateful_binder.dart` und stellen sie auf Riverpod um.
+
+```dart
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final MyAppBuilder child;
+
+  @override
+  Widget build(context) => ProviderScope(child: child);
+}
+
+class MyHomePageBinder extends ConsumerWidget {
+  const MyHomePageBinder({super.key});
+
+  @override
+  Widget build(context, ref) => MyHomePageBuilder(
+        props: ref.watch(homePagePropsProvider),
+      );
+}
+
+class MyCounterWidgetBinder extends ConsumerWidget {
+  const MyCounterWidgetBinder({super.key});
+
+  @override
+  Widget build(context, ref) => MyCounterWidgetBuilder(
+        props: ref.watch(counterWidgetPropsProvider),
+      );
+}
+```
+
+Nun können wir in der Klasse `binder.dart`den Schalter umlegen und anstelle von `stateful_binder.dart` die Datei `riverpod_binder.dart` exportieren. Damit ist die Portierung auf Riverpod abgeschlossen und die App kann verwendet werden.
+
+## Portierung nach Bloc
+
+Den Abschluss des Tutorials bildet die Portierung auf Bloc.
+Dazu legen wir im Ordner `lib`einen Unterordner `bloc` an und darin die Dateien `bloc.dart` und `bloc_binder.dart`.
+
+In der Datei `bloc.dart` definieren wir die Klasse `MyAppStateBloc`
+und eine Extension für den bequemen Zugriff auf die Instanz dieser Klasse.
+
+```dart
+class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
+  MyAppStateBloc()
+      : super(
+          const MyAppState(
+            title: 'Flutter Demo Home Page',
+            counter: 0,
+          ),
+        ) {
+    on<Reducer<MyAppState>>((event, emit) => emit(event(state)));
+  }
+
+  MyAppState getState() => state;
+
+  late final reduceable = Reduceable(getState, add);
+
+}
+
+extension MyAppStateBlocOnBuildContext on BuildContext {
+  MyAppStateBloc get appStateBloc =>
+      BlocProvider.of<MyAppStateBloc>(this);
+}
+```
+
+In der Datei `bloc_binder.dart` duplizieren wir alle Klassen aus `stateful_binder.dart` (oder `riverpod_binder.dart`) und stellen sie auf Bloc um.
+
+```dart
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final MyAppState state = const MyAppState(
+    title: 'Flutter Demo Home Page',
+    counter: 0,
+  );
+  final Widget child;
+
+  @override
+  Widget build(context) => BlocProvider(
+        create: (_) => MyAppStateBloc(),
+        child: child,
+      );
+}
+
+class MyHomePageBinder extends StatelessWidget {
+  const MyHomePageBinder({super.key});
+
+  @override
+  Widget build(context) =>
+      BlocSelector<MyAppStateBloc, MyAppState, MyHomePageProps>(
+        selector: (state) => MyHomePageProps.reduceable(
+          context.appStateBloc.reduceable,
+        ),
+        builder: (context, props) => MyHomePageBuilder(
+          props: props,
+        ),
+      );
+}
+
+class MyCounterWidgetBinder extends StatelessWidget {
+  const MyCounterWidgetBinder({super.key});
+
+  @override
+  Widget build(context) =>
+      BlocSelector<MyAppStateBloc, MyAppState, MyCounterWidgetProps>(
+        selector: (state) => MyCounterWidgetProps.reduceable(
+          context.appStateBloc.reduceable,
+        ),
+        builder: (context, props) => MyCounterWidgetBuilder(
+          props: props,
+        ),
+      );
+}
+```
+
+Nun können wir in der Klasse `binder.dart`den Schalter umlegen und anstelle von `stateful_binder.dart` oder `riverpod_binder.dart` die Datei `bloc_binder.dart` exportieren. Damit ist die Portierung nach Bloc abgeschlossen und die App kann verwendet werden.
+
+## Fazit
 
 t.b.d.
 
@@ -549,10 +872,10 @@ t.b.d.
 
 [^13]: Michael Feathers [michaelfeathers.silvrback.com/bio](https://michaelfeathers.silvrback.com/bio)
 
-[^14]: Fold Operator</br> [www.cs.nott.ac.uk/~gmh/fold.pdf](http://www.cs.nott.ac.uk/~gmh/fold.pdf)
+[^14]: Faltungsfunktion</br> [www.cs.nott.ac.uk/~gmh/fold.pdf](http://www.cs.nott.ac.uk/~gmh/fold.pdf)
 
 [^15]: Reducer Pattern Nachteil</br> [twitter.com/acdlite/status/1025408731805184000](https://twitter.com/acdlite/status/1025408731805184000)
 
-[^16]: Gliederung der App-Zustandes</br> [redux.js.org/usage/structuring-reducers/basic-reducer-structure](https://redux.js.org/usage/structuring-reducers/basic-reducer-structure)
+[^16]: App-Zustands-Gliederung</br> [redux.js.org/usage/structuring-reducers/basic-reducer-structure](https://redux.js.org/usage/structuring-reducers/basic-reducer-structure)
 
-[^17]: Normalisierung des App-Zustandes</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
+[^17]: App-Zustands-Normalisierung</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)

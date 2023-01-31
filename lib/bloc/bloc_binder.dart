@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../domain.dart';
 import '../builder.dart';
-import '../reduceable.dart';
 import 'bloc.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -54,13 +53,4 @@ class MyCounterWidgetBinder extends StatelessWidget {
           props: props,
         ),
       );
-}
-
-extension _MyAppStateBlocOnBuildContext on BuildContext {
-  MyAppStateBloc get appStateBloc =>
-      BlocProvider.of<MyAppStateBloc>(this);
-}
-
-extension _ReduceableOnMyAppStateBloc on MyAppStateBloc {
-  Reduceable<MyAppState> get reduceable => Reduceable(getState, add);
 }
