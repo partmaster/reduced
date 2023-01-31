@@ -9,7 +9,7 @@ import 'riverpod.dart';
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
-  final MyAppBuilder child;
+  final Widget child;
 
   @override
   Widget build(context) => ProviderScope(child: child);
