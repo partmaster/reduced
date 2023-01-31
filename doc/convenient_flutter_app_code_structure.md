@@ -110,9 +110,9 @@ In der Redux-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen 
 
 Letztlich kann man versuchen, performanzkritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen.   
 
-## Beispiel
+## Tutorial
 
-Nun soll die vorgestellte Code-Struktur an einem praktischen Beispiel illustriert werden. 
+Nun soll die vorgestellte Code-Struktur an einem kleinen Beispiel illustriert werden. 
 
 ### Ausgangslage
 
@@ -461,8 +461,8 @@ class InheritedValueWidget<V> extends InheritedWidget {
 
 ### MyAppStateBinder 
 
-Die Klasse `MyAppStateBinder` kapselt in der hier vorgestellten Code-Struktur die App-Zustands-Verwaltung, bei der es sich im ein Framework, wie Riverpod oder Bloc, oder um eine eigene Implementierung handeln kann. 
-Als Beispiel implementieren wir mit Hilfe von `AppStateBinder`und `InheritedValueWidget` selbst.
+Die Klasse `MyAppStateBinder` kapselt in der hier vorgestellten Code-Struktur die App-Zustands-Verwaltung, bei der es sich entweder um ein Framework, wie Riverpod oder Bloc, oder um eine eigene Implementierung handeln kann. 
+Als Beispiel implementieren wir Die Klasse `MyAppStateBinder` mit Hilfe von `AppStateBinder`und `InheritedValueWidget` selbst.
 
 ```dart
 class MyAppStateBinder extends StatelessWidget {
@@ -487,9 +487,10 @@ class MyAppStateBinder extends StatelessWidget {
         ),
       );
 }
-
 ```
+
 Das `MyAppStateBinder`-Widget bildet die Wurzel der Widget-Hierarchie der App und ist für die Bindung der App-Zustands-Verwaltung an die UI verantwortlich. Es stellt der nachfolgenden Widget-Hierarchie den Zugang zur App-Zustands-Verwaltung in Form des Interfaces `Reduceable` bereit. 
+</br>
 In diesem Fall haben wir die App-Zustands-Verwaltung einer Kombination aus StatefulWidget und InheritedWidget selbst implementiert und stellen das Interface `Reduceable`, wie bei InheritedWidgets üblich, mit einer statischen Methode `T of<T>(BuildContext context)` bereit.
 
 ### main
@@ -504,7 +505,7 @@ void main() {
 
 ## Zugabe
 
-Mit der main-Funktion könnte das Beispiel und dieser Artikel enden. Doch es gibt noch eine Verlängerung, und auf die passt der Titel des Films "Das Beste kommt zum Schluss":
+Mit der main-Funktion könnte das Tutorial und dieser Artikel enden. Doch es gibt noch eine Verlängerung, und auf die könnte der Titel des Films "Das Beste kommt zum Schluss" passen:
 
 1. **Testbarkeit**</br> Um zu zeigen, wie die Trennung der Verantwortlichkeiten im Code für eine Vereinfachung der Tests genutzt werden kann, schreiben wir für die umgestellte Counter-Demo-App einen UI-Test und einen App-Logik-Test.
 
@@ -519,8 +520,11 @@ t.b.d.
 ### Skalierung
 
 Beim bisher erreichten Stand der Umgestaltung der Flutter-Counter-App hat sich eines gegenüber dem Original nicht geändert: Bei jeder Änderung des App-Zustandes wird der Widget-Baum der gesamten App-Seite neu gebaut. 
+</br>
 Für komplexere Apps kann dies zu einem Performance-Problem werden. Darum ist es essenziell, bei Änderungen des App-Zustandes nur die Teil-Bäume der App-Seite neu zu bauen, die tatsächlich von der Änderung betroffen sind. 
+</br>
 Im Widget-Baum der Flutter-Counter-App-Seite ist die AppBar vom Property `title` abhängig, der FloatingActionButton vom Property `onIncrementPressed` und ein Text-Widget vom Property `counterText`.
+</br>
 Wir wollen nun die App so refaktorisieren, dass bei Änderungen des Properties `counterText` nur noch das betroffene Text-Widget neu erzeugt wird und die anderen Widgets des Widget-Baums der App-Seite weiter 
 genutzt werden.
 
@@ -552,7 +556,9 @@ class MyHomePageProps {
       title == other.title &&
       onIncrementPressed == other.onIncrementPressed;
 }
+```
 
+```dart
 class MyCounterWidgetProps {
   final String counterText;
 
@@ -686,7 +692,9 @@ class MyAppStateNotifier extends StateNotifier<MyAppState> {
 
   void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
 }
+```
 
+```dart
 final appStateProvider =
     StateNotifierProvider<MyAppStateNotifier, MyAppState>(
   (ref) => MyAppStateNotifier(),
@@ -708,7 +716,9 @@ final counterWidgetPropsProvider = StateProvider(
     );
   },
 );
+```
 
+```dart
 final homePagePropsProvider = StateProvider(
   (ref) {
     final appStateNotifier = ref.watch(appStateProvider.notifier);
@@ -734,7 +744,9 @@ class MyAppStateBinder extends StatelessWidget {
   @override
   Widget build(context) => ProviderScope(child: child);
 }
+```
 
+```dart
 class MyHomePageBinder extends ConsumerWidget {
   const MyHomePageBinder({super.key});
 
@@ -743,7 +755,9 @@ class MyHomePageBinder extends ConsumerWidget {
         props: ref.watch(homePagePropsProvider),
       );
 }
+```
 
+```dart
 class MyCounterWidgetBinder extends ConsumerWidget {
   const MyCounterWidgetBinder({super.key});
 
@@ -759,7 +773,7 @@ Nun können wir in der Klasse `binder.dart`den Schalter umlegen und anstelle von
 ## Portierung nach Bloc
 
 Den Abschluss des Tutorials bildet die Portierung auf Bloc.
-Dazu legen wir im Ordner `lib`einen Unterordner `bloc` an und darin die Dateien `bloc.dart` und `bloc_binder.dart`.
+Dazu legen wir im Ordner `lib` einen Unterordner `bloc` an und darin die Dateien `bloc.dart` und `bloc_binder.dart`.
 
 In der Datei `bloc.dart` definieren wir die Klasse `MyAppStateBloc`
 und eine Extension für den bequemen Zugriff auf die Instanz dieser Klasse.
@@ -781,7 +795,9 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
   late final reduceable = Reduceable(getState, add);
 
 }
+```
 
+```dart
 extension MyAppStateBlocOnBuildContext on BuildContext {
   MyAppStateBloc get appStateBloc =>
       BlocProvider.of<MyAppStateBloc>(this);
@@ -806,7 +822,9 @@ class MyAppStateBinder extends StatelessWidget {
         child: child,
       );
 }
+```
 
+```dart
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
@@ -821,7 +839,9 @@ class MyHomePageBinder extends StatelessWidget {
         ),
       );
 }
+```
 
+```dart
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
