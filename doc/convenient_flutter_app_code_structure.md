@@ -19,7 +19,7 @@ Flutter-App-Projekte sind da keine Ausnahme. Ein typisches Symptom sind build-Me
 Mit App-Logik meine ich die Fachlogik der UI und ihres Zustands im engeren Sinn - in Abgrenzung zur Fachlogik einer Anwendungsdomäne, die oft in Datenbanken, Backends oder externen Bibliotheken implementiert ist. 
 Viele Flutter-Frameworks wurden und werden entwickelt, um eine saubere Code-Struktur zu unterstützen. Dabei geht es hauptsächlich um das Verwalten des Zustandes der App als Voraussetzung für eine Trennung der Verantwortlichkeiten zwischen App-Logik und UI.  
 Bei einem unbedachten Einsatz solcher Frameworks besteht die Gefahr, dass sie neben ihrer eigentlichen Aufgabe, der Trennung der Verantwortlichkeiten, die App-Logik und die UI infiltrieren und unerwünschte Abhängigkeiten schaffen.
-Weil es so viele Frameworks gibt (in der offiziellen Flutter-Dokumentation sind aktuell 13 Frameworks gelistet [^6]) und die Entwicklung sicher noch nicht abgeschlossen ist, kann es besonders für große und langlebige App-Projekte zur Herausforderung werden, zwischen Frameworks migrieren oder verschiedene Frameworks intergrieren zu müssen.  
+Weil es so viele Frameworks gibt (in der offiziellen Flutter-Dokumentation sind aktuell 13 Frameworks gelistet [^6]) und die Entwicklung sicher noch nicht abgeschlossen ist, kann es besonders für große und langlebige App-Projekte zur Herausforderung werden, zwischen Frameworks migrieren oder verschiedene Frameworks integrieren zu müssen.  
 </br>
 Im Folgenden wird eine Code-Struktur für Flutter-Apps vorgestellt, die solche unerwünschten Infiltrationen vermeidet und so die Qualität von App-Logik- und UI-Code zu verbessert. Dabei geht es ausdrücklich nicht um die Einführung eines weiteren Frameworks sondern um die abgestimmte Anwendung von zwei Entwurfsmustern, Humble Object Pattern [^7] und Reducer Pattern [^8], auf den Flutter-App-Code. 
 </br>
@@ -526,9 +526,10 @@ Für komplexere Apps kann dies zu einem Performance-Problem werden. Darum ist es
 Im Widget-Baum der Flutter-Counter-App-Seite ist die AppBar vom Property `title` abhängig, der FloatingActionButton vom Property `onIncrementPressed` und ein Text-Widget vom Property `counterText`.
 </br>
 Wir wollen nun die App so refaktorisieren, dass bei Änderungen des Properties `counterText` nur noch das betroffene Text-Widget neu erzeugt wird und die anderen Widgets des Widget-Baums der App-Seite weiter 
-genutzt werden.
+genutzt werden. Der Umbau erfolgt in 5 Schritten:
 
-1. Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText` in eine neue Klasse `MyCounterWidgetProps` und definieren den benannten Konstruktor `MyCounterWidgetProps.reduceable`.
+1\. **Props**</br>
+Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText` in eine neue Klasse `MyCounterWidgetProps` und definieren den benannten Konstruktor `MyCounterWidgetProps.reduceable`.
 
 ```dart
 class MyHomePageProps {
@@ -579,7 +580,8 @@ class MyCounterWidgetProps {
 }
 ```
 
-2. In der Klasse `MyAppStateBinder` fügen wir ein `InheritedValueWidget` mit einem Template-Parameter vom Typ `MyCounterWidgetProps` ein.
+2\. **Änderungs-Selektor**</br>
+In der Klasse `MyAppStateBinder` fügen wir ein `InheritedValueWidget` mit einem Template-Parameter vom Typ `MyCounterWidgetProps` ein.
 
 ```dart
 class MyAppStateBinder extends StatelessWidget {
@@ -606,7 +608,8 @@ class MyAppStateBinder extends StatelessWidget {
 }
 ```
 
-3. Aus der build-Methode der Klasse `MyHomePageBuilder` extrahieren wir das relevante Text-Widget in eine neue Klasse `MyCounterWidgetBuilder` und verwenden die Klasse `MyCounterWidgetProps` als Konstruktor-Parameter.
+3\. **Builder**</br>
+Aus der build-Methode der Klasse `MyHomePageBuilder` extrahieren wir das relevante Text-Widget in eine neue Klasse `MyCounterWidgetBuilder` und verwenden die Klasse `MyCounterWidgetProps` als Konstruktor-Parameter.
 
 ```dart
 class MyCounterWidgetBuilder extends StatelessWidget {
@@ -622,7 +625,8 @@ class MyCounterWidgetBuilder extends StatelessWidget {
 }
 ```
 
-4. Nach dem Muster von `MyHomePageBinder` erzeugen wir eine neue Klasse `MyCounterWidgetBinder` und holen ins in deren build-Methode vom `InheritedValueWidget` die `MyCounterWidgetProps` und bauen damit den `MyCounterWidgetBuilder`.
+4\. **Binder**</br>
+Nach dem Muster von `MyHomePageBinder` erzeugen wir eine neue Klasse `MyCounterWidgetBinder` und holen ins in deren build-Methode vom `InheritedValueWidget` die `MyCounterWidgetProps` und bauen damit den `MyCounterWidgetBuilder`.
 
 ```dart
 class MyCounterWidgetBinder extends StatelessWidget {
@@ -635,7 +639,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
 }
 ```
 
-5. Schließlich ersetzen wir in build-Methode der Klasse `MyHomePageBuilder` das Text-Widget durch `MyCounterWidgetBuilder`.
+5\. **Einbau**</br> 
+Schließlich ersetzen wir in build-Methode der Klasse `MyHomePageBuilder` das Text-Widget durch `MyCounterWidgetBuilder`.
 
 ```dart
 class MyHomePageBuilder extends StatelessWidget {
