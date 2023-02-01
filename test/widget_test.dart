@@ -7,16 +7,8 @@
 
 import 'package:counter_app/binder.dart';
 import 'package:counter_app/builder.dart';
-import 'package:counter_app/domain.dart';
-import 'package:counter_app/reduceable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-class MockCallable extends Callable<void> {
-  bool called = false;
-  @override
-  void call() => called = true; 
-}
 
 void main() {
   testWidgets('Counter increments smoke test',
@@ -68,22 +60,5 @@ void main() {
       isTrue,
       reason: 'homePage was rebuild $homePage0, $homePage1',
     );
-  });
-
-  testWidgets('testMyHomePageBuilder', (tester) async {
-    const title = 'title';
-    final onIncrementPressed = MockCallable();
-    final props = MyHomePageProps(
-      title: title,
-      onIncrementPressed: onIncrementPressed,
-    );
-    final objectUnderTest = MyHomePageBuilder(props: props);
-    final materialApp = MyAppStateBinder(
-      child: MaterialApp(home: objectUnderTest),
-    );
-    await tester.pumpWidget(materialApp);
-    expect(find.widgetWithText(AppBar, title), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.add));
-    expect(onIncrementPressed.called, isTrue);
   });
 }

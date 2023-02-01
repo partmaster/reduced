@@ -9,15 +9,15 @@ import 'stateful.dart';
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
-  final MyAppState state = const MyAppState(
+  final Widget child;
+  static const _initialState = MyAppState(
     title: 'Flutter Demo Home Page',
     counter: 0,
   );
-  final Widget child;
 
   @override
   Widget build(context) => AppStateBinder(
-        initialState: state,
+        initialState: _initialState,
         child: child,
         builder: (value, child) => InheritedValueWidget(
           value: MyHomePageProps.reduceable(value),
@@ -39,8 +39,8 @@ class MyHomePageBinder extends StatelessWidget {
 }
 
 //
-//
 // </br>
+
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 

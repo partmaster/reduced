@@ -42,6 +42,7 @@ class Reduceable<S> {
 }
 
 abstract class Callable<T> {
+  const Callable();
   T call();
 }
 

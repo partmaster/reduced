@@ -29,7 +29,7 @@ class MyHomePageProps {
   final String title;
   final Callable<void> onIncrementPressed;
 
-  MyHomePageProps({
+  const MyHomePageProps({
     required this.title,
     required this.onIncrementPressed,
   });
@@ -54,7 +54,7 @@ class MyHomePageProps {
 class MyCounterWidgetProps {
   final String counterText;
 
-  MyCounterWidgetProps({
+  const MyCounterWidgetProps({
     required this.counterText,
   });
 
