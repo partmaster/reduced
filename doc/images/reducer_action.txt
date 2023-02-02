@@ -7,14 +7,28 @@ Reduceable : void reduce(Reducer<S >)
 interface Reducer<S>
 Reducer : S call(S)
 
-class MyAppStateBloc <<bloc>>
-class MyAppStateNotifier <<riverpod>>
-class MyAppStateBinder <<stateful>>
+class MyAppStateBloc 
+class MyAppStateNotifier 
+class MyAppStateBinder 
+
+class StateNotifier<S> <<riverpod>>
+MyAppStateNotifier -down-> StateNotifier
+
+class StatefulWidget <<flutter>>
+MyAppStateBinder -down-> StatefulWidget
+
+class Bloc<R, S> <<bloc>>
+MyAppStateBloc -down-> Bloc
 
 Reduceable .up.> Reducer : accept
 MyAppStateBloc .up.> Reduceable : provide
 MyAppStateNotifier .up.> Reduceable : provide
 MyAppStateBinder .up.> Reduceable : provide
+
+note right of Reduceable
+    wird vom Props.reduceable Konstruktor verwendet 
+    um die Callback-Properties zu erzeugen  
+end note 
 
 object IncrementCounterReducer
 object DecrementCounterReducer

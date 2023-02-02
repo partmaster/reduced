@@ -86,7 +86,12 @@ Das Lauschen der Builder-Klasse auf selektive Änderungen und der Konstruktor de
 
 Das zweite Ziel ist, den Code so zu strukturieren, dass die App-Logik vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter allgemein separiert wird.
 Um das zu erreichen, wird das Reducer Pattern angewandt. 
-Das Reducer Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^14] aus dem initialen App-Zustand und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^8]:  
+</br>
+Einfach ausgedrückt beinhaltet dieses Pattern die Forderung, dass jede Änderung am App-Zustand als atomare Operation mit einem App-Zustand als Parameter und einem App-Zustands als Resultat ausgeführt wird. Aktionen, die potenziell länger laufen (Datenbank-Aktionen, Netzwerk-Aufrufe, ..), müssen wegen dieser Forderung meist mit mehreren atomaren App-Zustands-Änderungen umgesetzt werden, z.B. eine am Beginn der Aktion und eine am Ende. Entscheidend ist, dass die App-Zustands-Änderung am Ende der Aktion nicht das App-Zustands-Resultat vom Anfang der Aktion als Parameter (wieder-)verwendet, sondern den aktuellen App-Zustand des App-Zustands-Verwaltungs-Frameworks. Das Pattern unterstützt diese Absicht, indem es dafür sorgt, dass man den aktuellen App-Zustand für eine Änderung nicht selbst holen muss, sondern geliefert bekommt.
+</br>
+Oder etwas analytischer ausgedrückt: Das Reducer Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^14] aus dem initialen App-Zustand und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. 
+<br>
+Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^8]:  
 
 > Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben. Mit anderen Worten: `(state, action) => newState`.
 
@@ -102,7 +107,7 @@ Auf App-Code bezogen heißt das:
 
 3. Die App-Zustands-Verwaltung stellt eine Möglichkeit zur Verfügung, sich über Zustandsänderungen benachrichtigen zu lassen. In der minimalen Variante recht es aus, wenn als Benachrichtigung in einem Widget ein [setState](https://api.flutter.dev/flutter/widgets/State/setState.html) oder [markNeedsBuild](https://api.flutter.dev/flutter/widgets/Element/markNeedsBuild.html) ausgelöst wird. Diese Benachrichtigung sollte auch selektiv nur für ausgesuchte Änderungen möglich sein.  
 
-Für die ersten beiden Anforderungen lässt sich leicht eine minimale Schnittstelle definieren:
+Für die ersten beiden Anforderungen lässt sich leicht eine Schnittstelle definieren:
 
 1. eine get-Methode für den App-Zustand
 
@@ -127,13 +132,13 @@ Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgend
     setState(reducer(getState()));
 ```
 
-Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-Framework umsetzten lassen. Das Wichtige an dem Pattern ist, dass eine Absicht sichtbar gemacht werden soll: Jede Änderung am App-Zustand soll als atomare Operation mit genau einem App-Zustands-Parameter und einem App-Zustands-Resultat implementiert werden. Aktionen, die potenziell länger laufen, müssen meist mehrere atomare App-Zustands-Änderungen ausführen, z.B. eine am Beginn der Aktion und eine am Ende. Entscheidend ist, dass die App-Zustands-Änderung am Ende der Aktion nicht das App-Zustands-Resultat vom Anfang der Aktion als Parameter (wieder-)verwendet, sondern den aktuellen App-Zustand des App-Zustands-Verwaltungs-Frameworks. Das Pattern unterstützt diese Absicht, indem es dafür sorgt, dass man den aktuellen App-Zustand für eine Änderung nicht selbst holen muss, sondern geliefert bekommt.
+Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-Framework umsetzten lassen. 
 
 Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand benachrichtigen lassen zu können, ist stark vom eingesetzten App-Zustands-Verwaltungs-Framework abhängig (insbesondere die selektive Benachrichtigung) und wird später für ausgewählte Lösungen (StatefulWidget/InheritedWidget, Riverpod, Bloc) diskutiert. 
 
 ![](images/reducer_action.png)
 
-Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer, Reduceable sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
+Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reduceable sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
 Der Rest der App-Logik liegt in den Konvertern, die aus einem Reduceable und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
 
 ## Tutorial
@@ -1163,6 +1168,8 @@ Für den separierten Flutter-UI-Code werden allerdings für größere Projekte w
 * Wie separiere ich das Theming, z.B. Light Mode und Dark Mode?
 
 * Wie separiere ich die Layout-Adaptionen für verschiedene Endgeräte-Gruppen, z.B. Smartphone, Tablet, Desktop ? 
+
+* Wie separiere ich den Code für die Layout-Resposivness für Änderungen der App-Display-Größe zwischen den Adaptionsstufen ?
 
 * Wie separiere ich den Code für Animationen?
 
