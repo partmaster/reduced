@@ -1,0 +1,46 @@
+@startuml
+
+class MyHomePageBuilder
+MyHomePageBuilder : MyHomePageBuilder(props)
+MyHomePageBuilder : Widget build(context)
+
+note left of MyHomePageBuilder
+    nutzt die Props 
+    in der build-Methode
+    für den Widget-Baum-Bau
+end note
+
+class MyHomePageBinder
+
+note left of MyHomePageBinder
+    lauscht auf Props-Änderungen
+    holt die Props von der App-Zustands-Verwaltung
+    erzeugt den MyHomePageBuilder
+end note
+
+class MyHomePageProps
+MyHomePageProps : String title
+MyHomePageProps : Callable<void> onIncrementPressed
+MyHomePageProps : String counterText
+MyHomePageProps : MyHomePageProps.reduceable(Reduceable<MyAppState>)
+
+
+note top of MyHomePageProps
+    enthält alle Layout- 
+    und Callback-Properties
+    für den Widget-Baum-Bau 
+    in MyHomePageBuilder 
+end note
+
+
+note bottom of MyHomePageProps
+    reduceable-Konstruktor für Konvertierung
+    vom MyAppState nach MyHomePageProps
+    und die Abbildung der Callbacks auf Reducer
+end note
+
+MyHomePageBinder ..> MyHomePageBuilder : build
+MyHomePageBinder ..> MyHomePageProps : watch
+MyHomePageBuilder .up.> MyHomePageProps : use
+
+@enduml

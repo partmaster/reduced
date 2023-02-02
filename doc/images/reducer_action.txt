@@ -1,0 +1,25 @@
+@startuml
+
+interface Reduceable<S>
+Reduceable : S get state
+Reduceable : void reduce(Reducer<S >)
+
+interface Reducer<S>
+Reducer : S call(S)
+
+class MyAppStateBloc <<bloc>>
+class MyAppStateNotifier <<riverpod>>
+class MyAppStateBinder <<stateful>>
+
+Reduceable .up.> Reducer : accept
+MyAppStateBloc .up.> Reduceable : provide
+MyAppStateNotifier .up.> Reduceable : provide
+MyAppStateBinder .up.> Reduceable : provide
+
+object IncrementCounterReducer
+object DecrementCounterReducer
+
+IncrementCounterReducer -down-> Reducer
+DecrementCounterReducer -down-> Reducer
+
+@enduml

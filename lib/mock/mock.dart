@@ -8,11 +8,6 @@ class MyMockProps {
   final MyHomePageProps myHomePageProps;
   final MyCounterWidgetProps counterWidgetProps;
 
-  MyMockProps.props({
-    required this.myHomePageProps,
-    required this.counterWidgetProps,
-  });
-
   MyMockProps({
     required String title,
     required Callable<void> onIncrementPressed,

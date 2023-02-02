@@ -51,30 +51,54 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 
 > Wenn Code nicht gut testbar ist, weil er zu eng mit seiner Umgebung verbunden ist, extrahiere die Logik in eine separate, leicht zu testende Komponente, die von ihrer Umgebung entkoppelt ist.
 
+#### Ausgangslage des Humble Object Pattern
+</br>
+![](images/humble1.jpg)
+</br>
+*Bildquelle: manning.com*
+
+#### Lage nach Anwendung des Umble Object Pattern
+</br> 
+![](images/humble2.jpg)
+</br>
+*Bildquelle: manning.com*
+
 Auf eine Widget-Klasse bezogen heißt das: 
 
 1. Wenn die Widget-Klasse sowohl UI-Aufgaben als auch 
-App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klasse und eine Binder-Klasse geteilt. 
+App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klasse, eine Binder-Klasse und eine Props-Klasse geteilt.
+</br> 
+Dabei ist die Builder-Klasse wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung das Humble-Object und die Logik wird auf Binder- und Props-Klasse verteilt: Die Binder-Klasse  
 
-2. Die Binder-Klasse lässt sich über App-Zustandsänderungen benachrichtigen, konvertiert den aktuellen App-Zustand in die Properties für die Builder-Klassse, stellt für die Nutzergesten die Callback-Objekte mit den App-Zustands-Operationen zur Verfügung und liefert in der build-Methode ein Widget der Builder-Klasse zurück.
+2. Die Builder-Klasse ist ein StatelessWidget. Sie bekommt von der Binder-Klasse im Konstruktor die Props-Instanz mit vorkonfektionierten Properties und Callbacks und erzeugt in der build-Methode einen Widget-Baum aus Layout-, Renderer und Gestenerkennungs-Widgets.
 
-3. Die Builder-Klasse ist ein StatelessWidget. Sie bekommt von der Binder-Klasse im Konstruktor die vorkonfektionierten Properties und Callbacks und erzeugt in der build-Methode einen Widget-Baum aus Layout-, Renderer und Gestenerkennungs-Widgets.
+3. Die Binder-Klasse lauscht bei der App-Zustands-Verwaltung selektiv auf Änderungen 'ihrer' Props und liefert in der build-Methode ein Widget der Builder-Klasse zurück. 
 
-4. Für die vorkonfektionierten Properties und Callbacks wird eine  Props-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern und einem const Konstruktor.
+4. Für die vorkonfektionierten Properties und Callbacks der Builder-Klasse wird eine Props-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern.
+Die Props-Klasse hat einen Konstruktor, der den aktuellen App-Zustand in die Properties konvertiert und die Callback-Objekte auf die App-Zustands-Operationen abbildet.
+
+![](images/humble_widget.png)
+
+Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
+Das Lauschen der Builder-Klasse auf selektive Änderungen und der Konstruktor der Props-Klasse repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
 
 ## AppState, Reducer und Reduceable
 
-Das zweite Ziel ist, den Code so zu strukturieren, dass die App-Logik streng vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter insgesamt separiert wird.
+Das zweite Ziel ist, den Code so zu strukturieren, dass die App-Logik vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter allgemein separiert wird.
 Um das zu erreichen, wird das Reducer Pattern angewandt. 
-Das Reducer Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^14] des initialen App-Zustands und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht:  
+Das Reducer Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^14] aus dem initialen App-Zustand und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^8]:  
 
-> Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben. Mit anderen Worten: `(state, action) => newState` [^8].
+> Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben. Mit anderen Worten: `(state, action) => newState`.
+
+![](images/reducer_killalldefectscom.png)
+</br>
+*Bildquelle: killalldefects.com*
 
 Auf App-Code bezogen heißt das:
 
 1. Für den App-Zustand wird eine AppState-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern und einem const Konstruktor. Die App-Zustands-Verwaltung stellt eine get-Methode für den aktuellen App-Zustand zur Verfügung.  
 
-2. Die App-Zustands-Verwaltung stellt eine reduce-Methode zur Verfügung, die einen Reducer als Parameter akzeptiert. Ein Reducer ist eine reine synchrone Funktion, die eine Instanz der AppState-Klasse als Parameter bekommt und eine neue Instanz der AppState-Klasse als zurückgibt. Beim Aufruf führt die reduce-Methode den übergebenen Reducer mit dem aktuellen App-Zustand als Parameter aus und speichert den Rückgabewert des Reducer-Aufrufs als neuen App-Zustand ab. 
+2. Die App-Zustands-Verwaltung stellt eine reduce-Methode zur Verfügung, die einen Reducer als Parameter akzeptiert. Ein Reducer ist eine reine [^11] synchrone Funktion, die eine Instanz der AppState-Klasse als Parameter bekommt und eine neue Instanz der AppState-Klasse als zurückgibt. Beim Aufruf führt die reduce-Methode den übergebenen Reducer mit dem aktuellen App-Zustand als Parameter aus und speichert den Rückgabewert des Reducer-Aufrufs als neuen App-Zustand ab. 
 
 3. Die App-Zustands-Verwaltung stellt eine Möglichkeit zur Verfügung, sich über Zustandsänderungen benachrichtigen zu lassen. In der minimalen Variante recht es aus, wenn als Benachrichtigung in einem Widget ein [setState](https://api.flutter.dev/flutter/widgets/State/setState.html) oder [markNeedsBuild](https://api.flutter.dev/flutter/widgets/Element/markNeedsBuild.html) ausgelöst wird. Diese Benachrichtigung sollte auch selektiv nur für ausgesuchte Änderungen möglich sein.  
 
@@ -96,19 +120,21 @@ abstract class Reducer<S> {
   S call(S state);
 }
 ```
+Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- und eine Set-Methode für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reduceable` einfach implementieren:
 
-Die dritte Anforderung ist stark vom eingesetzten App-Zustands-Verwaltungs-Framework abhängig (insbesondere die selektive Benachrichtigung) und wird später für ausgewählte Lösungen (StatefulWidget/InheritedWidget, Riverpod, Bloc) diskutiert. 
+```dart
+  void reduce(Reducer<MyAppState> reducer) => 
+    setState(reducer(getState()));
+```
+
+Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-Framework umsetzten lassen. Das Wichtige an dem Pattern ist, dass eine Absicht sichtbar gemacht werden soll: Jede Änderung am App-Zustand soll als atomare Operation mit genau einem App-Zustands-Parameter und einem App-Zustands-Resultat implementiert werden. Aktionen, die potenziell länger laufen, müssen meist mehrere atomare App-Zustands-Änderungen ausführen, z.B. eine am Beginn der Aktion und eine am Ende. Entscheidend ist, dass die App-Zustands-Änderung am Ende der Aktion nicht das App-Zustands-Resultat vom Anfang der Aktion als Parameter (wieder-)verwendet, sondern den aktuellen App-Zustand des App-Zustands-Verwaltungs-Frameworks. Das Pattern unterstützt diese Absicht, indem es dafür sorgt, dass man den aktuellen App-Zustand für eine Änderung nicht selbst holen muss, sondern geliefert bekommt.
+
+Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand benachrichtigen lassen zu können, ist stark vom eingesetzten App-Zustands-Verwaltungs-Framework abhängig (insbesondere die selektive Benachrichtigung) und wird später für ausgewählte Lösungen (StatefulWidget/InheritedWidget, Riverpod, Bloc) diskutiert. 
+
+![](images/reducer_action.png)
 
 Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer, Reduceable sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
-Hinzu kommen Konverter, die aus einem Reduceable und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
-
-### Die Grenzen des Reducer Pattern
-
-Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^15].</br>
-
-In der Redux-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
-
-Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen.   
+Der Rest der App-Logik liegt in den Konvertern, die aus einem Reduceable und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
 
 ## Tutorial
 
@@ -116,7 +142,7 @@ Nun soll die vorgestellte Code-Struktur an einem kleinen Beispiel illustriert we
 
 ### Ausgangslage
 
-Als Vorlage wird das wohlbekannte Flutter-Counter-App-Projekt verwendet. In diesem Projekt spielt die Klasse _MyHomePageState die zentrale Rolle:
+Als Vorlage dient das wohlbekannte Flutter-Counter-App-Projekt. In diesem Projekt spielt die Klasse _MyHomePageState die zentrale Rolle:
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
@@ -508,15 +534,11 @@ void main() {
 
 Mit der main-Funktion könnte das Tutorial und dieser Artikel enden. Doch es gibt noch eine Verlängerung, und auf die könnte der Titel des Films "Das Beste kommt zum Schluss" passen:
 
-1. **Testbarkeit**</br> Um zu zeigen, wie die Trennung der Verantwortlichkeiten im Code für eine Vereinfachung der Tests genutzt werden kann, schreiben wir für die umgestellte Counter-Demo-App einen UI-Test und einen App-Logik-Test.
+1. **Skalierbarkeit**</br> Um zu zeigen, dass die neue Code-Struktur einfach skalierbar ist, extrahieren wir aus der Klasse `MyHomePageBuilder` eine Klasse `MyCounterBuilder`, die nur die Anzeige des Zählerwerts enthält, und implementieren für beide Klassen individuelle selektive Bindungen an den App-Zustand, so dass die build-Methoden von `MyHomePageBuilder` und `MyCounterBuilder` nur ausgeführt werden, wenn sich ihre Props tatsächlich ändern.
 
-2. **Skalierbarkeit**</br> Um zu zeigen, dass die neue Code-Struktur einfach skalierbar ist, extrahieren wir aus der Klasse `MyHomePageBuilder` eine Klasse `MyCounterBuilder`, die nur die Anzeige des Zählerwerts enthält, und implementieren für beide Klassen individuelle selektive Bindungen an den App-Zustand, so dass die build-Methoden von `MyHomePageBuilder` und `MyCounterBuilder` nur ausgeführt werden, wenn sich ihre Props tatsächlich ändern.
+2. **Testbarkeit**</br> Um zu zeigen, wie die Trennung der Verantwortlichkeiten im Code für eine Vereinfachung der Tests genutzt werden kann, schreiben wir für die umgestellte Counter-Demo-App einen UI-Test und einen App-Logik-Test.
 
 3. **Portierbarkeit**</br> Um zu zeigen, dass die neue Code-Struktur die Abhängigkeit vom verwendeten Framework tatsächlich veringert und sich auf die Binder-Klassen beschränkt, portieren wir die umgestellte Counter-Demo-App von der eigenen App-Zustands-Verwaltungs-Implementierung nacheinander auf die Nutzung der Frameworks Riverpod und Bloc.
-
-### Test
-
-t.b.d.
 
 ### Skalierung
 
@@ -640,7 +662,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 }
 ```
 
-5\. **Einbau**</br> 
+5\. **Scharfschaltung**</br> 
 Schließlich ersetzen wir in build-Methode der Klasse `MyHomePageBuilder` das Text-Widget durch `MyCounterWidgetBuilder`.
 
 ```dart
@@ -675,6 +697,253 @@ class MyHomePageBuilder extends StatelessWidget {
 ```
 
 Damit ist die Einführung und Nutzung einer neuen Builder-Binder-Props-Klassen-Kombination abgeschlossen und kann genutzt werden. 
+
+### Test
+
+Die App ist sauber nach UI-Code und App-Logik-Code getrennt. Diese Trennung wollen wir nun auch in den Tests vornehmen.
+
+#### App-Logik-Tests
+
+In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den reduceable-Konstruktoren der Props-Klassen. In unserem Beispiel-Projekt sind das die Klassen `IncrementCounterReducer`, `MyHomePageProps` und `MyCounterWidgetProps`. Da diese Klassen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
+
+Hier ein Beispiel-Test für den call-Methode der Klasse `IncrementCounterReducer`:
+
+```dart
+  test('testIncrementCounterReducer', () {
+    final objectUnderTest = IncrementCounterReducer();
+    final state = objectUnderTest.call(
+      const MyAppState(title: '', counter: 0),
+    );
+    expect(state.counter, equals(1));
+  });
+```
+
+Hier ein Beispiel-Test für den reduceable-Konstruktor der Klasse `MyCounterWidgetProps`:
+
+```dart
+  test('testMyCounterWidgetProps', () {
+    Reduceable<MyAppState> reduceable = Reduceable(
+      () => const MyAppState(counter: 0, title: ''),
+      (_) {},
+    );
+    final objectUnderTest =
+        MyCounterWidgetProps.reduceable(reduceable);
+    expect(objectUnderTest.counterText, equals('0'));
+  });
+```
+
+Hier ein Beispiel-Test für den reduceable-Konstruktor der Klasse `MyHomePageProps`:
+
+```dart
+  test('testMyHomePageProps', () {
+    const title = 'Flutter Demo App';
+    final incrementReducer = IncrementCounterReducer();
+    final decrementReducer = DecrementCounterReducer();
+    final reduceable = Reduceable(
+      () => const MyAppState(counter: 0, title: title),
+      (_) {},
+    );
+    final onIncrementPressed =
+        VoidCallable(reduceable, incrementReducer);
+    final onDecrementPressed =
+        VoidCallable(reduceable, decrementReducer);
+    final objectUnderTest = MyHomePageProps.reduceable(reduceable);
+    final expected = MyHomePageProps(
+      title: title,
+      onIncrementPressed: onIncrementPressed,
+    );
+    final withUnexpectedTitle = MyHomePageProps(
+      title: '_$title',
+      onIncrementPressed: onIncrementPressed,
+    );
+    final withUnexpectedCallback = MyHomePageProps(
+      title: title,
+      onIncrementPressed: onDecrementPressed,
+    );
+    expect(objectUnderTest, equals(expected));
+    expect(objectUnderTest, isNot(equals(withUnexpectedTitle)));
+    expect(objectUnderTest, isNot(equals(withUnexpectedCallback)));
+  });
+```
+
+Um den `operator==` testen zu können (notwendig für selektive Änderungsbenachrichtigungen), wurde für den Test `testMyHomePageProps` eine weitere Reducer-Klasse `DecrementCounterReducer` angelegt. 
+
+```dart
+class DecrementCounterReducer extends Reducer<MyAppState> {
+  DecrementCounterReducer._();
+  factory DecrementCounterReducer() => instance;
+
+  static final instance = DecrementCounterReducer._();
+
+  @override
+  MyAppState call(state) =>
+      state.copyWith(counter: state.counter - 1);
+}
+```
+
+#### UI-Tests
+
+Ensprechend der Code-Struktur können wir die Tests in Builder-Tests, Binder-Tests und Tests der kompletten App einteilen:
+
+##### Builder-Tests
+
+Die Builder-Klassen haben die Verantwortlichkeiten Layout, Rendering und Gestenerkennung und dies sollte sich in den Builder-Tests wiederfinden. Es kann einen gewissen Aufwand verursachen, eine App in den jeweiligen Zustand zu bringen, in welchem Layout, Rendering oder Gestenerkennung getestet werden sollen. Wenn für eine hohe Testabdeckung viele Zustände benötigt werden, ist jede Erleichterung wünschenswert. Mit der hier vorgestellten Code-Struktur ist eine Erleichterung für das Einstellen von Zuständen möglich:
+</b>
+Dazu erstellen wir zunächst einige Utility-Klassen:
+
+```dart
+class MyMockProps {
+  final MyHomePageProps myHomePageProps;
+  final MyCounterWidgetProps counterWidgetProps;
+
+  MyMockProps({
+    required String title,
+    required Callable<void> onIncrementPressed,
+    required String counterText,
+  })  : myHomePageProps = MyHomePageProps(
+          title: title,
+          onIncrementPressed: onIncrementPressed,
+        ),
+        counterWidgetProps = MyCounterWidgetProps(
+          counterText: counterText,
+        );
+}
+```
+
+```dart
+extension MockPropsOnBuildContext on BuildContext {
+  MyMockProps get mock => InheritedValueWidget.of<MyMockProps>(this);
+}
+```
+
+```dart
+class MyMockPropsBinder extends StatelessWidget {
+  const MyMockPropsBinder({
+    super.key,
+    required this.child,
+    required this.props,
+  });
+
+  final Widget child;
+  final MyMockProps props;
+
+  @override
+  Widget build(context) => InheritedValueWidget(
+        value: props,
+        child: child,
+      );
+}
+```
+
+```dart
+class MockCallable extends Callable<void> {
+  int count = 0;
+  
+  @override
+  void call() => ++count;
+}
+```
+
+Mit den Utility-Klassen erstellen wir Mock-Builder-Klassen, mit denen man die Props für die Builder-Klassen vorgeben kann:
+
+```dart
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(context) => child;
+}
+```
+
+```dart
+class MyHomePageBinder extends StatelessWidget {
+  const MyHomePageBinder({super.key});
+
+  @override
+  Widget build(context) => MyHomePageBuilder(
+        props: context.mock.myHomePageProps,
+      );
+}
+```
+
+```dart
+class MyCounterWidgetBinder extends StatelessWidget {
+  const MyCounterWidgetBinder({super.key});
+
+  @override
+  Widget build(context) => MyCounterWidgetBuilder(
+        props: context.mock.counterWidgetProps,
+      );
+}
+```
+
+Nach diesen Vorbereitungen können wir mit dem MyMockProps-Konstruktor nun einfach Builder-Tests für jeden Zustand gewünschten implementieren. Für die überschaubaren Zustände unserer Beispiel-App mag der Vorbereitungsaufwand übertrieben sein,
+bei größeren Apps kann er sich lohnen. 
+</br>
+Hier nun ein Builder-Test:
+
+```dart
+  testWidgets('testBuilder', (tester) async {
+    const title = 'title';
+    const counterText = '0';
+    final onIncrementPressed = MockCallable();
+    final app = MyMockPropsBinder(
+      props: MyMockProps(
+        title: title,
+        counterText: '0',
+        onIncrementPressed: onIncrementPressed,
+      ),
+      child: const MyAppBuilder(),
+    );
+    await tester.pumpWidget(app);
+    expect(find.widgetWithText(AppBar, title), findsOneWidget);
+    expect(
+      find.widgetWithText(MyCounterWidgetBuilder, counterText),
+      findsOneWidget,
+    );
+    await tester.tap(find.byIcon(Icons.add));
+    expect(onIncrementPressed.count, equals(1));
+  });
+```
+
+##### Binder-Tests
+
+Die Binder-Klassen müssen bei relevanten App-Zustands-Änderungen (und möglichst nur dann) dafür sorgen, dass ihr zugehöriges Builder-Widget mit den richtigen Props neu gebaut wird. 
+</br>
+Im `testSelectiveRebuild` wird geprüft, dass beim Drücken des Plus-Button das MyCounterWidgetBuilder-Widget neu gebaut wird, aber das MyHomePageBuilder-Widget nicht.
+
+```dart
+  testWidgets('testSelectiveRebuild',
+      (WidgetTester tester) async {
+
+    const app = MyAppBuilder();
+    const binder = MyAppStateBinder(child: app);
+    await tester.pumpWidget(binder);
+
+    final homePage0 = find.singleWidgetByType(MyHomePageBuilder);
+    final counterWidget0 =
+        find.singleWidgetByType(MyCounterWidgetBuilder);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    final homePage1 = find.singleWidgetByType(MyHomePageBuilder);
+    final counterWidget1 =
+        find.singleWidgetByType(MyCounterWidgetBuilder);
+
+    expect(identical(counterWidget0, counterWidget1), isFalse);
+    expect(identical(homePage0, homePage1), isTrue);
+  });
+```
+
+```dart
+extension SingleWidgetByType on CommonFinders {
+  T singleWidgetByType<T>(Type type) =>
+      find.byType(type).evaluate().single.widget as T;
+}
+```
 
 ### Portierung auf Riverpod
 
@@ -776,7 +1045,7 @@ class MyCounterWidgetBinder extends ConsumerWidget {
 
 Nun können wir in der Klasse `binder.dart` den Schalter umlegen und anstelle von `stateful_binder.dart` die Datei `riverpod_binder.dart` exportieren. Damit ist die Portierung auf Riverpod abgeschlossen und die App kann verwendet werden.
 
-## Portierung nach Bloc
+### Portierung auf Bloc
 
 Den Abschluss des Tutorials bildet die Portierung auf Bloc.
 Dazu legen wir im Ordner `lib` einen Unterordner `bloc` an und darin die Dateien `bloc.dart` und `bloc_binder.dart`.
@@ -866,9 +1135,44 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
 Nun können wir in der Klasse `binder.dart`den Schalter umlegen und anstelle von `stateful_binder.dart` oder `riverpod_binder.dart` die Datei `bloc_binder.dart` exportieren. Damit ist die Portierung nach Bloc abgeschlossen und die App kann verwendet werden.
 
+## Offene Enden
+
+### Grauzonen zwischen UI uns App-Logik
+
+Zur Implementierung einiger UI-Aktionen benötigt man einen BuildContext. Ein prominentes Beispiel ist die Navigation zwischen App-Seiten mit `Navigator.of(BuildContext)`. Die Entscheidung, wann zu welcher App-Seite navigiert wird, ist App-Logik. Die App-Logik sollte möglichst ohne Abhängigkeiten von der UI-Ablaufumgebung bleiben, und ein BuildContext repräsentiert quasi diese Ablaufumgebung. 
+</br>
+Ein ähnliches Problem sind UI-Ressourcen wie Bilder, Icons, Farben und Fonts, die eine Abhängigkeit zur UI-Ablaufumgebung besitzen und deren Bereitstellung UI-App-Logik erfordern kann. 
+Zwischen UI-Code und App-Logik-Code gibt es also noch Grauzonen, die in klare Abgrenzungen umgewandelt werden sollten.  
+
+### Lokale App-Zustände
+
+Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^15].</br>
+
+In der Redux-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
+
+Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen.   
+
+### UI-Code-Strukturierung
+
+In diesem Artikel wurden Code-Struktur und Entwurfsmuster für eine Trennung der Verantwortlichkeiten von UI-Code und App-Logik-Code diskutiert. 
+</br>
+Eine separierte App-Logik kann man mit allen verfügbaren Architektur-Ansätzen und Entwurfmustern weiterstrukturiert werden und ist für mich darum kein offenes Ende dieses Artikels über Flutter-App-Code.
+</br>
+Für den separierten Flutter-UI-Code werden allerdings für größere Projekte weitere interne Strukturierungskonzepte benötigt, die die Vorteile aus dem Flutter-Prinzip 'Alles ist ein Widget' nutzen. Hier einige offene Punkte:
+
+* Wie separiere ich das Theming, z.B. Light Mode und Dark Mode?
+
+* Wie separiere ich die Layout-Adaptionen für verschiedene Endgeräte-Gruppen, z.B. Smartphone, Tablet, Desktop ? 
+
+* Wie separiere ich den Code für Animationen?
+
+### Groß-Projekt-Erprobung
+
+Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen und mittleren Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^19] und im Google- [^20] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf größere Projekte anwenden lassen, müsste noch geprüft werden.
+
 ## Fazit
 
-t.b.d.
+Code-Struktur und Entwurfsmuster sind wichtige Themen der App-Architektur. Mit diesem Artikel wollte ich das Nachdenken und die Diskussion über diese Themen anregen. 
 
 ## Referenzen
 
@@ -906,4 +1210,8 @@ t.b.d.
 
 [^17]: App-Zustands-Normalisierung</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
 
-[^18]: React</br> []()
+[^18]: React</br> [reactjs.org/](https://reactjs.org/)
+
+[^19]: Die App *Cantarei* im Apple-Appstore [apps.apple.com/us/app/cantarei/id1624281880](https://apps.apple.com/us/app/cantarei/id1624281880)
+
+[^20]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
