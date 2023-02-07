@@ -8,16 +8,16 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 Hier wird eine Code-Struktur vorgestellt, die durch die Anwendung von Entwurfsmustern [^1] die Trennung der Verantwortlichkeiten [^2] im Code von App-Projekten mit Flutter [^3] befördert. 
 Für die Code-Struktur werden die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reduceable verwendet, die im Folgenden erklärt werden.
-Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Mittel StatefulWidget und InheritedWidget eingesetzt werden.
+Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Klassen StatefulWidget und InheritedWidget eingesetzt werden.
 </br> 
-Wer seine Code-Struktur übersichtlicher gestalten will oder wer bei der Wahl einer App-Zustands-Verwaltungs-Lösung flexibel sein will, für den könnte der Artikel interessant sein. 
+Wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will oder wer bei der Wahl einer App-Zustands-Verwaltungs-Lösung flexibel sein will, für den könnte der Artikel interessant sein. 
 
 ## Einleitung
 
 Source Code scheint dem 2. Gesetz der Thermodynamik zu folgen und zur Aufrechterhaltung der Ordnung der ständigen Zuführung von äußerer Energie zu bedürfen. 
 Flutter-App-Projekte sind da keine Ausnahme. Ein typisches Symptom sind build-Methoden mit wachsenden Widget-Konstruktor-Hierarchien, die von App-Logik infiltriert werden.
 Mit App-Logik meine ich die Fachlogik der UI und ihres Zustands im engeren Sinn - in Abgrenzung zur Fachlogik einer Anwendungsdomäne, die oft in Datenbanken, Backends oder externen Bibliotheken implementiert ist. 
-Viele Flutter-Frameworks wurden und werden entwickelt, um eine saubere Code-Struktur zu unterstützen. Dabei geht es hauptsächlich um das Verwalten des Zustandes der App auf eine Art und Weise, die eine Trennung der Verantwortlichkeiten zwischen App-Logik und UI ermöglicht.  
+Viele Flutter-Frameworks wurden und werden entwickelt, um eine saubere Code-Struktur zu unterstützen. Dabei geht es hauptsächlich um die eine Trennung der Verantwortlichkeiten zwischen App-Logik und UI beim Verwalten des Zustandes der App.  
 Bei einem unbedachten Einsatz solcher Frameworks besteht die Gefahr, dass sie neben ihrer eigentlichen Aufgabe, der Trennung der Verantwortlichkeiten, die App-Logik und die UI infiltrieren und unerwünschte Abhängigkeiten schaffen.
 Weil es viele Frameworks gibt (in der offiziellen Flutter-Dokumentation sind aktuell 13 Frameworks gelistet [^6]) und die Entwicklung sicher noch nicht abgeschlossen ist, kann es besonders für große und langlebige App-Projekte zur Herausforderung werden, zwischen Frameworks migrieren oder verschiedene Frameworks integrieren zu müssen.  
 </br>
@@ -57,13 +57,13 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 </br>
 *Bildquelle: manning.com*
 
-#### Lage nach Anwendung des Umble Object Pattern
+#### Lage nach Anwendung des Humble Object Pattern
 </br> 
 ![](images/humble2.jpg)
 </br>
 *Bildquelle: manning.com*
 
-Auf eine Widget-Klasse bezogen heißt das: 
+Auf eine Flutter-Widget-Klasse bezogen, habe ich das Pattern folgendermaßen angewendet: 
 
 1. Wenn die Widget-Klasse sowohl UI-Aufgaben als auch 
 App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klasse, eine Binder-Klasse und eine Props-Klasse geteilt.
