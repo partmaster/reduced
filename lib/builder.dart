@@ -18,8 +18,8 @@ class MyHomePageBuilder extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[
-              Text(
+            children:  <Widget>[
+              const Text(
                 'You have pushed the button this many times:',
               ),
               MyCounterWidgetBinder(),
@@ -62,6 +62,6 @@ class MyAppBuilder extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePageBinder(),
+        home: MyHomePageBinder(),
       );
 }

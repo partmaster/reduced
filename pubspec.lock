@@ -171,6 +171,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  functional_listener:
+    dependency: transitive
+    description:
+      name: functional_listener
+      sha256: "18f4f43478b78b037c9a64c3c10d4067a8c9a5d510f3e174775705ce4337414a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      sha256: "290fde3a86072e4b37dbb03c07bec6126f0ecc28dad403c12ffe2e5a2d751ab7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.2.0"
+  get_it_mixin:
+    dependency: "direct main"
+    description:
+      name: get_it_mixin
+      sha256: d6e90b642e6bae0eed2db366e2c18c7126427f9ae76b3a2ec88239ce2fa51ec5
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.4+2"
   glob:
     dependency: transitive
     description:
@@ -521,5 +545,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.6 <4.0.0"
+  dart: ">=2.18.6 <3.0.0"
   flutter: ">=3.0.0"

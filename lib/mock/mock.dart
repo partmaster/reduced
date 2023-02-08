@@ -2,7 +2,7 @@ import 'package:counter_app/domain.dart';
 import 'package:flutter/widgets.dart';
 
 import '../reduceable.dart';
-import '../stateful/stateful.dart';
+import '../setstate/setstate.dart';
 
 class MyMockProps {
   final MyHomePageProps myHomePageProps;

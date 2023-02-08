@@ -1,10 +1,10 @@
-// stateful_binder.dart
+// setstate_binder.dart
 
 import 'package:flutter/widgets.dart';
 
 import '../domain.dart';
 import '../builder.dart';
-import 'stateful.dart';
+import 'setstate.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
