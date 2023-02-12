@@ -17,7 +17,7 @@ class MyAppStateBinder extends StatelessWidget {
     Get.put(
       AppStateController(
         const MyAppState(
-          title: 'title',
+          title: 'Flutter Demo Home Page',
           counter: 0,
         ),
       ),

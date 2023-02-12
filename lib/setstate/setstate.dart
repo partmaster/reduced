@@ -33,7 +33,7 @@ class _AppStateBinderState<S> extends State<AppStateBinder<S>> {
 
   S getState() => _state;
 
-  late final reduceable = Reduceable(getState, reduce);
+  late final reduceable = Reduceable(getState, reduce, this);
 
   void reduce(Reducer<S> reducer) =>
       setState(() => _state = reducer(_state));

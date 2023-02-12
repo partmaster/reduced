@@ -19,7 +19,7 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
 
   MyAppState getState() => state;
 
-  late final reduceable = Reduceable(getState, add);
+  late final reduceable = Reduceable(getState, add, this);
 
 }
 

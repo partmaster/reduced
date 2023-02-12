@@ -32,6 +32,7 @@ void main() {
     Reduceable<MyAppState> reduceable = Reduceable(
       () => const MyAppState(counter: 0, title: ''),
       (_) {},
+      false,
     );
     final objectUnderTest =
         MyCounterWidgetProps.reduceable(reduceable);
@@ -44,6 +45,7 @@ void main() {
     final reduceable = Reduceable(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
+      false,
     );
     final onIncrementPressed =
         VoidCallable(reduceable, incrementReducer);

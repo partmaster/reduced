@@ -10,5 +10,5 @@ extension ReduceableOnValueNotifier<S> on ValueNotifier<S> {
   }
 
   Reduceable<S> get reduceable =>
-      Reduceable(getState, reduce);
+      Reduceable(getState, reduce, this);
 }

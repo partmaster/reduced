@@ -12,7 +12,7 @@ class MyAppStateNotifier extends StateNotifier<MyAppState> {
           counter: 0,
         ));
 
-  late final reduceable = Reduceable(getState, reduce);
+  late final reduceable = Reduceable(getState, reduce, this);
 
   MyAppState getState() => super.state;
 

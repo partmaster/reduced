@@ -14,6 +14,6 @@ class AppStateController<S> extends GetxController {
     update();
   }
 
-  Reduceable<S> get reduceable =>
-      Reduceable(getState, reduce);
+  late final Reduceable<S> reduceable =
+      Reduceable(getState, reduce, this);
 }
