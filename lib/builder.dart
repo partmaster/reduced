@@ -62,6 +62,6 @@ class MyAppBuilder extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePageBinder(),
+        home: const MyHomePageBinder(),
       );
 }

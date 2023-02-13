@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../reduceable.dart';
 
-extension GetitReduceable<S> on ValueNotifier<S> {
+extension ReduceableValueNotifier<S> on ValueNotifier<S> {
   S getState() => value;
 
   void reduce(Reducer<S> reducer) {

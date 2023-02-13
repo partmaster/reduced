@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 import '../reduceable.dart';
 
-class GetxReduceable<S> extends GetxController {
-  GetxReduceable(S state) : _state = state;
+class ReduceableGetx<S> extends GetxController {
+  ReduceableGetx(S state) : _state = state;
 
   S _state;
 

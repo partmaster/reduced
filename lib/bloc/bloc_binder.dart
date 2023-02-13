@@ -7,7 +7,7 @@ import '../domain.dart';
 import '../builder.dart';
 import 'bloc_reduceable.dart';
 
-typedef MyAppStateBloc = BlocReduceable<MyAppState>;
+typedef MyAppStateBloc = ReduceableBloc<MyAppState>;
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -20,7 +20,7 @@ class MyAppStateBinder extends StatelessWidget {
 
   @override
   Widget build(context) => BlocProvider(
-        create: (_) => BlocReduceable(
+        create: (_) => ReduceableBloc(
           const MyAppState(
             title: 'Flutter Demo Home Page',
             counter: 0,

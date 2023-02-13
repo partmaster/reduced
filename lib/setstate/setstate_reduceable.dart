@@ -9,8 +9,8 @@ typedef ReduceableWidgetBuilder<S> = Widget Function(
   Widget child,
 );
 
-class SetStateReduceable<S> extends StatefulWidget {
-  const SetStateReduceable({
+class ReduceableStatefulWidget<S> extends StatefulWidget {
+  const ReduceableStatefulWidget({
     super.key,
     required this.initialState,
     required this.child,
@@ -22,12 +22,12 @@ class SetStateReduceable<S> extends StatefulWidget {
   final ReduceableWidgetBuilder<S> builder;
 
   @override
-  State<SetStateReduceable> createState() =>
-      _SetStateReduceableState<S>(initialState);
+  State<ReduceableStatefulWidget> createState() =>
+      _ReduceableStatefulWidgetState<S>(initialState);
 }
 
-class _SetStateReduceableState<S> extends State<SetStateReduceable<S>> {
-  _SetStateReduceableState(S initialState) : _state = initialState;
+class _ReduceableStatefulWidgetState<S> extends State<ReduceableStatefulWidget<S>> {
+  _ReduceableStatefulWidgetState(S initialState) : _state = initialState;
 
   S _state;
 

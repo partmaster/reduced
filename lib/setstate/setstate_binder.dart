@@ -16,7 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   );
 
   @override
-  Widget build(context) => SetStateReduceable(
+  Widget build(context) => ReduceableStatefulWidget(
         initialState: _initialState,
         child: child,
         builder: (value, child) => InheritedValueWidget(

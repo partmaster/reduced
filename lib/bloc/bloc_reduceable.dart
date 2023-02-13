@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../reduceable.dart';
 
-class BlocReduceable<S> extends Bloc<Reducer<S>, S> {
-  BlocReduceable(super.initialState) {
+class ReduceableBloc<S> extends Bloc<Reducer<S>, S> {
+  ReduceableBloc(super.initialState) {
     on<Reducer<S>>((event, emit) => emit(event(state)));
   }
 
