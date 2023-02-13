@@ -48,9 +48,9 @@ void main() {
       false,
     );
     final onIncrementPressed =
-        VoidCallable(reduceable, incrementReducer);
+        Action(reduceable, incrementReducer);
     final onDecrementPressed =
-        VoidCallable(reduceable, decrementReducer);
+        Action(reduceable, decrementReducer);
     final objectUnderTest = MyHomePageProps.reduceable(reduceable);
     final expected = MyHomePageProps(
       title: title,

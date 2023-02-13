@@ -1,27 +1,15 @@
 // reduceable.dart
 
-import 'package:quiver/core.dart';
-
-typedef Reduce<S> = void Function(Reducer<S>);
-
-class VoidCallable<S> extends Callable<void> {
-  VoidCallable(this.reduceable, this.reducer);
-
-  final Reduceable<S> reduceable;
-  final Reducer<S> reducer;
-
-  @override
-  void call() => reduceable.reduce(reducer);
-
-  @override
-  int get hashCode => hash2(reduceable, reducer);
-
-  @override
-  bool operator ==(Object other) =>
-      other is VoidCallable &&
-      reducer == other.reducer &&
-      reduceable == other.reduceable;
+abstract class Callable<T> {
+  T call();
 }
+
+typedef VoidCallable = Callable<void>;
+
+abstract class Reducer<S> {
+  S call(S state);
+}
+typedef Reduce<S> = void Function(Reducer<S>);
 
 class Reduceable<S> {
   Reduceable(this.getState, this.reduce, this.equality);
@@ -40,11 +28,21 @@ class Reduceable<S> {
       other is Reduceable<S> && equality == other.equality;
 }
 
-abstract class Callable<T> {
-  const Callable();
-  T call();
-}
+class Action<S> extends VoidCallable {
+  Action(this.reduceable, this.reducer);
 
-abstract class Reducer<S> {
-  S call(S state);
+  final Reduceable<S> reduceable;
+  final Reducer<S> reducer;
+
+  @override
+  void call() => reduceable.reduce(reducer);
+
+  @override
+  int get hashCode => Object.hash(reduceable, reducer);
+
+  @override
+  bool operator ==(Object other) =>
+      other is Action &&
+      reducer == other.reducer &&
+      reduceable == other.reduceable;
 }

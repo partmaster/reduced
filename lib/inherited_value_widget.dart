@@ -11,8 +11,8 @@ class InheritedValueWidget<V> extends InheritedWidget {
 
   final V value;
 
-  static V of<V>(BuildContext context) =>
-      _widgetOf<InheritedValueWidget<V>>(context).value;
+  static U of<U>(BuildContext context) =>
+      _widgetOf<InheritedValueWidget<U>>(context).value;
 
   static W _widgetOf<W extends InheritedValueWidget>(
           BuildContext context) =>

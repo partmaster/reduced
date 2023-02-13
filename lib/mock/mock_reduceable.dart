@@ -12,7 +12,7 @@ class MyMockProps {
 
   MyMockProps({
     required String title,
-    required Callable<void> onIncrementPressed,
+    required Callable onIncrementPressed,
     required String counterText,
   })  : myHomePageProps = MyHomePageProps(
           title: title,
@@ -44,7 +44,7 @@ class MyMockPropsBinder extends StatelessWidget {
       );
 }
 
-class MockCallable extends Callable<void> {
+class MockCallable extends Callable {
   int count = 0;
   
   @override

@@ -1,7 +1,5 @@
 // domain.dart
 
-import 'package:quiver/core.dart';
-
 import 'reduceable.dart';
 
 class MyAppState {
@@ -16,7 +14,7 @@ class MyAppState {
       );
 
   @override
-  int get hashCode => hash2(title, counter);
+  int get hashCode => Object.hash(title, counter);
 
   @override
   bool operator ==(Object other) =>
@@ -27,7 +25,7 @@ class MyAppState {
 
 class MyHomePageProps {
   final String title;
-  final Callable<void> onIncrementPressed;
+  final Callable onIncrementPressed;
 
   const MyHomePageProps({
     required this.title,
@@ -36,13 +34,13 @@ class MyHomePageProps {
 
   MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
       : title = reduceable.state.title,
-        onIncrementPressed = VoidCallable(
+        onIncrementPressed = Action(
           reduceable,
           IncrementCounterReducer(),
         );
 
   @override
-  int get hashCode => hash2(title, onIncrementPressed);
+  int get hashCode => Object.hash(title, onIncrementPressed);
 
   @override
   bool operator ==(Object other) =>
