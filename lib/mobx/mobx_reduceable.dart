@@ -1,22 +1,19 @@
 // mobx_reduceable.dart
 
-import 'package:counter_app/domain.dart';
 import 'package:mobx/mobx.dart';
 
+import '../domain.dart';
 import '../reduceable.dart';
 
 part 'mobx_reduceable.g.dart';
 
-final store = MyStore();
-
 class MyStore = MyStoreBase with _$MyStore;
 
 abstract class MyStoreBase with Store {
+  MyStoreBase(this.value);
+
   @observable
-  MyAppState value = const MyAppState(
-    title: 'Flutter Demo Home Page',
-    counter: 0,
-  );
+  MyAppState value;
 
   MyAppState getState() => value;
 

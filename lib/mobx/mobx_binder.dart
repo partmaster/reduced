@@ -1,18 +1,28 @@
 // mobx_binder.dart
 
-import 'package:counter_app/mobx/mobx_reduceable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../builder.dart';
+import '../domain.dart';
+import '../inherited_value_widget.dart';
+import 'mobx_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
   final Widget child;
-
+  
   @override
-  Widget build(context) => child;
+  Widget build(context) => InheritedValueWidget(
+        value: MyStore(
+          const MyAppState(
+            title: 'Flutter Demo Home Page',
+            counter: 0,
+          ),
+        ),
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {
@@ -21,7 +31,8 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) => Observer(
         builder: (_) => MyHomePageBuilder(
-          props: store.homePageProps,
+          props:
+              InheritedValueWidget.of<MyStore>(context).homePageProps,
         ),
       );
 }
@@ -32,7 +43,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) => Observer(
         builder: (_) => MyCounterWidgetBuilder(
-          props: store.conterWidgetProps,
+          props: InheritedValueWidget.of<MyStore>(context)
+              .conterWidgetProps,
         ),
       );
 }
