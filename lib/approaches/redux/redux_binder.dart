@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import '../builder.dart';
-import '../domain.dart';
-import '../reduceable.dart' as reduceable;
+import '../../builder.dart';
+import '../../domain.dart';
+import '../../reduceable.dart' as reduceable;
 import 'redux_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {

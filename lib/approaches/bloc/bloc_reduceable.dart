@@ -2,7 +2,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 class ReduceableBloc<S> extends Bloc<Reducer<S>, S> {
   ReduceableBloc(super.initialState) {

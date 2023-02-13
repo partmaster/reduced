@@ -5,7 +5,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 // ignore: implementation_imports
 import 'package:solidart/src/core/signal_selector.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 extension ReduceableSignal<S> on Signal<S> {
   S getState() => value;

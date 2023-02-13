@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../builder.dart';
-import '../domain.dart';
+import '../../builder.dart';
+import '../../domain.dart';
 import 'riverpod_reduceable.dart';
 
 typedef MyAppStateNotifier = ReduceableStateNotifier<MyAppState>;

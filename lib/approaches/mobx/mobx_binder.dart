@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../builder.dart';
-import '../domain.dart';
-import '../inherited_value_widget.dart';
+import '../../builder.dart';
+import '../../domain.dart';
+import '../../inherited_value_widget.dart';
 import 'mobx_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {

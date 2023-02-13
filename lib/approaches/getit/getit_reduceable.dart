@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 extension ReduceableValueNotifier<S> on ValueNotifier<S> {
   S getState() => value;

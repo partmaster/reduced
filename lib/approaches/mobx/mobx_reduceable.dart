@@ -2,8 +2,8 @@
 
 import 'package:mobx/mobx.dart';
 
-import '../domain.dart';
-import '../reduceable.dart';
+import '../../domain.dart';
+import '../../reduceable.dart';
 
 part 'mobx_reduceable.g.dart';
 

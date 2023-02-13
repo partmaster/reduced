@@ -3,8 +3,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../domain.dart';
-import '../builder.dart';
+import '../../domain.dart';
+import '../../builder.dart';
 import 'bloc_reduceable.dart';
 
 typedef MyAppStateBloc = ReduceableBloc<MyAppState>;

@@ -2,7 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 class ReduceableStateNotifier<S> extends StateNotifier<S> {
   ReduceableStateNotifier(super.state);

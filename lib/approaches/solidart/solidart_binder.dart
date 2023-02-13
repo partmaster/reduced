@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 
-import '../builder.dart';
-import '../domain.dart';
+import '../../builder.dart';
+import '../../domain.dart';
 import 'solidart_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {

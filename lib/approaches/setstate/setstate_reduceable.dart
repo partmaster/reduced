@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 typedef ReduceableWidgetBuilder<S> = Widget Function(
   Reduceable<S> value,

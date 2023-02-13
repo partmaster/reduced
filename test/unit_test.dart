@@ -5,8 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:counter_app/domain.dart';
-import 'package:counter_app/reduceable.dart';
+import 'package:reduceable/domain.dart';
+import 'package:reduceable/reduceable.dart';
 import 'package:test/test.dart';
 
 class DecrementCounterReducer extends Reducer<MyAppState> {

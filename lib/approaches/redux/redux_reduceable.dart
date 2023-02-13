@@ -2,7 +2,7 @@
 
 import 'package:redux/redux.dart';
 
-import '../reduceable.dart';
+import '../../reduceable.dart';
 
 extension ReduceableStore on Store {
   Reduceable<S> reduceable<S>() => 
