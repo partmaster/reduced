@@ -1,10 +1,10 @@
 // mock_reduceable.dart
 
-import 'package:counter_app/domain.dart';
 import 'package:flutter/widgets.dart';
 
 import '../inherited_value_widget.dart';
 import '../reduceable.dart';
+import '../domain.dart';
 
 class MyMockProps {
   final MyHomePageProps myHomePageProps;
