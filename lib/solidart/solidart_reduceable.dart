@@ -1,3 +1,5 @@
+// solidart_reduceable.dart
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 // ignore: implementation_imports
@@ -5,7 +7,7 @@ import 'package:solidart/src/core/signal_selector.dart';
 
 import '../reduceable.dart';
 
-extension ReduceableOnAppStateSignal<S> on Signal<S> {
+extension ReduceableSignal<S> on Signal<S> {
   S getState() => value;
 
   void reduce(Reducer<S> reducer) => value = reducer(value);

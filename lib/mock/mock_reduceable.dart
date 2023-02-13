@@ -1,8 +1,10 @@
+// mock_reduceable.dart
+
 import 'package:counter_app/domain.dart';
 import 'package:flutter/widgets.dart';
 
 import '../reduceable.dart';
-import '../setstate/setstate.dart';
+import '../setstate/setstate_reduceable.dart';
 
 class MyMockProps {
   final MyHomePageProps myHomePageProps;

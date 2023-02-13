@@ -1,4 +1,4 @@
-// stateful.dart
+// setstate_reduceable.dart
 
 import 'package:flutter/material.dart';
 
@@ -9,8 +9,8 @@ typedef ReduceableWidgetBuilder<S> = Widget Function(
   Widget child,
 );
 
-class AppStateBinder<S> extends StatefulWidget {
-  const AppStateBinder({
+class SetStateReduceable<S> extends StatefulWidget {
+  const SetStateReduceable({
     super.key,
     required this.initialState,
     required this.child,
@@ -22,12 +22,12 @@ class AppStateBinder<S> extends StatefulWidget {
   final ReduceableWidgetBuilder<S> builder;
 
   @override
-  State<AppStateBinder> createState() =>
-      _AppStateBinderState<S>(initialState);
+  State<SetStateReduceable> createState() =>
+      _SetStateReduceableState<S>(initialState);
 }
 
-class _AppStateBinderState<S> extends State<AppStateBinder<S>> {
-  _AppStateBinderState(S initialState) : _state = initialState;
+class _SetStateReduceableState<S> extends State<SetStateReduceable<S>> {
+  _SetStateReduceableState(S initialState) : _state = initialState;
 
   S _state;
 

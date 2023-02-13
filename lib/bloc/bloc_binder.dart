@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../domain.dart';
 import '../builder.dart';
-import 'bloc.dart';
+import 'bloc_reduceable.dart';
+
+typedef MyAppStateBloc = BlocReduceable<MyAppState>;
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -18,7 +20,12 @@ class MyAppStateBinder extends StatelessWidget {
 
   @override
   Widget build(context) => BlocProvider(
-        create: (_) => MyAppStateBloc(),
+        create: (_) => BlocReduceable(
+          const MyAppState(
+            title: 'Flutter Demo Home Page',
+            counter: 0,
+          ),
+        ),
         child: child,
       );
 }
@@ -30,7 +37,7 @@ class MyHomePageBinder extends StatelessWidget {
   Widget build(context) =>
       BlocSelector<MyAppStateBloc, MyAppState, MyHomePageProps>(
         selector: (state) => MyHomePageProps.reduceable(
-          context.appStateBloc.reduceable,
+          BlocProvider.of<MyAppStateBloc>(context).reduceable,
         ),
         builder: (context, props) => MyHomePageBuilder(
           props: props,
@@ -47,7 +54,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   Widget build(context) =>
       BlocSelector<MyAppStateBloc, MyAppState, MyCounterWidgetProps>(
         selector: (state) => MyCounterWidgetProps.reduceable(
-          context.appStateBloc.reduceable,
+          BlocProvider.of<MyAppStateBloc>(context).reduceable,
         ),
         builder: (context, props) => MyCounterWidgetBuilder(
           props: props,

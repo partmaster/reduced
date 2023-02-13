@@ -1,6 +1,6 @@
 // stateful_binder.dart
 
-import 'package:counter_app/mock/mock.dart';
+import 'package:counter_app/mock/mock_reduceable.dart';
 import 'package:flutter/widgets.dart';
 
 import '../builder.dart';

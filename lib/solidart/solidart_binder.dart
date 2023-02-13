@@ -1,6 +1,6 @@
 // solidart_binder.dart
 
-import 'package:counter_app/solidart/solidart.dart';
+import 'package:counter_app/solidart/solidart_reduceable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 

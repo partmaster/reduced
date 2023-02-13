@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../domain.dart';
 import '../builder.dart';
-import 'setstate.dart';
+import 'setstate_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -16,7 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   );
 
   @override
-  Widget build(context) => AppStateBinder(
+  Widget build(context) => SetStateReduceable(
         initialState: _initialState,
         child: child,
         builder: (value, child) => InheritedValueWidget(

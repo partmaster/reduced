@@ -1,4 +1,5 @@
-import 'package:counter_app/redux/redux.dart';
+// redux_binder.dart
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -6,6 +7,7 @@ import 'package:redux/redux.dart';
 import '../builder.dart';
 import '../domain.dart';
 import '../reduceable.dart' as reduceable;
+import 'redux_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -34,7 +36,7 @@ class MyHomePageBinder extends StatelessWidget {
   Widget build(context) =>
       StoreConnector<MyAppState, MyHomePageProps>(
         converter: (store) => MyHomePageProps.reduceable(
-          store.reduceable,
+          store.reduceable<MyAppState>(),
         ),
         builder: (context, props) => MyHomePageBuilder(
           props: props,
@@ -49,7 +51,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   Widget build(context) =>
       StoreConnector<MyAppState, MyCounterWidgetProps>(
         converter: (store) => MyCounterWidgetProps.reduceable(
-          store.reduceable,
+          store.reduceable(),
         ),
         builder: (context, props) => MyCounterWidgetBuilder(
           props: props,

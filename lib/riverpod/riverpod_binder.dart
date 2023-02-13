@@ -4,7 +4,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../builder.dart';
-import 'riverpod.dart';
+import '../domain.dart';
+import 'riverpod_reduceable.dart';
+
+typedef MyAppStateNotifier = ReduceableStateNotifier<MyAppState>;
+typedef MyAppStateProvider
+    = StateNotifierProvider<MyAppStateNotifier, MyAppState>;
+
+final appStateProvider = MyAppStateProvider(
+  (ref) => ReduceableStateNotifier(
+    const MyAppState(
+      title: 'Flutter Demo Home Page',
+      counter: 0,
+    ),
+  ),
+);
+
+final counterWidgetPropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyCounterWidgetProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);
+
+final homePagePropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyHomePageProps.reduceable(
+          appStateNotifier.reduceable,
+        ),
+      ),
+    );
+  },
+);
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});

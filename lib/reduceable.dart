@@ -5,10 +5,7 @@ import 'package:quiver/core.dart';
 typedef Reduce<S> = void Function(Reducer<S>);
 
 class VoidCallable<S> extends Callable<void> {
-  VoidCallable(this.reduceable, this.reducer) {
-    print('VoidCallable(reduceable=${reduceable.hashCode}, reducer=${reducer.hashCode}) => $hashCode');
-
-  }
+  VoidCallable(this.reduceable, this.reducer);
 
   final Reduceable<S> reduceable;
   final Reducer<S> reducer;
@@ -27,23 +24,20 @@ class VoidCallable<S> extends Callable<void> {
 }
 
 class Reduceable<S> {
-  Reduceable(this.getState, this.reduce, this.store) {
-    print('Reduceable() => $hashCode');
-  }
+  Reduceable(this.getState, this.reduce, this.equality);
 
   final S Function() getState;
   final Reduce<S> reduce;
-  final Object store;
+  final Object equality;
 
   S get state => getState();
 
   @override
-  int get hashCode => store.hashCode;
+  int get hashCode => equality.hashCode;
 
   @override
   bool operator ==(Object other) =>
-      other is Reduceable<S> &&
-      store == other.store;
+      other is Reduceable<S> && equality == other.equality;
 }
 
 abstract class Callable<T> {

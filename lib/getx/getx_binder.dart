@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../builder.dart';
 import '../domain.dart';
-import 'getx.dart';
+import 'getx_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -15,7 +15,7 @@ class MyAppStateBinder extends StatelessWidget {
   @override
   Widget build(context) {
     Get.put(
-      AppStateController(
+      GetxReduceable(
         const MyAppState(
           title: 'Flutter Demo Home Page',
           counter: 0,
@@ -30,7 +30,7 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => GetBuilder<AppStateController<MyAppState>>(
+  Widget build(context) => GetBuilder<GetxReduceable<MyAppState>>(
         builder: (controller) => MyHomePageBuilder(
           props: MyHomePageProps.reduceable(controller.reduceable),
         ),
@@ -41,7 +41,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => GetBuilder<AppStateController<MyAppState>>(
+  Widget build(context) => GetBuilder<GetxReduceable<MyAppState>>(
         builder: (controller) => MyCounterWidgetBuilder(
           props:
               MyCounterWidgetProps.reduceable(controller.reduceable),

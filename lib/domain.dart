@@ -39,10 +39,7 @@ class MyHomePageProps {
         onIncrementPressed = VoidCallable(
           reduceable,
           IncrementCounterReducer(),
-        ) {
-    print(
-        'MyHomePageProps(onIncrementPressed.hashCode=${onIncrementPressed.hashCode}) => $hashCode');
-  }
+        );
 
   @override
   int get hashCode => hash2(title, onIncrementPressed);

@@ -1,6 +1,6 @@
-// provider_binder.dart
+// getit_binder.dart
 
-import 'package:counter_app/getit/getit.dart';
+import 'package:counter_app/getit/getit_reduceable.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';

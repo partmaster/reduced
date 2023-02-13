@@ -1,9 +1,11 @@
+// mobx_reduceable.dart
+
 import 'package:counter_app/domain.dart';
 import 'package:mobx/mobx.dart';
 
 import '../reduceable.dart';
 
-part 'mobx.g.dart';
+part 'mobx_reduceable.g.dart';
 
 final store = MyStore();
 
