@@ -9,7 +9,8 @@
 // export 'approaches/riverpod/riverpod_binder.dart';
 // export 'approaches/setstate/setstate_binder.dart';
 // export 'approaches/solidart/solidart_binder.dart';
-export 'approaches/statesrebuilder/statesrebuilder_binder.dart';
+// export 'approaches/statesrebuilder/statesrebuilder_binder.dart';
+export 'approaches/fluttertriple/fluttertriple_binder.dart';
 
 // export 'approaches/mock/mock_binder.dart';
 
