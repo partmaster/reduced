@@ -7,12 +7,7 @@ import '../../domain.dart';
 import '../../builder.dart';
 import 'binder_reduceable.dart';
 
-final stateRef = StateRef(
-  const MyAppState(
-    title: 'Flutter Demo Home Page',
-    counter: 0,
-  ),
-);
+final stateRef = StateRef(const MyAppState(title: 'binder'));
 
 final logicRef = LogicRef(
   (scope) => ReduceableLogic(scope, stateRef),

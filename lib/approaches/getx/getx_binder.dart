@@ -14,14 +14,7 @@ class MyAppStateBinder extends StatelessWidget {
 
   @override
   Widget build(context) {
-    Get.put(
-      ReduceableGetx(
-        const MyAppState(
-          title: 'Flutter Demo Home Page',
-          counter: 0,
-        ),
-      ),
-    );
+    Get.put(ReduceableGetx(const MyAppState(title: 'getx')));
     return child;
   }
 }

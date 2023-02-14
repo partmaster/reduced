@@ -24,13 +24,13 @@ void main() {
   test('testIncrementCounterReducer', () {
     final objectUnderTest = IncrementCounterReducer();
     final state = objectUnderTest.call(
-      const MyAppState(title: '', counter: 0),
+      const MyAppState(title: 'mock', counter: 0),
     );
     expect(state.counter, equals(1));
   });
   test('testMyCounterWidgetProps', () {
     Reduceable<MyAppState> reduceable = Reduceable(
-      () => const MyAppState(counter: 0, title: ''),
+      () => const MyAppState(title: 'mock', counter: 0),
       (_) {},
       false,
     );
@@ -39,7 +39,7 @@ void main() {
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
-    const title = 'Flutter Demo App';
+    const title = 'mock';
     final incrementReducer = IncrementCounterReducer();
     final decrementReducer = DecrementCounterReducer();
     final reduceable = Reduceable(

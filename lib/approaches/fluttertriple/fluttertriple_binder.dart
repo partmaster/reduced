@@ -1,11 +1,11 @@
 // fluttertriple_binder.dart
 
 import 'package:flutter/widgets.dart';
-import 'package:reduceable/approaches/fluttertriple/fluttertriple_reduceable.dart';
 
 import '../../domain.dart';
 import '../../builder.dart';
 import '../../inherited_value_widget.dart';
+import 'fluttertriple_reduceable.dart';
 
 typedef MyStore = ReduceableStreamStore<MyAppState>;
 
@@ -14,12 +14,8 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store = MyStore(
-    const MyAppState(
-      title: 'Flutter Demo Home Page',
-      counter: 0,
-    ),
-  );
+  static final store =
+      MyStore(const MyAppState(title: 'flutter_triple'));
 
   @override
   Widget build(context) => InheritedValueWidget(

@@ -16,12 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   @override
   Widget build(context) {
     GetIt.instance.registerSingleton<ValueNotifier<MyAppState>>(
-      ValueNotifier<MyAppState>(
-        const MyAppState(
-          title: 'Flutter Demo Home Page',
-          counter: 0,
-        ),
-      ),
+      ValueNotifier<MyAppState>(const MyAppState(title: 'get_it')),
     );
     return child;
   }

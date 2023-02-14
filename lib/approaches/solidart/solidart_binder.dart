@@ -16,10 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   Widget build(context) => Solid(
         signals: {
           MyAppState: () => createSignal<MyAppState>(
-                const MyAppState(
-                  title: 'Flutter Demo Home Page',
-                  counter: 0,
-                ),
+                const MyAppState(title: 'solidart'),
               ),
         },
         child: Builder(builder: (context) => child),

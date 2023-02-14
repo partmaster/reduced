@@ -16,11 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   Widget build(context) =>
       ChangeNotifierProvider<ValueNotifier<MyAppState>>(
         create: (context) => ValueNotifier<MyAppState>(
-          const MyAppState(
-            title: 'Flutter Demo Home Page',
-            counter: 0,
-          ),
-        ),
+            const MyAppState(title: 'provider')),
         child: child,
       );
 }

@@ -238,6 +238,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.1"
+  flutter_command:
+    dependency: "direct main"
+    description:
+      name: flutter_command
+      sha256: d1cbc570691d43cf8aba8840d93ff29e724bcef9fd235b4eed136a61e4a89750
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -305,7 +313,7 @@ packages:
     source: hosted
     version: "3.2.0"
   functional_listener:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: functional_listener
       sha256: "18f4f43478b78b037c9a64c3c10d4067a8c9a5d510f3e174775705ce4337414a"
@@ -536,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   redux:
     dependency: "direct main"
     description:

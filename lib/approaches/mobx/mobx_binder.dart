@@ -13,12 +13,7 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store = MyStore(
-          const MyAppState(
-            title: 'Flutter Demo Home Page',
-            counter: 0,
-          ),
-        );
+  static final store = MyStore(const MyAppState(title: 'mobx'));
 
   @override
   Widget build(context) => InheritedValueWidget(

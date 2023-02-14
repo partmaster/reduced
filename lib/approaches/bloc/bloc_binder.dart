@@ -12,20 +12,12 @@ typedef MyAppStateBloc = ReduceableBloc<MyAppState>;
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
-  final MyAppState state = const MyAppState(
-    title: 'Flutter Demo Home Page',
-    counter: 0,
-  );
   final Widget child;
 
   @override
   Widget build(context) => BlocProvider(
-        create: (_) => ReduceableBloc(
-          const MyAppState(
-            title: 'Flutter Demo Home Page',
-            counter: 0,
-          ),
-        ),
+        create: (_) =>
+            ReduceableBloc(const MyAppState(title: 'flutter_bloc')),
         child: child,
       );
 }
@@ -45,8 +37,6 @@ class MyHomePageBinder extends StatelessWidget {
       );
 }
 
-//
-// </br>
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 

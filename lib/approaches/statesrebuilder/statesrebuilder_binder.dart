@@ -13,12 +13,8 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store = Store(
-          const MyAppState(
-            title: 'Flutter Demo Home Page',
-            counter: 0,
-          ),
-        );
+  static final store =
+      Store(const MyAppState(title: 'states_rebuilder'));
 
   @override
   Widget build(context) => InheritedValueWidget(
@@ -34,17 +30,17 @@ class MyHomePageBinder extends ReactiveStatelessWidget {
   Widget build(context) {
     final store = InheritedValueWidget.of<Store<MyAppState>>(context);
     return OnBuilder<MyAppState>(
-        listenTo: store.value,
-        shouldRebuild: (p0, p1) => shouldRebuild(
-          p0.data as MyAppState,
-          p1.data as MyAppState,
-          store.reduceable.reduce,
-          MyHomePageProps.reduceable,
-        ),
-        builder: () => MyHomePageBuilder(
-          props: MyHomePageProps.reduceable(store.reduceable),
-        ),
-      );
+      listenTo: store.value,
+      shouldRebuild: (p0, p1) => shouldRebuild(
+        p0.data as MyAppState,
+        p1.data as MyAppState,
+        store.reduceable.reduce,
+        MyHomePageProps.reduceable,
+      ),
+      builder: () => MyHomePageBuilder(
+        props: MyHomePageProps.reduceable(store.reduceable),
+      ),
+    );
   }
 }
 
@@ -55,16 +51,16 @@ class MyCounterWidgetBinder extends ReactiveStatelessWidget {
   Widget build(context) {
     final store = InheritedValueWidget.of<Store<MyAppState>>(context);
     return OnBuilder<MyAppState>(
-        listenTo: store.value,
-        shouldRebuild: (p0, p1) => shouldRebuild(
-          p0.data as MyAppState,
-          p1.data as MyAppState,
-          store.reduceable.reduce,
-          MyCounterWidgetProps.reduceable,
-        ),
-        builder: () => MyCounterWidgetBuilder(
-          props: MyCounterWidgetProps.reduceable(store.reduceable),
-        ),
-      );
+      listenTo: store.value,
+      shouldRebuild: (p0, p1) => shouldRebuild(
+        p0.data as MyAppState,
+        p1.data as MyAppState,
+        store.reduceable.reduce,
+        MyCounterWidgetProps.reduceable,
+      ),
+      builder: () => MyCounterWidgetBuilder(
+        props: MyCounterWidgetProps.reduceable(store.reduceable),
+      ),
+    );
   }
 }

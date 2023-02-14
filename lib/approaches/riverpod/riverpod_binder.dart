@@ -12,12 +12,8 @@ typedef MyAppStateProvider
     = StateNotifierProvider<MyAppStateNotifier, MyAppState>;
 
 final appStateProvider = MyAppStateProvider(
-  (ref) => ReduceableStateNotifier(
-    const MyAppState(
-      title: 'Flutter Demo Home Page',
-      counter: 0,
-    ),
-  ),
+  (ref) =>
+      ReduceableStateNotifier(const MyAppState(title: 'riverpod')),
 );
 
 final counterWidgetPropsProvider = StateProvider(

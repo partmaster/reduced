@@ -14,13 +14,8 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final Store<MyAppState> store = Store(
-    reducer,
-    initialState: const MyAppState(
-      title: 'Flutter Demo Home Page',
-      counter: 0,
-    ),
-  );
+  static final Store<MyAppState> store =
+      Store(reducer, initialState: const MyAppState(title: 'redux'));
 
   static MyAppState reducer(MyAppState state, dynamic action) =>
       action is reduceable.Reducer ? action(state) : state;

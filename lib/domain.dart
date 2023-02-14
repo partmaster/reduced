@@ -3,7 +3,7 @@
 import 'reduceable.dart';
 
 class MyAppState {
-  const MyAppState({required this.title, required this.counter});
+  const MyAppState({required this.title, this.counter=0});
 
   final String title;
   final int counter;

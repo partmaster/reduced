@@ -51,6 +51,8 @@ dependencies:
   states_rebuilder: ^6.2.0
   flutter_triple: ^1.2.7+4
   binder: ^0.4.0
+  flutter_command: ^2.0.1
+  functional_listener: ^2.1.0
 
 dev_dependencies:
   flutter_test:
