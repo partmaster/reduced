@@ -313,7 +313,7 @@ packages:
     source: hosted
     version: "3.2.0"
   functional_listener:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: functional_listener
       sha256: "18f4f43478b78b037c9a64c3c10d4067a8c9a5d510f3e174775705ce4337414a"
