@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../reduceable.dart';
 
-export 'package:binder/src/build_context_extensions.dart';
+import 'package:binder/src/build_context_extensions.dart';
 
 class ReduceableLogic<S> with Logic {
   ReduceableLogic(this.scope, this.state);
@@ -26,19 +26,25 @@ class ReduceableLogic<S> with Logic {
       Reduceable(getState, reduce, this);
 }
 
-Consumer<P> createConsumer<S, P>({
-  required StateRef<S> stateRef,
-  required ReduceableLogic<S> logic,
-  required P Function(Reduceable<S>) converter,
-  required Widget Function({required P props}) builder,
-}) =>
-    Consumer<P>(
-      watchable: stateRef.select(
-        (state) => converter(
-          Reduceable(() => state, logic.reduceable.reduce, logic),
+extension CreateConsumer<S> on ReduceableLogic<S> {
+  Widget buildWidget<P>({
+    required StateRef<S> stateRef,
+    required P Function(Reduceable<S>) converter,
+    required Widget Function({required P props}) builder,
+  }) =>
+      Consumer<P>(
+        watchable: stateRef.select(
+          (state) => converter(
+            Reduceable(() => state, reduceable.reduce, this),
+          ),
         ),
-      ),
-      builder: (_, __, ___) => builder(
-        props: converter(logic.reduceable),
-      ),
-    );
+        builder: (_, __, ___) => builder(
+          props: converter(reduceable),
+        ),
+      );
+}
+
+extension LogicOnBuildContext on BuildContext {
+  ReduceableLogic<S> logic<S>(LogicRef<ReduceableLogic<S>> ref) =>
+      readScope().use(ref);
+}

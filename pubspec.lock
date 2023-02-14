@@ -217,6 +217,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  fish_redux:
+    dependency: "direct main"
+    description:
+      name: fish_redux
+      sha256: a5aad1ad75618210e1487ef1fea5e263ef349362d70f0b09c0e0441ba989bf3f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.7"
   fixnum:
     dependency: transitive
     description:

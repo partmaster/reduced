@@ -28,8 +28,7 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => scopedBuilder(
-        store: InheritedValueWidget.of<MyStore>(context),
+  Widget build(context) => context.store<MyAppState>().buildWidget(
         converter: MyHomePageProps.reduceable,
         builder: MyHomePageBuilder.new,
       );
@@ -39,8 +38,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => scopedBuilder(
-        store: InheritedValueWidget.of<MyStore>(context),
+  Widget build(context) => context.store<MyAppState>().buildWidget(
         converter: MyCounterWidgetProps.reduceable,
         builder: MyCounterWidgetBuilder.new,
       );

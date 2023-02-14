@@ -15,16 +15,21 @@ extension ReduceableSignal<S> on Signal<S> {
   Reduceable<S> get reduceable => Reduceable(getState, reduce, this);
 }
 
-Widget signalBuilder<S, P>(
-  Signal<S> signal,
-  P Function(Reduceable<S>) selector,
-  Widget Function({Key? key, required P props}) builder,
-) =>
-    SignalBuilder(
-      signal: SignalSelector<S, P>(
-        signal: signal,
-        selector: (_) => selector(signal.reduceable),
-        options: SignalOptions(comparator: (a, b) => a == b),
-      ),
-      builder: (_, value, ___) => builder(props: value),
-    );
+extension BuildWidgetExtension<S> on Signal<S> {
+  Widget buildWidget<P>({
+    required P Function(Reduceable<S>) converter,
+    required Widget Function({Key? key, required P props}) builder,
+  }) =>
+      SignalBuilder(
+        signal: SignalSelector<S, P>(
+          signal: this,
+          selector: (_) => converter(reduceable),
+          options: SignalOptions(comparator: (a, b) => a == b),
+        ),
+        builder: (_, value, ___) => builder(props: value),
+      );
+}
+
+extension StoreOnBuildContext on BuildContext {
+  Signal<S> signal<S>() => get<Signal<S>>(S);
+}

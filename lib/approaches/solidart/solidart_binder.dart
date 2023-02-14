@@ -27,10 +27,9 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => signalBuilder(
-        context.get<Signal<MyAppState>>(MyAppState),
-        MyHomePageProps.reduceable,
-        MyHomePageBuilder.new,
+  Widget build(context) => context.signal<MyAppState>().buildWidget(
+        converter: MyHomePageProps.reduceable,
+        builder: MyHomePageBuilder.new,
       );
 }
 
@@ -38,9 +37,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => signalBuilder(
-        context.get<Signal<MyAppState>>(MyAppState),
-        MyCounterWidgetProps.reduceable,
-        MyCounterWidgetBuilder.new,
+  Widget build(context) => context.signal<MyAppState>().buildWidget(
+        converter: MyCounterWidgetProps.reduceable,
+        builder: MyCounterWidgetBuilder.new,
       );
 }

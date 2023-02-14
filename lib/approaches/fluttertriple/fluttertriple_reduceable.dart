@@ -3,9 +3,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 
+import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
 
-class ReduceableStreamStore<S extends Object> extends StreamStore<Object, S> {
+class ReduceableStreamStore<S extends Object>
+    extends StreamStore<Object, S> {
   ReduceableStreamStore(super.initialState);
 
   S getState() => state;
@@ -16,13 +18,20 @@ class ReduceableStreamStore<S extends Object> extends StreamStore<Object, S> {
       Reduceable(getState, reduce, this);
 }
 
-Widget scopedBuilder<S extends Object, P>({
-  required ReduceableStreamStore<S> store,
-  required P Function(Reduceable<S>) converter,
-  required Widget Function({required P props}) builder,
-}) =>
-    ScopedBuilder<ReduceableStreamStore<S>, Object, S>(
-      store: store,
-      distinct: (_) => converter(store.reduceable),
-      onState: (_, __) => builder(props: converter(store.reduceable)),
-    );
+extension BuildWidgetExtension<S extends Object>
+    on ReduceableStreamStore<S> {
+  Widget buildWidget<P>({
+    required P Function(Reduceable<S>) converter,
+    required Widget Function({required P props}) builder,
+  }) =>
+      ScopedBuilder<ReduceableStreamStore<S>, Object, S>(
+        store: this,
+        distinct: (_) => converter(reduceable),
+        onState: (_, __) => builder(props: converter(reduceable)),
+      );
+}
+
+extension StoreOnBuildContext on BuildContext {
+  ReduceableStreamStore<S> store<S extends Object>() =>
+      InheritedValueWidget.of<ReduceableStreamStore<S>>(this);
+}

@@ -26,9 +26,8 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => createConsumer(
+  Widget build(context) => context.logic(logicRef).buildWidget(
       stateRef: stateRef,
-      logic: context.readScope().use(logicRef),
       converter: MyHomePageProps.reduceable,
       builder: MyHomePageBuilder.new);
 }
@@ -37,9 +36,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => createConsumer(
+  Widget build(context) => context.logic(logicRef).buildWidget(
         stateRef: stateRef,
-        logic: context.readScope().use(logicRef),
         converter: MyCounterWidgetProps.reduceable,
         builder: MyCounterWidgetBuilder.new,
       );

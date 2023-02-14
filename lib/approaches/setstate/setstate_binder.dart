@@ -35,9 +35,6 @@ class MyHomePageBinder extends StatelessWidget {
       );
 }
 
-//
-// </br>
-
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 

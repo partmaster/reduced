@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
 
+import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
 
 class ReduceableCommandStore<S> {
@@ -19,14 +20,20 @@ class ReduceableCommandStore<S> {
       Reduceable(() => _state, command, this);
 }
 
-Widget createValueListenableBuilder<S, P>({
-  required ReduceableCommandStore<S> store,
-  required P Function(Reduceable<S>) converter,
-  required Widget Function({required P props}) builder,
-}) =>
-    ValueListenableBuilder<P>(
-      valueListenable: store.command.map(
-        (state) => converter(store.reduceable),
-      ),
-      builder: (_, props, ___) => builder(props: props),
-    );
+extension CreateValueListenableBuilder<S>
+    on ReduceableCommandStore<S> {
+  Widget buildWidget<P>({
+    required P Function(Reduceable<S>) converter,
+    required Widget Function({required P props}) builder,
+  }) =>
+      ValueListenableBuilder<P>(
+        valueListenable:
+            command.map((state) => converter(reduceable)),
+        builder: (_, props, ___) => builder(props: props),
+      );
+}
+
+extension StoreOnBuildContext on BuildContext {
+  ReduceableCommandStore<S> store<S>() =>
+      InheritedValueWidget.of<ReduceableCommandStore<S>>(this);
+}
