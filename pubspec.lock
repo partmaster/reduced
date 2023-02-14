@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  binder:
+    dependency: "direct main"
+    description:
+      name: binder
+      sha256: c9837a35195dc4b4fb838ff33d9957bf98f3473889e3183a8b586617fc2d85c0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   bloc:
     dependency: transitive
     description:

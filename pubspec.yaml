@@ -50,6 +50,7 @@ dependencies:
   flutter_solidart: ^0.1.4
   states_rebuilder: ^6.2.0
   flutter_triple: ^1.2.7+4
+  binder: ^0.4.0
 
 dev_dependencies:
   flutter_test:
