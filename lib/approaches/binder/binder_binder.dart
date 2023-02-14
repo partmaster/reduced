@@ -2,24 +2,21 @@
 
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
-import 'package:reduceable/reduceable.dart';
 
 import '../../domain.dart';
 import '../../builder.dart';
 import 'binder_reduceable.dart';
 
-final state = StateRef(const MyAppState(
-  title: 'Flutter Demo Home Page',
-  counter: 0,
-));
-final logic = LogicRef(
-  (scope) => ReduceableLogic(scope, state),
+final stateRef = StateRef(
+  const MyAppState(
+    title: 'Flutter Demo Home Page',
+    counter: 0,
+  ),
 );
 
-final homePageProps = Computed((watch) {
-  watch(state);
-  return null;
-});
+final logicRef = LogicRef(
+  (scope) => ReduceableLogic(scope, stateRef),
+);
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -35,8 +32,8 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) => createConsumer(
-      stateRef: state,
-      logic: context.readScope().use(logic),
+      stateRef: stateRef,
+      logic: context.readScope().use(logicRef),
       converter: MyHomePageProps.reduceable,
       builder: MyHomePageBuilder.new);
 }
@@ -46,8 +43,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) => createConsumer(
-        stateRef: state,
-        logic: context.readScope().use(logic),
+        stateRef: stateRef,
+        logic: context.readScope().use(logicRef),
         converter: MyCounterWidgetProps.reduceable,
         builder: MyCounterWidgetBuilder.new,
       );
