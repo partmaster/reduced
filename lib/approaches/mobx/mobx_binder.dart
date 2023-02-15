@@ -26,11 +26,10 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => Observer(
-        builder: (_) => MyHomePageBuilder(
-          props:
-              InheritedValueWidget.of<MyStore>(context).homePageProps,
-        ),
+  Widget build(context) =>
+      InheritedValueWidget.of<MyStore>(context).buildWidget(
+        props: (store) => store.homePageProps,
+        builder: MyHomePageBuilder.new,
       );
 }
 
@@ -38,10 +37,9 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => Observer(
-        builder: (_) => MyCounterWidgetBuilder(
-          props: InheritedValueWidget.of<MyStore>(context)
-              .conterWidgetProps,
-        ),
+  Widget build(context) =>
+      InheritedValueWidget.of<MyStore>(context).buildWidget(
+        props: (store) => store.conterWidgetProps,
+        builder: MyCounterWidgetBuilder.new,
       );
 }

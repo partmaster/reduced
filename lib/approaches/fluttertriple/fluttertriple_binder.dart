@@ -7,15 +7,14 @@ import '../../builder.dart';
 import '../../inherited_value_widget.dart';
 import 'fluttertriple_reduceable.dart';
 
-typedef MyStore = ReduceableStreamStore<MyAppState>;
-
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
   final Widget child;
 
-  static final store =
-      MyStore(const MyAppState(title: 'flutter_triple'));
+  static final store = ReduceableStreamStore<MyAppState>(
+    const MyAppState(title: 'flutter_triple'),
+  );
 
   @override
   Widget build(context) => InheritedValueWidget(
@@ -29,8 +28,8 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) => context.store<MyAppState>().buildWidget(
-        converter: MyHomePageProps.reduceable,
         builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
       );
 }
 
@@ -39,7 +38,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) => context.store<MyAppState>().buildWidget(
-        converter: MyCounterWidgetProps.reduceable,
         builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

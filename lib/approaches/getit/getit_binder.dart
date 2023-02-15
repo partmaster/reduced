@@ -27,7 +27,7 @@ class MyHomePageBinder extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(context) => MyHomePageBuilder(
-        props: watchOnly<ValueNotifier<MyAppState>, MyHomePageProps>(
+        props: watchOnly(
           (ValueNotifier<MyAppState> notifier) =>
               MyHomePageProps.reduceable(notifier.reduceable),
         ),
@@ -39,8 +39,7 @@ class MyCounterWidgetBinder extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(context) => MyCounterWidgetBuilder(
-        props: watchOnly<ValueNotifier<MyAppState>,
-            MyCounterWidgetProps>(
+        props: watchOnly(
           (ValueNotifier<MyAppState> notifier) =>
               MyCounterWidgetProps.reduceable(notifier.reduceable),
         ),

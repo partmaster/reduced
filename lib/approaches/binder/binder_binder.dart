@@ -7,7 +7,9 @@ import '../../domain.dart';
 import '../../builder.dart';
 import 'binder_reduceable.dart';
 
-final stateRef = StateRef(const MyAppState(title: 'binder'));
+final stateRef = StateRef(
+  const MyAppState(title: 'binder'),
+);
 
 final logicRef = LogicRef(
   (scope) => ReduceableLogic(scope, stateRef),
@@ -27,9 +29,10 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) => context.logic(logicRef).buildWidget(
-      stateRef: stateRef,
-      converter: MyHomePageProps.reduceable,
-      builder: MyHomePageBuilder.new);
+        stateRef: stateRef,
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
+      );
 }
 
 class MyCounterWidgetBinder extends StatelessWidget {
@@ -38,7 +41,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) => context.logic(logicRef).buildWidget(
         stateRef: stateRef,
-        converter: MyCounterWidgetProps.reduceable,
         builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

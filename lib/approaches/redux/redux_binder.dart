@@ -28,14 +28,9 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) =>
-      StoreConnector<MyAppState, MyHomePageProps>(
-        converter: (store) => MyHomePageProps.reduceable(
-          store.reduceable<MyAppState>(),
-        ),
-        builder: (context, props) => MyHomePageBuilder(
-          props: props,
-        ),
+  Widget build(context) => buildWidget(
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
       );
 }
 
@@ -43,13 +38,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) =>
-      StoreConnector<MyAppState, MyCounterWidgetProps>(
-        converter: (store) => MyCounterWidgetProps.reduceable(
-          store.reduceable(),
-        ),
-        builder: (context, props) => MyCounterWidgetBuilder(
-          props: props,
-        ),
+  Widget build(context) => buildWidget(
+        builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

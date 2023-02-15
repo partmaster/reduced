@@ -20,8 +20,7 @@ class ReduceableCommandStore<S> {
       Reduceable(() => _state, command, this);
 }
 
-extension CreateValueListenableBuilder<S>
-    on ReduceableCommandStore<S> {
+extension BuildWidgetExtension<S> on ReduceableCommandStore<S> {
   Widget buildWidget<P>({
     required P Function(Reduceable<S>) converter,
     required Widget Function({required P props}) builder,

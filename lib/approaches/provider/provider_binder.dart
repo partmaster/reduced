@@ -25,12 +25,9 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) =>
-      Selector<ValueNotifier<MyAppState>, MyHomePageProps>(
-        builder: (context, props, _) =>
-            MyHomePageBuilder(props: props),
-        selector: (context, notifier) =>
-            MyHomePageProps.reduceable(notifier.reduceable),
+  Widget build(context) => buildWidget(
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
       );
 }
 
@@ -38,11 +35,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) =>
-      Selector<ValueNotifier<MyAppState>, MyCounterWidgetProps>(
-        builder: (context, props, _) =>
-            MyCounterWidgetBuilder(props: props),
-        selector: (context, notifier) =>
-            MyCounterWidgetProps.reduceable(notifier.reduceable),
+  Widget build(context) => buildWidget(
+        builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

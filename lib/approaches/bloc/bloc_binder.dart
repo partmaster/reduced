@@ -7,8 +7,6 @@ import '../../domain.dart';
 import '../../builder.dart';
 import 'bloc_reduceable.dart';
 
-typedef MyAppStateBloc = ReduceableBloc<MyAppState>;
-
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
@@ -26,14 +24,9 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) =>
-      BlocSelector<MyAppStateBloc, MyAppState, MyHomePageProps>(
-        selector: (state) => MyHomePageProps.reduceable(
-          BlocProvider.of<MyAppStateBloc>(context).reduceable,
-        ),
-        builder: (context, props) => MyHomePageBuilder(
-          props: props,
-        ),
+  Widget build(context) => context.bloc<MyAppState>().buildWidget(
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
       );
 }
 
@@ -41,13 +34,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) =>
-      BlocSelector<MyAppStateBloc, MyAppState, MyCounterWidgetProps>(
-        selector: (state) => MyCounterWidgetProps.reduceable(
-          BlocProvider.of<MyAppStateBloc>(context).reduceable,
-        ),
-        builder: (context, props) => MyCounterWidgetBuilder(
-          props: props,
-        ),
+  Widget build(context) => context.bloc<MyAppState>().buildWidget(
+        builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

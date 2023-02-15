@@ -51,20 +51,22 @@ class MyAppStateBinder extends StatelessWidget {
   Widget build(context) => ProviderScope(child: child);
 }
 
-class MyHomePageBinder extends ConsumerWidget {
+class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context, ref) => MyHomePageBuilder(
-        props: ref.watch(homePagePropsProvider),
+  Widget build(context) => buildWidget(
+        builder: MyHomePageBuilder.new,
+        provider: homePagePropsProvider,
       );
 }
 
-class MyCounterWidgetBinder extends ConsumerWidget {
+class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context, ref) => MyCounterWidgetBuilder(
-        props: ref.watch(counterWidgetPropsProvider),
+  Widget build(context) => buildWidget(
+        builder: MyCounterWidgetBuilder.new,
+        provider: counterWidgetPropsProvider,
       );
 }

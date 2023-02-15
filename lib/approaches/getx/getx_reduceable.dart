@@ -1,5 +1,6 @@
 // getx_reduceable.dart
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../reduceable.dart';
@@ -19,3 +20,13 @@ class ReduceableGetx<S> extends GetxController {
   late final Reduceable<S> reduceable =
       Reduceable(getState, reduce, this);
 }
+
+Widget buildWidget<S, P>({
+  required P Function(Reduceable<S>) converter,
+  required Widget Function({Key? key, required P props}) builder,
+}) =>
+    GetBuilder<ReduceableGetx<S>>(
+      builder: (controller) => builder(
+        props: converter(controller.reduceable),
+      ),
+    );

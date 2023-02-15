@@ -1,6 +1,7 @@
 // provider_reduceable.dart
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../reduceable.dart';
 
@@ -14,3 +15,13 @@ extension ReduceableValueNotifier<S> on ValueNotifier<S> {
   Reduceable<S> get reduceable =>
       Reduceable(getState, reduce, this);
 }
+
+Widget buildWidget<S, P>({
+  required P Function(Reduceable<S>) converter,
+  required Widget Function({Key? key, required P props}) builder,
+}) =>
+    Selector<ValueNotifier<S>, P>(
+      builder: (context, props, _) => builder(props: props),
+      selector: (context, notifier) => converter(notifier.reduceable),
+    );
+

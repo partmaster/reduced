@@ -27,40 +27,18 @@ class MyHomePageBinder extends ReactiveStatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) {
-    final store = InheritedValueWidget.of<Store<MyAppState>>(context);
-    return OnBuilder<MyAppState>(
-      listenTo: store.value,
-      shouldRebuild: (p0, p1) => shouldRebuild(
-        p0.data as MyAppState,
-        p1.data as MyAppState,
-        store.reduceable.reduce,
-        MyHomePageProps.reduceable,
-      ),
-      builder: () => MyHomePageBuilder(
-        props: MyHomePageProps.reduceable(store.reduceable),
-      ),
-    );
-  }
+  Widget build(context) => context.store<MyAppState>().buildWidget(
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
+      );
 }
 
 class MyCounterWidgetBinder extends ReactiveStatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) {
-    final store = InheritedValueWidget.of<Store<MyAppState>>(context);
-    return OnBuilder<MyAppState>(
-      listenTo: store.value,
-      shouldRebuild: (p0, p1) => shouldRebuild(
-        p0.data as MyAppState,
-        p1.data as MyAppState,
-        store.reduceable.reduce,
-        MyCounterWidgetProps.reduceable,
-      ),
-      builder: () => MyCounterWidgetBuilder(
-        props: MyCounterWidgetProps.reduceable(store.reduceable),
-      ),
-    );
-  }
+  Widget build(context) => context.store<MyAppState>().buildWidget(
+        converter: MyCounterWidgetProps.reduceable,
+        builder: MyCounterWidgetBuilder.new,
+      );
 }

@@ -23,21 +23,18 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => GetBuilder<ReduceableGetx<MyAppState>>(
-        builder: (controller) => MyHomePageBuilder(
-          props: MyHomePageProps.reduceable(controller.reduceable),
-        ),
-      );
+  Widget build(context) => buildWidget(
+    builder: MyHomePageBuilder.new,
+    converter: MyHomePageProps.reduceable,
+  );
 }
 
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => GetBuilder<ReduceableGetx<MyAppState>>(
-        builder: (controller) => MyCounterWidgetBuilder(
-          props:
-              MyCounterWidgetProps.reduceable(controller.reduceable),
-        ),
-      );
+  Widget build(context) => buildWidget(
+    builder: MyCounterWidgetBuilder.new,
+    converter: MyCounterWidgetProps.reduceable,
+  );
 }

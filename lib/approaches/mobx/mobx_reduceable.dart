@@ -1,5 +1,7 @@
 // mobx_reduceable.dart
 
+import 'package:flutter/widgets.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../domain.dart';
@@ -32,4 +34,12 @@ abstract class MyStoreBase with Store {
   @computed
   MyCounterWidgetProps get conterWidgetProps =>
       MyCounterWidgetProps.reduceable(reduceable);
+}
+
+extension BuildWidgetExtension on MyStore {
+  Widget buildWidget<P>({
+    required P Function(MyStore) props,
+    required Widget Function({required P props}) builder,
+  }) =>
+      Observer(builder: (_) => builder(props: props(this)));
 }

@@ -31,5 +31,5 @@ extension BuildWidgetExtension<S> on Signal<S> {
 }
 
 extension StoreOnBuildContext on BuildContext {
-  Signal<S> signal<S>() => get<Signal<S>>(S);
+  Signal<S> store<S>() => get<Signal<S>>(S);
 }
