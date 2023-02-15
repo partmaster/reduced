@@ -44,6 +44,7 @@ Widget _buildView(
           ),
           Text(
             '${state.counter}',
+            // ignore: deprecated_member_use
             style: Theme.of(viewService.context).textTheme.headline4,
           ),
         ],
