@@ -36,8 +36,8 @@ abstract class MyStoreBase with Store {
       MyCounterWidgetProps.reduceable(reduceable);
 }
 
-extension BuildWidgetExtension on MyStore {
-  Widget buildWidget<P>({
+extension BuilderWidgetExtension on MyStore {
+  Widget builderWidget<P>({
     required P Function(MyStore) props,
     required Widget Function({required P props}) builder,
   }) =>

@@ -11,7 +11,7 @@ extension ReduceableStore on Store {
     Reduceable(() => state, (reducer) => dispatch(reducer), this);
 }
 
-Widget buildWidget<S, P>({
+Widget builderWidget<S, P>({
   required P Function(Reduceable<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>

@@ -26,8 +26,8 @@ class ReduceableLogic<S> with Logic {
       Reduceable(getState, reduce, this);
 }
 
-extension CreateConsumer<S> on ReduceableLogic<S> {
-  Widget buildWidget<P>({
+extension BuilderWidgetExtension<S> on ReduceableLogic<S> {
+  Widget builderWidget<P>({
     required StateRef<S> stateRef,
     required P Function(Reduceable<S>) converter,
     required Widget Function({required P props}) builder,

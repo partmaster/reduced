@@ -18,9 +18,9 @@ class ReduceableStreamStore<S extends Object>
       Reduceable(getState, reduce, this);
 }
 
-extension BuildWidgetExtension<S extends Object>
+extension BuilderWidgetExtension<S extends Object>
     on ReduceableStreamStore<S> {
-  Widget buildWidget<P>({
+  Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,
     required Widget Function({required P props}) builder,
   }) =>

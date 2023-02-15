@@ -1,6 +1,5 @@
 // statesrebuilder_reduceable.dart
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
@@ -8,6 +7,15 @@ import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
 
 typedef StateToPropsConverter<S, P> = P Function(Reduceable<S>);
+
+class ReactiveStatelessBuilder extends ReactiveStatelessWidget {
+  const ReactiveStatelessBuilder({super.key, required this.builder});
+
+  final WidgetBuilder builder;
+
+  @override
+  Widget build(BuildContext context) => builder(context);
+}
 
 @immutable
 class Store<S> {
@@ -28,20 +36,22 @@ extension StoreOnBuildContext on BuildContext {
   Store<S> store<S>() => InheritedValueWidget.of<Store<S>>(this);
 }
 
-extension BuildWidgetExtension<S> on Store<S> {
-  Widget buildWidget<P>({
+extension BuilderWidgetExtension<S> on Store<S> {
+  Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,
     required Widget Function({Key? key, required P props}) builder,
   }) =>
-      OnBuilder<S>(
-        listenTo: value,
-        shouldRebuild: (p0, p1) => _shouldRebuild(
-          p0.data as S,
-          p1.data as S,
-          reduceable.reduce,
-          converter,
+      ReactiveStatelessBuilder(
+        builder: (_) => OnBuilder<S>(
+          listenTo: value,
+          shouldRebuild: (p0, p1) => _shouldRebuild(
+            p0.data as S,
+            p1.data as S,
+            reduceable.reduce,
+            converter,
+          ),
+          builder: () => builder(props: converter(reduceable)),
         ),
-        builder: () => builder(props: converter(reduceable)),
       );
 }
 

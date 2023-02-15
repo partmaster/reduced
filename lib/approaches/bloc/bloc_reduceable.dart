@@ -15,8 +15,8 @@ class ReduceableBloc<S> extends Bloc<Reducer<S>, S> {
   late final reduceable = Reduceable(getState, add, this);
 }
 
-extension BuildWidgetExtension<S> on ReduceableBloc<S> {
-  Widget buildWidget<P>({
+extension BuilderWidgetExtension<S> on ReduceableBloc<S> {
+  Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,
     required Widget Function({required P props}) builder,
   }) =>

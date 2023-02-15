@@ -16,7 +16,7 @@ extension ReduceableValueNotifier<S> on ValueNotifier<S> {
       Reduceable(getState, reduce, this);
 }
 
-Widget buildWidget<S, P>({
+Widget builderWidget<S, P>({
   required P Function(Reduceable<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>

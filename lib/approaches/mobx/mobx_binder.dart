@@ -27,7 +27,7 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).buildWidget(
+      InheritedValueWidget.of<MyStore>(context).builderWidget(
         props: (store) => store.homePageProps,
         builder: MyHomePageBuilder.new,
       );
@@ -38,7 +38,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).buildWidget(
+      InheritedValueWidget.of<MyStore>(context).builderWidget(
         props: (store) => store.conterWidgetProps,
         builder: MyCounterWidgetBuilder.new,
       );

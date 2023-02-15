@@ -26,22 +26,18 @@ class MyHomePageBinder extends StatelessWidget with GetItMixin {
   MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => MyHomePageBuilder(
-        props: watchOnly(
-          (ValueNotifier<MyAppState> notifier) =>
-              MyHomePageProps.reduceable(notifier.reduceable),
-        ),
+  Widget build(context) => builderWidget(
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
       );
 }
 
-class MyCounterWidgetBinder extends StatelessWidget with GetItMixin {
-  MyCounterWidgetBinder({super.key});
+class MyCounterWidgetBinder extends StatelessWidget {
+  const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => MyCounterWidgetBuilder(
-        props: watchOnly(
-          (ValueNotifier<MyAppState> notifier) =>
-              MyCounterWidgetProps.reduceable(notifier.reduceable),
-        ),
+  Widget build(context) => builderWidget(
+        builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
       );
 }

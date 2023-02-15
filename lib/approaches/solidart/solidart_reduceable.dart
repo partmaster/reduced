@@ -15,8 +15,8 @@ extension ReduceableSignal<S> on Signal<S> {
   Reduceable<S> get reduceable => Reduceable(getState, reduce, this);
 }
 
-extension BuildWidgetExtension<S> on Signal<S> {
-  Widget buildWidget<P>({
+extension BuilderWidgetExtension<S> on Signal<S> {
+  Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,
     required Widget Function({Key? key, required P props}) builder,
   }) =>
