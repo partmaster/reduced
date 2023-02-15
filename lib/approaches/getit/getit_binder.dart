@@ -22,8 +22,8 @@ class MyAppStateBinder extends StatelessWidget {
   }
 }
 
-class MyHomePageBinder extends StatelessWidget with GetItMixin {
-  MyHomePageBinder({super.key});
+class MyHomePageBinder extends StatelessWidget {
+  const MyHomePageBinder({super.key});
 
   @override
   Widget build(context) => builderWidget(
