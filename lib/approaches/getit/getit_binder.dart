@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
