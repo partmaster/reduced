@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 import '../../domain.dart';
 import '../../builder.dart';
-import '../../inherited_value_widget.dart';
 import 'fluttertriple_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -17,10 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   );
 
   @override
-  Widget build(context) => InheritedValueWidget(
-        value: store,
-        child: child,
-      );
+  Widget build(context) => binderWidget(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

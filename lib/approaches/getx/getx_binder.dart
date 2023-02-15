@@ -1,7 +1,6 @@
 // getx_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
@@ -13,10 +12,10 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) {
-    Get.put(ReduceableGetx(const MyAppState(title: 'getx')));
-    return child;
-  }
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'GetX'),
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {
@@ -24,9 +23,9 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) => builderWidget(
-    builder: MyHomePageBuilder.new,
-    converter: MyHomePageProps.reduceable,
-  );
+        builder: MyHomePageBuilder.new,
+        converter: MyHomePageProps.reduceable,
+      );
 }
 
 class MyCounterWidgetBinder extends StatelessWidget {
@@ -34,7 +33,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) => builderWidget(
-    builder: MyCounterWidgetBuilder.new,
-    converter: MyCounterWidgetProps.reduceable,
-  );
+        builder: MyCounterWidgetBuilder.new,
+        converter: MyCounterWidgetProps.reduceable,
+      );
 }

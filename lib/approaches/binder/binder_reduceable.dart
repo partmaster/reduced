@@ -26,6 +26,9 @@ class ReduceableLogic<S> with Logic {
       Reduceable(getState, reduce, this);
 }
 
+Widget binderWidget({Key? key, required Widget child}) =>
+    BinderScope(child: child);
+
 extension BuilderWidgetExtension<S> on ReduceableLogic<S> {
   Widget builderWidget<P>({
     required StateRef<S> stateRef,

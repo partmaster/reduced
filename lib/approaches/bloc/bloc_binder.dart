@@ -1,7 +1,6 @@
 // bloc_binder.dart
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain.dart';
 import '../../builder.dart';
@@ -13,9 +12,8 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => BlocProvider(
-        create: (_) =>
-            ReduceableBloc(const MyAppState(title: 'flutter_bloc')),
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'flutter_bloc'),
         child: child,
       );
 }

@@ -18,6 +18,12 @@ class ReduceableStreamStore<S extends Object>
       Reduceable(getState, reduce, this);
 }
 
+Widget binderWidget<S extends Object>({
+  required ReduceableStreamStore<S> store,
+  required Widget child,
+}) =>
+    InheritedValueWidget(value: store, child: child);
+
 extension BuilderWidgetExtension<S extends Object>
     on ReduceableStreamStore<S> {
   Widget builderWidget<P>({

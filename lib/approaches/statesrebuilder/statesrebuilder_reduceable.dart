@@ -32,9 +32,14 @@ class Store<S> {
       Reduceable(getState, reduce, this);
 }
 
-extension StoreOnBuildContext on BuildContext {
-  Store<S> store<S>() => InheritedValueWidget.of<Store<S>>(this);
-}
+Widget binderWidget<S>({
+  required Store<S> store,
+  required Widget child,
+}) =>
+    InheritedValueWidget(
+      value: store,
+      child: child,
+    );
 
 extension BuilderWidgetExtension<S> on Store<S> {
   Widget builderWidget<P>({
@@ -70,3 +75,7 @@ bool _shouldRebuild<S, P>(
 ) =>
     _stateToProps(p0, reduce, converter) !=
     _stateToProps(p1, reduce, converter);
+
+extension StoreOnBuildContext on BuildContext {
+  Store<S> store<S>() => InheritedValueWidget.of<Store<S>>(this);
+}

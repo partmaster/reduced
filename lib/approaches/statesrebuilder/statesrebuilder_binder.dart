@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
-import '../../inherited_value_widget.dart';
 import 'statesrebuilder_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -16,10 +15,7 @@ class MyAppStateBinder extends StatelessWidget {
       Store(const MyAppState(title: 'states_rebuilder'));
 
   @override
-  Widget build(context) => InheritedValueWidget(
-        value: store,
-        child: child,
-      );
+  Widget build(context) => binderWidget(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

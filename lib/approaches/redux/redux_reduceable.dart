@@ -7,9 +7,15 @@ import 'package:redux/redux.dart';
 import '../../reduceable.dart';
 
 extension ReduceableStore on Store {
-  Reduceable<S> reduceable<S>() => 
-    Reduceable(() => state, (reducer) => dispatch(reducer), this);
+  Reduceable<S> reduceable<S>() =>
+      Reduceable(() => state, (reducer) => dispatch(reducer), this);
 }
+
+Widget binderWidget<S>({
+  required Store<S> store,
+  required Widget child,
+}) =>
+    StoreProvider(store: store, child: child);
 
 Widget builderWidget<S, P>({
   required P Function(Reduceable<S>) converter,

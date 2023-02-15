@@ -20,6 +20,12 @@ class ReduceableCommandStore<S> {
       Reduceable(() => _state, command, this);
 }
 
+Widget binderWidget<S>({
+  required ReduceableCommandStore<S> store,
+  required Widget child,
+}) =>
+    InheritedValueWidget(value: store, child: child);
+
 extension BuilderWidgetExtension<S> on ReduceableCommandStore<S> {
   Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,

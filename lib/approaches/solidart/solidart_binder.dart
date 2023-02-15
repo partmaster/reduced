@@ -1,7 +1,6 @@
 // solidart_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_solidart/flutter_solidart.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
@@ -13,13 +12,9 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => Solid(
-        signals: {
-          MyAppState: () => createSignal<MyAppState>(
-                const MyAppState(title: 'solidart'),
-              ),
-        },
-        child: Builder(builder: (context) => child),
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'solidart'),
+        child: child,
       );
 }
 

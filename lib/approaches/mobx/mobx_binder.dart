@@ -15,10 +15,7 @@ class MyAppStateBinder extends StatelessWidget {
   static final store = MyStore(const MyAppState(title: 'mobx'));
 
   @override
-  Widget build(context) => InheritedValueWidget(
-        value: store,
-        child: child,
-      );
+  Widget build(context) => binderWidget(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

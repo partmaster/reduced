@@ -21,7 +21,7 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => BinderScope(child: child);
+  Widget build(context) => binderWidget(child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

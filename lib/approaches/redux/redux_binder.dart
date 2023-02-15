@@ -14,14 +14,14 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final Store<MyAppState> store =
-      Store(reducer, initialState: const MyAppState(title: 'redux'));
-
-  static MyAppState reducer(MyAppState state, dynamic action) =>
-      action is reduceable.Reducer ? action(state) : state;
+  static final Store<MyAppState> store = Store(
+    (state, dynamic action) =>
+        action is reduceable.Reducer ? action(state) : state,
+    initialState: const MyAppState(title: 'redux'),
+  );
 
   @override
-  Widget build(context) => StoreProvider(store: store, child: child);
+  Widget build(context) => binderWidget(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

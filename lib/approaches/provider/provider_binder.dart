@@ -1,7 +1,6 @@
 // provider_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
@@ -13,10 +12,8 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) =>
-      ChangeNotifierProvider<ValueNotifier<MyAppState>>(
-        create: (context) => ValueNotifier<MyAppState>(
-            const MyAppState(title: 'provider')),
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'provider'),
         child: child,
       );
 }

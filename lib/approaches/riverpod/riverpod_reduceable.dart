@@ -15,6 +15,9 @@ class ReduceableStateNotifier<S> extends StateNotifier<S> {
   void reduce(Reducer<S> reducer) => state = reducer(state);
 }
 
+Widget binderWidget({required Widget child}) =>
+    ProviderScope(child: child);
+
 Widget builderWidget<S, P>({
   required StateProvider<P> provider,
   required Widget Function({Key? key, required P props}) builder,

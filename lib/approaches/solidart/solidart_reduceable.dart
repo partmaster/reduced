@@ -15,6 +15,15 @@ extension ReduceableSignal<S> on Signal<S> {
   Reduceable<S> get reduceable => Reduceable(getState, reduce, this);
 }
 
+Widget binderWidget<S>({
+  required S initialState,
+  required Widget child,
+}) =>
+    Solid(
+      signals: {S: () => createSignal<S>(initialState)},
+      child: Builder(builder: (context) => child),
+    );
+
 extension BuilderWidgetExtension<S> on Signal<S> {
   Widget builderWidget<P>({
     required P Function(Reduceable<S>) converter,

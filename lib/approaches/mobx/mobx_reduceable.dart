@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../domain.dart';
+import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
 
 part 'mobx_reduceable.g.dart';
@@ -35,6 +36,12 @@ abstract class MyStoreBase with Store {
   MyCounterWidgetProps get conterWidgetProps =>
       MyCounterWidgetProps.reduceable(reduceable);
 }
+
+Widget binderWidget({
+  required MyStore store,
+  required Widget child,
+}) =>
+    InheritedValueWidget(value: store, child: child);
 
 extension BuilderWidgetExtension on MyStore {
   Widget builderWidget<P>({

@@ -21,6 +21,14 @@ class ReduceableGetx<S> extends GetxController {
       Reduceable(getState, reduce, this);
 }
 
+Widget binderWidget<S>({
+  required S initialState,
+  required Widget child,
+}) {
+  Get.put(ReduceableGetx(initialState));
+  return child;
+}
+
 Widget builderWidget<S, P>({
   required P Function(Reduceable<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
