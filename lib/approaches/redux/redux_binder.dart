@@ -1,12 +1,9 @@
 // redux_binder.dart
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 
 import '../../builder.dart';
 import '../../domain.dart';
-import '../../reduceable.dart' as reduceable;
 import 'redux_reduceable.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -14,14 +11,11 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final Store<MyAppState> store = Store(
-    (state, dynamic action) =>
-        action is reduceable.Reducer ? action(state) : state,
-    initialState: const MyAppState(title: 'redux'),
-  );
-
   @override
-  Widget build(context) => binderWidget(store: store, child: child);
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'redux'),
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {

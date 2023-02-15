@@ -29,12 +29,13 @@ Widget binderWidget<S>({
   return child;
 }
 
-Widget builderWidget<S, P>({
+Widget builderWidget<S, P extends Object>({
   required P Function(Reduceable<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
     GetBuilder<ReduceableGetx<S>>(
-      builder: (controller) => builder(
-        props: converter(controller.reduceable),
-      ),
+      filter: (controller) =>
+          converter(controller.reduceable),
+      builder: (controller) =>
+          builder(props: converter(controller.reduceable)),
     );

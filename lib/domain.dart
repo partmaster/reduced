@@ -21,6 +21,9 @@ class MyAppState {
       other is MyAppState &&
       title == other.title &&
       counter == other.counter;
+
+      @override
+  String toString() => 'MyAppState#$hashCode(counter=$counter)';
 }
 
 class MyHomePageProps {
@@ -47,6 +50,9 @@ class MyHomePageProps {
       other is MyHomePageProps &&
       title == other.title &&
       onIncrementPressed == other.onIncrementPressed;
+
+  @override
+  String toString() => 'MyHomePageProps#$hashCode';
 }
 
 class MyCounterWidgetProps {
@@ -66,6 +72,9 @@ class MyCounterWidgetProps {
   bool operator ==(Object other) =>
       other is MyCounterWidgetProps &&
       counterText == other.counterText;
+
+  @override
+  String toString() => 'MyCounterWidgetProps#$hashCode(counterText=$counterText)';
 }
 
 class IncrementCounterReducer extends Reducer<MyAppState> {

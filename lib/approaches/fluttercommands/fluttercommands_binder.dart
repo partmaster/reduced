@@ -10,12 +10,12 @@ class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 
   final Widget child;
-  static final store = ReduceableCommandStore(
-    const MyAppState(title: 'flutter_commands'),
-  );
 
   @override
-  Widget build(context) => binderWidget(store: store, child: child);
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'flutter_commands'),
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {

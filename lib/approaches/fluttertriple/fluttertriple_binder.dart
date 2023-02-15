@@ -11,12 +11,11 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store = ReduceableStreamStore<MyAppState>(
-    const MyAppState(title: 'flutter_triple'),
-  );
-
   @override
-  Widget build(context) => binderWidget(store: store, child: child);
+  Widget build(context) => binderWidget(
+        initialState: const MyAppState(title: 'flutter_triple'),
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {

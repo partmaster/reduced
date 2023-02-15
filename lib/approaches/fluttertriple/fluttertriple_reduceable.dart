@@ -5,6 +5,7 @@ import 'package:flutter_triple/flutter_triple.dart';
 
 import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
+import '../../stateful_inherited_value_widget.dart';
 
 class ReduceableStreamStore<S extends Object>
     extends StreamStore<Object, S> {
@@ -19,10 +20,14 @@ class ReduceableStreamStore<S extends Object>
 }
 
 Widget binderWidget<S extends Object>({
-  required ReduceableStreamStore<S> store,
+  required S initialState,
   required Widget child,
 }) =>
-    InheritedValueWidget(value: store, child: child);
+    StatefulInheritedValueWidget(
+      builder: (initialState) => ReduceableStreamStore(initialState),
+      initializer: initialState,
+      child: child,
+    );
 
 extension BuilderWidgetExtension<S extends Object>
     on ReduceableStreamStore<S> {

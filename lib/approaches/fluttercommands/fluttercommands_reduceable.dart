@@ -5,6 +5,7 @@ import 'package:flutter_command/flutter_command.dart';
 
 import '../../inherited_value_widget.dart';
 import '../../reduceable.dart';
+import '../../stateful_inherited_value_widget.dart';
 
 class ReduceableCommandStore<S> {
   ReduceableCommandStore(S initialState) : _state = initialState;
@@ -21,10 +22,14 @@ class ReduceableCommandStore<S> {
 }
 
 Widget binderWidget<S>({
-  required ReduceableCommandStore<S> store,
+  required S initialState,
   required Widget child,
 }) =>
-    InheritedValueWidget(value: store, child: child);
+    StatefulInheritedValueWidget(
+      builder: (initialState) => ReduceableCommandStore(initialState),
+      initializer: initialState,
+      child: child,
+    );
 
 extension BuilderWidgetExtension<S> on ReduceableCommandStore<S> {
   Widget builderWidget<P>({

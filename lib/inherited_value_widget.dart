@@ -15,8 +15,13 @@ class InheritedValueWidget<V> extends InheritedWidget {
       _widgetOf<InheritedValueWidget<U>>(context).value;
 
   static W _widgetOf<W extends InheritedValueWidget>(
-          BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<W>()!;
+          BuildContext context) {
+              final result = context.dependOnInheritedWidgetOfExactType<W>();
+              if(result == null) {
+                throw AssertionError('InheritedValueWidget._widgetOf<$W> return null');
+              }
+              return result;
+            }
 
   @override
   bool updateShouldNotify(InheritedValueWidget oldWidget) =>

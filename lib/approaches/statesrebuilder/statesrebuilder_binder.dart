@@ -18,6 +18,8 @@ class MyAppStateBinder extends StatelessWidget {
   Widget build(context) => binderWidget(store: store, child: child);
 }
 
+
+
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
