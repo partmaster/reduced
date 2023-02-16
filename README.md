@@ -59,7 +59,7 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 
 #### Lage nach Anwendung des Humble Object Pattern
 </br> 
-![humble2](images/humble2.png)
+<img src="images/humble2.png">
 </br>
 *Bildquelle: manning.com*
 
