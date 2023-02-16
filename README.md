@@ -57,14 +57,8 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 </br>
 *Bildquelle: manning.com*
 
-</br>
-![humble1](images/humble1.png)
-</br>
-*Bildquelle: manning.com*
-
 #### Lage nach Anwendung des Humble Object Pattern
 
-</br>
 ![humble2](images/humble2.png)
 </br>
 *Bildquelle: manning.com*
