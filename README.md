@@ -53,6 +53,10 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 
 #### Ausgangslage des Humble Object Pattern
 
+![reducer](images/reducer_killalldefectscom.png)
+</br>
+*Bildquelle: killalldefects.com*
+
 </br>
 ![humble1](images/humble1.png)
 </br>
