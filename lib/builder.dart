@@ -49,7 +49,7 @@ class MyCounterWidgetBuilder extends StatelessWidget {
   @override
   Widget build(context) => Text(
         props.counterText,
-        style: Theme.of(context).textTheme.headline4,
+        style: Theme.of(context).textTheme.headlineMedium,
       );
 }
 

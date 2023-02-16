@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../reduceable.dart';
 
+// ignore: implementation_imports
 import 'package:binder/src/build_context_extensions.dart';
 
 class ReduceableLogic<S> with Logic {

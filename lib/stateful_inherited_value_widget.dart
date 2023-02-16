@@ -19,6 +19,7 @@ class StatefulInheritedValueWidget<V, S> extends StatefulWidget {
 
   @override
   State<StatefulInheritedValueWidget> createState() =>
+      // ignore: no_logic_in_create_state
       _StatefulInheritedValueWidgetState<V, S>(builder(initializer));
 }
 

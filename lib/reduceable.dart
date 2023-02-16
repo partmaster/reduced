@@ -12,20 +12,25 @@ abstract class Reducer<S> {
 typedef Reduce<S> = void Function(Reducer<S>);
 
 class Reduceable<S> {
-  Reduceable(this.getState, this.reduce, this.equality);
+  Reduceable(this.getState, this.reduce, this.identity);
 
   final S Function() getState;
   final Reduce<S> reduce;
-  final Object equality;
+  final Object identity;
 
   S get state => getState();
 
   @override
-  int get hashCode => equality.hashCode;
+  int get hashCode => identity.hashCode;
 
   @override
   bool operator ==(Object other) =>
-      other is Reduceable<S> && equality == other.equality;
+      other is Reduceable<S> && identity == other.identity;
+
+  @override
+  String toString() {
+    return 'Reduceable(${identity.hashCode})';
+  }
 }
 
 class Action<S> extends VoidCallable {
