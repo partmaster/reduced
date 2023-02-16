@@ -53,13 +53,13 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 
 #### Ausgangslage des Humble Object Pattern
 </br>
-![](./images/humble1.jpg)
+![humble1](images/humble1.jpg)
 </br>
 *Bildquelle: manning.com*
 
 #### Lage nach Anwendung des Humble Object Pattern
 </br> 
-![](./images/humble2.jpg)
+![humble2](images/humble2.jpg)
 </br>
 *Bildquelle: manning.com*
 
@@ -77,7 +77,7 @@ Dabei ist die Builder-Klasse wegen ihrer inhärenten Abhängigkeit von der UI-Um
 4. Für die vorkonfektionierten Properties und Callbacks der Builder-Klasse wird eine Props-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern.
 Die Props-Klasse hat einen Konstruktor, der den aktuellen App-Zustand in die Properties konvertiert und die Callback-Objekte auf die App-Zustands-Operationen abbildet.
 
-![](./images/humble_widget.png)
+![humble_widget](images/humble_widget.png)
 
 Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
 Das Lauschen der Builder-Klasse auf selektive Änderungen und der Konstruktor der Props-Klasse repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
@@ -95,7 +95,7 @@ Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwe
 
 > Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben. Mit anderen Worten: `(state, action) => newState`.
 
-![](./images/reducer_killalldefectscom.png)
+![reducer](images/reducer_killalldefectscom.png)
 </br>
 *Bildquelle: killalldefects.com*
 
@@ -136,7 +136,7 @@ Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-
 
 Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand benachrichtigen lassen zu können, ist stark vom eingesetzten App-Zustands-Verwaltungs-Framework abhängig (insbesondere die selektive Benachrichtigung) und wird später für ausgewählte Lösungen (StatefulWidget/InheritedWidget, Riverpod, Bloc) diskutiert. 
 
-![](./images/reducer_action.png)
+![reducer_action](images/reducer_action.png)
 
 Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
 Der Rest der App-Logik liegt in den Konvertern, die aus einem Reducible und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
