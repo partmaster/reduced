@@ -5,8 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:reduceable/domain.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:examples/logic.dart';
+import 'package:reduceable/reducible.dart';
 import 'package:test/test.dart';
 
 class DecrementCounterReducer extends Reducer<MyAppState> {
@@ -29,29 +29,29 @@ void main() {
     expect(state.counter, equals(1));
   });
   test('testMyCounterWidgetProps', () {
-    Reduceable<MyAppState> reduceable = Reduceable(
+    Reducible<MyAppState> reducible = Reducible(
       () => const MyAppState(title: 'mock', counter: 0),
       (_) {},
       false,
     );
     final objectUnderTest =
-        MyCounterWidgetProps.reduceable(reduceable);
+        MyCounterWidgetProps.reducible(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
     const title = 'mock';
     final incrementReducer = IncrementCounterReducer();
     final decrementReducer = DecrementCounterReducer();
-    final reduceable = Reduceable(
+    final reducible = Reducible(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
       false,
     );
     final onIncrementPressed =
-        Action(reduceable, incrementReducer);
+        Action(reducible, incrementReducer);
     final onDecrementPressed =
-        Action(reduceable, decrementReducer);
-    final objectUnderTest = MyHomePageProps.reduceable(reduceable);
+        Action(reducible, decrementReducer);
+    final objectUnderTest = MyHomePageProps.reducible(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

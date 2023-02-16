@@ -1,6 +1,6 @@
 // logic.dart
 
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
 class MyAppState {
   const MyAppState({required this.title, this.counter=0});
@@ -35,10 +35,10 @@ class MyHomePageProps {
     required this.onIncrementPressed,
   });
 
-  MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
-      : title = reduceable.state.title,
+  MyHomePageProps.reducible(Reducible<MyAppState> reducible)
+      : title = reducible.getState().title,
         onIncrementPressed = Action(
-          reduceable,
+          reducible,
           IncrementCounterReducer(),
         );
 
@@ -62,8 +62,8 @@ class MyCounterWidgetProps {
     required this.counterText,
   });
 
-  MyCounterWidgetProps.reduceable(Reduceable<MyAppState> reduceable)
-      : counterText = '${reduceable.state.counter}';
+  MyCounterWidgetProps.reducible(Reducible<MyAppState> reducible)
+      : counterText = '${reducible.getState().counter}';
 
   @override
   int get hashCode => counterText.hashCode;

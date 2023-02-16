@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mobx_reduceable.dart';
+part of 'mobx_reducible.dart';
 
 // **************************************************************************
 // StoreGenerator

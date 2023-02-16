@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../builder.dart';
 import '../../logic.dart';
-import 'statesrebuilder_reduceable.dart';
+import 'statesrebuilder_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -26,7 +26,7 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) => context.store<MyAppState>().builderWidget(
         builder: MyHomePageBuilder.new,
-        converter: MyHomePageProps.reduceable,
+        converter: MyHomePageProps.reducible,
       );
 }
 
@@ -35,7 +35,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) => context.store<MyAppState>().builderWidget(
-        converter: MyCounterWidgetProps.reduceable,
+        converter: MyCounterWidgetProps.reducible,
         builder: MyCounterWidgetBuilder.new,
       );
 }

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../../logic.dart';
 import '../../builder.dart';
 import '../../util/inherited_value_widget.dart';
-import 'setstate_reduceable.dart';
+import 'setstate_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -13,13 +13,13 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => ReduceableStatefulWidget(
+  Widget build(context) => ReducibleStatefulWidget(
         initialState: const MyAppState(title: 'setState'),
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePageProps.reduceable(value),
+          value: MyHomePageProps.reducible(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetProps.reduceable(value),
+            value: MyCounterWidgetProps.reducible(value),
             child: child,
           ),
         ),

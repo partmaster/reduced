@@ -1,14 +1,14 @@
-// fluttercommands_reduceable.dart
+// fluttercommands_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
 import '../../util/inherited_value_widget.dart';
 import '../../util/stateful_inherited_value_widget.dart';
 
-class ReduceableCommandStore<S> {
-  ReduceableCommandStore(S initialState) : _state = initialState;
+class ReducibleCommandStore<S> {
+  ReducibleCommandStore(S initialState) : _state = initialState;
 
   S _state;
 
@@ -17,7 +17,7 @@ class ReduceableCommandStore<S> {
     return _state;
   }, _state);
 
-  late final Reduceable<S> reduceable = Reduceable(() => _state, command, this);
+  late final Reducible<S> reducible = Reducible(() => _state, command, this);
 }
 
 Widget binderWidget<S>({
@@ -25,23 +25,23 @@ Widget binderWidget<S>({
   required Widget child,
 }) =>
     StatefulInheritedValueWidget(
-      builder: (initialState) => ReduceableCommandStore(initialState),
+      builder: (initialState) => ReducibleCommandStore(initialState),
       initializer: initialState,
       child: child,
     );
 
-extension BuilderWidgetExtension<S> on ReduceableCommandStore<S> {
+extension BuilderWidgetExtension<S> on ReducibleCommandStore<S> {
   Widget builderWidget<P>({
-    required P Function(Reduceable<S>) converter,
+    required P Function(Reducible<S>) converter,
     required Widget Function({required P props}) builder,
   }) =>
       ValueListenableBuilder<P>(
-        valueListenable: command.map((state) => converter(reduceable)),
+        valueListenable: command.map((state) => converter(reducible)),
         builder: (_, props, ___) => builder(props: props),
       );
 }
 
 extension StoreOnBuildContext on BuildContext {
-  ReduceableCommandStore<S> store<S>() =>
-      InheritedValueWidget.of<ReduceableCommandStore<S>>(this);
+  ReducibleCommandStore<S> store<S>() =>
+      InheritedValueWidget.of<ReducibleCommandStore<S>>(this);
 }

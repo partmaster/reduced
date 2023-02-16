@@ -1,11 +1,11 @@
-// getx_reduceable.dart
+// getx_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
-class ReduceableGetx<S> extends GetxController {
-  ReduceableGetx(S state) : _state = state;
+class ReducibleGetx<S> extends GetxController {
+  ReducibleGetx(S state) : _state = state;
 
   S _state;
 
@@ -16,25 +16,25 @@ class ReduceableGetx<S> extends GetxController {
     update();
   }
 
-  late final Reduceable<S> reduceable =
-      Reduceable(getState, reduce, this);
+  late final Reducible<S> reducible =
+      Reducible(getState, reduce, this);
 }
 
 Widget binderWidget<S>({
   required S initialState,
   required Widget child,
 }) {
-  Get.put(ReduceableGetx(initialState));
+  Get.put(ReducibleGetx(initialState));
   return child;
 }
 
 Widget builderWidget<S, P extends Object>({
-  required P Function(Reduceable<S>) converter,
+  required P Function(Reducible<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
-    GetBuilder<ReduceableGetx<S>>(
+    GetBuilder<ReducibleGetx<S>>(
       filter: (controller) =>
-          converter(controller.reduceable),
+          converter(controller.reducible),
       builder: (controller) =>
-          builder(props: converter(controller.reduceable)),
+          builder(props: converter(controller.reducible)),
     );

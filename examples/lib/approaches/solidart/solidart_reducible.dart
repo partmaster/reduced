@@ -1,17 +1,17 @@
-// solidart_reduceable.dart
+// solidart_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 // ignore: implementation_imports
 import 'package:solidart/src/core/signal_selector.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
-extension ReduceableSignal<S> on Signal<S> {
+extension ReducibleSignal<S> on Signal<S> {
   S getState() => value;
 
   void reduce(Reducer<S> reducer) => value = reducer(value);
 
-  Reduceable<S> get reduceable => Reduceable(getState, reduce, this);
+  Reducible<S> get reducible => Reducible(getState, reduce, this);
 }
 
 Widget binderWidget<S>({
@@ -25,13 +25,13 @@ Widget binderWidget<S>({
 
 extension BuilderWidgetExtension<S> on Signal<S> {
   Widget builderWidget<P>({
-    required P Function(Reduceable<S>) converter,
+    required P Function(Reducible<S>) converter,
     required Widget Function({Key? key, required P props}) builder,
   }) =>
       SignalBuilder(
         signal: SignalSelector<S, P>(
           signal: this,
-          selector: (_) => converter(reduceable),
+          selector: (_) => converter(reducible),
           options: SignalOptions(comparator: (a, b) => a == b),
         ),
         builder: (_, value, ___) => builder(props: value),

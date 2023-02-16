@@ -1,5 +1,5 @@
-import 'package:reduceable/builder.dart';
-import 'package:reduceable/approaches/mock/mock_reduceable.dart';
+import 'package:examples/approaches/mock/mock_reducible.dart';
+import 'package:examples/builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

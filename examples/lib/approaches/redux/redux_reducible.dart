@@ -1,13 +1,13 @@
-// redux_reduceable.dart
+// redux_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 import 'package:redux/redux.dart' hide Reducer;
 
-extension ReduceableStore on Store {
-  Reduceable<S> reduceable<S>() =>
-      Reduceable(() => state, (reducer) => dispatch(reducer), this);
+extension ReducibleStore on Store {
+  Reducible<S> reducible<S>() =>
+      Reducible(() => state, (reducer) => dispatch(reducer), this);
 }
 
 Widget binderWidget<S>({
@@ -23,11 +23,11 @@ Widget binderWidget<S>({
         child: child);
 
 Widget builderWidget<S, P>({
-  required P Function(Reduceable<S>) converter,
+  required P Function(Reducible<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
     StoreConnector<S, P>(
       distinct: true,
-      converter: (store) => converter(store.reduceable<S>()),
+      converter: (store) => converter(store.reducible<S>()),
       builder: (context, props) => builder(props: props),
     );

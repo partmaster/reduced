@@ -1,8 +1,8 @@
 // @dart=2.9
 
+import 'package:examples/logic.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
-import 'package:reduceable/domain.dart';
 
 // Action Types
 enum CounterAction { increment, decrement }

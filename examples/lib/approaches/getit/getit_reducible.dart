@@ -1,18 +1,18 @@
-// getit_reduceable.dart
+// getit_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
-extension ReduceableValueNotifier<S> on ValueNotifier<S> {
+extension ReducibleValueNotifier<S> on ValueNotifier<S> {
   S getState() => value;
 
   void reduce(Reducer<S> reducer) {
     value = reducer(value);
   }
 
-  Reduceable<S> get reduceable => Reduceable(getState, reduce, this);
+  Reducible<S> get reducible => Reducible(getState, reduce, this);
 }
 
 Widget binderWidget<S>({
@@ -26,7 +26,7 @@ Widget binderWidget<S>({
 }
 
 Widget builderWidget<S, P>({
-  required P Function(Reduceable<S>) converter,
+  required P Function(Reducible<S>) converter,
   required Widget Function({required P props}) builder,
 }) =>
     StatelessWidgetWithGetItMixin(
@@ -36,7 +36,7 @@ Widget builderWidget<S, P>({
 
 class StatelessWidgetWithGetItMixin<S, P> extends StatelessWidget
     with GetItMixin {
-  final P Function(Reduceable<S>) converter;
+  final P Function(Reducible<S>) converter;
   final Widget Function({required P props}) builder;
 
   StatelessWidgetWithGetItMixin({
@@ -49,7 +49,7 @@ class StatelessWidgetWithGetItMixin<S, P> extends StatelessWidget
   Widget build(context) => builder(
         props: watchOnly(
           (ValueNotifier<S> notifier) =>
-              converter(notifier.reduceable),
+              converter(notifier.reducible),
         ),
       );
 }

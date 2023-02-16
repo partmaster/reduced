@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../../builder.dart';
-import 'mock_reduceable.dart';
+import 'mock_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});

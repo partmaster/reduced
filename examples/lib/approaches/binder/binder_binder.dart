@@ -5,14 +5,14 @@ import 'package:flutter/widgets.dart';
 
 import '../../logic.dart';
 import '../../builder.dart';
-import 'binder_reduceable.dart';
+import 'binder_reducible.dart';
 
 final stateRef = StateRef(
   const MyAppState(title: 'binder'),
 );
 
 final logicRef = LogicRef(
-  (scope) => ReduceableLogic(scope, stateRef),
+  (scope) => ReducibleLogic(scope, stateRef),
 );
 
 class MyAppStateBinder extends StatelessWidget {
@@ -31,7 +31,7 @@ class MyHomePageBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).builderWidget(
         stateRef: stateRef,
         builder: MyHomePageBuilder.new,
-        converter: MyHomePageProps.reduceable,
+        converter: MyHomePageProps.reducible,
       );
 }
 
@@ -42,6 +42,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).builderWidget(
         stateRef: stateRef,
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetProps.reduceable,
+        converter: MyCounterWidgetProps.reducible,
       );
 }

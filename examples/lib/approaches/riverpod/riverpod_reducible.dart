@@ -1,13 +1,13 @@
-// riverpod_reduceable.dart
+// riverpod_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
-class ReduceableStateNotifier<S> extends StateNotifier<S> {
-  ReduceableStateNotifier(super.state);
+class ReducibleStateNotifier<S> extends StateNotifier<S> {
+  ReducibleStateNotifier(super.state);
 
-  late final reduceable = Reduceable(getState, reduce, this);
+  late final reducible = Reducible(getState, reduce, this);
 
   S getState() => super.state;
 

@@ -1,8 +1,8 @@
-// provider_reduceable.dart
+// provider_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
 extension ReduceableValueNotifier<S> on ValueNotifier<S> {
   S getState() => value;
@@ -11,8 +11,8 @@ extension ReduceableValueNotifier<S> on ValueNotifier<S> {
     value = reducer(value);
   }
 
-  Reduceable<S> get reduceable =>
-      Reduceable(getState, reduce, this);
+  Reducible<S> get reducible =>
+      Reducible(getState, reduce, this);
 }
 
 Widget binderWidget<S>({
@@ -25,11 +25,11 @@ Widget binderWidget<S>({
     );
 
 Widget builderWidget<S, P>({
-  required P Function(Reduceable<S>) converter,
+  required P Function(Reducible<S>) converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
     Selector<ValueNotifier<S>, P>(
       builder: (context, props, _) => builder(props: props),
-      selector: (context, notifier) => converter(notifier.reduceable),
+      selector: (context, notifier) => converter(notifier.reducible),
     );
 

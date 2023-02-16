@@ -5,15 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../builder.dart';
 import '../../logic.dart';
-import 'riverpod_reduceable.dart';
+import 'riverpod_reducible.dart';
 
-typedef MyAppStateNotifier = ReduceableStateNotifier<MyAppState>;
+typedef MyAppStateNotifier = ReducibleStateNotifier<MyAppState>;
 typedef MyAppStateProvider
     = StateNotifierProvider<MyAppStateNotifier, MyAppState>;
 
 final appStateProvider = MyAppStateProvider(
   (ref) =>
-      ReduceableStateNotifier(const MyAppState(title: 'riverpod')),
+      ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
 );
 
 final counterWidgetPropsProvider = StateProvider(
@@ -21,8 +21,8 @@ final counterWidgetPropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyCounterWidgetProps.reduceable(
-          appStateNotifier.reduceable,
+        (state) => MyCounterWidgetProps.reducible(
+          appStateNotifier.reducible,
         ),
       ),
     );
@@ -34,8 +34,8 @@ final homePagePropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyHomePageProps.reduceable(
-          appStateNotifier.reduceable,
+        (state) => MyHomePageProps.reducible(
+          appStateNotifier.reducible,
         ),
       ),
     );

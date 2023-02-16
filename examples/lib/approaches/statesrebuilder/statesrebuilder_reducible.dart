@@ -1,12 +1,12 @@
-// statesrebuilder_reduceable.dart
+// statesrebuilder_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
 import '../../util/inherited_value_widget.dart';
 
-typedef StateToPropsConverter<S, P> = P Function(Reduceable<S>);
+typedef StateToPropsConverter<S, P> = P Function(Reducible<S>);
 
 class ReactiveStatelessBuilder extends ReactiveStatelessWidget {
   const ReactiveStatelessBuilder({super.key, required this.builder});
@@ -28,8 +28,8 @@ class Store<S> {
   void reduce(Reducer<S> reducer) =>
       value.state = reducer(value.state);
 
-  late final Reduceable<S> reduceable =
-      Reduceable(getState, reduce, this);
+  late final Reducible<S> reducible =
+      Reducible(getState, reduce, this);
 }
 
 Widget binderWidget<S>({
@@ -43,7 +43,7 @@ Widget binderWidget<S>({
 
 extension BuilderWidgetExtension<S> on Store<S> {
   Widget builderWidget<P>({
-    required P Function(Reduceable<S>) converter,
+    required P Function(Reducible<S>) converter,
     required Widget Function({Key? key, required P props}) builder,
   }) =>
       ReactiveStatelessBuilder(
@@ -52,10 +52,10 @@ extension BuilderWidgetExtension<S> on Store<S> {
           shouldRebuild: (p0, p1) => _shouldRebuild(
             p0.data as S,
             p1.data as S,
-            reduceable.reduce,
+            reducible.reduce,
             converter,
           ),
-          builder: () => builder(props: converter(reduceable)),
+          builder: () => builder(props: converter(reducible)),
         ),
       );
 }
@@ -65,7 +65,7 @@ P _stateToProps<S, P>(
   Reduce<S> reduce,
   StateToPropsConverter<S, P> converter,
 ) =>
-    converter(Reduceable(() => state, reduce, reduce));
+    converter(Reducible(() => state, reduce, reduce));
 
 bool _shouldRebuild<S, P>(
   S p0,

@@ -1,14 +1,14 @@
-// mobx_reduceable.dart
+// mobx_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:reduceable/reduceable.dart';
+import 'package:reduceable/reducible.dart';
 
 import '../../logic.dart';
 import '../../util/inherited_value_widget.dart';
 
-part 'mobx_reduceable.g.dart';
+part 'mobx_reducible.g.dart';
 
 class MyStore = MyStoreBase with _$MyStore;
 
@@ -25,16 +25,16 @@ abstract class MyStoreBase with Store {
     value = reducer(value);
   }
 
-  late final Reduceable<MyAppState> reduceable =
-      Reduceable(getState, reduce, this);
+  late final Reducible<MyAppState> reducible =
+      Reducible(getState, reduce, this);
 
   @computed
   MyHomePageProps get homePageProps =>
-      MyHomePageProps.reduceable(reduceable);
+      MyHomePageProps.reducible(reducible);
 
   @computed
   MyCounterWidgetProps get conterWidgetProps =>
-      MyCounterWidgetProps.reduceable(reduceable);
+      MyCounterWidgetProps.reducible(reducible);
 }
 
 Widget binderWidget({
