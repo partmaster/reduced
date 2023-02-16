@@ -159,7 +159,7 @@ Der Rest der App-Logik liegt in den Konvertern, die
 
 2. und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
 
-## Tutorial
+## Examples
 
 Nun soll die vorgestellte Code-Struktur an einem kleinen Beispiel illustriert werden. 
 
