@@ -56,11 +56,13 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 <img src="images/humble1.png">
 </br>
 *Bildquelle: manning.com*
+*Bildquelle: killalldefects.com*
 
 #### Lage nach Anwendung des Humble Object Pattern
 </br> 
 <img src="images/humble2.png">
 </br>
+*Bildquelle: killalldefects.com*
 *Bildquelle: manning.com*
 
 Auf eine Flutter-Widget-Klasse bezogen, habe ich das Pattern folgendermaßen angewendet: 
