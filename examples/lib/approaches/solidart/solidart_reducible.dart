@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 // ignore: implementation_imports
 import 'package:solidart/src/core/signal_selector.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 extension ReducibleSignal<S> on Signal<S> {
   S getState() => value;

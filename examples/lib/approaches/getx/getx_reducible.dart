@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 class ReducibleGetx<S> extends GetxController {
   ReducibleGetx(S state) : _state = state;

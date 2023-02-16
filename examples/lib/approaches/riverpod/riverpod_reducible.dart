@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 class ReducibleStateNotifier<S> extends StateNotifier<S> {
   ReducibleStateNotifier(super.state);

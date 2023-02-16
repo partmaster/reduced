@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 import 'package:redux/redux.dart' hide Reducer;
 
 extension ReducibleStore on Store {

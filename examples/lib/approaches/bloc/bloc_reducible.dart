@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
   ReducibleBloc(super.initialState) {

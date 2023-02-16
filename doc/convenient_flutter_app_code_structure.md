@@ -7,7 +7,7 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 ## Abstract
 
 Hier wird eine Code-Struktur vorgestellt, die durch die Anwendung von Entwurfsmustern [^1] die Trennung der Verantwortlichkeiten [^2] im Code von App-Projekten mit Flutter [^3] befördert. 
-Für die Code-Struktur werden die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reduceable verwendet, die im Folgenden erklärt werden.
+Für die Code-Struktur werden die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reducible verwendet, die im Folgenden erklärt werden.
 Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Klassen StatefulWidget und InheritedWidget eingesetzt werden.
 </br> 
 Wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will oder wer bei der Wahl einer App-Zustands-Verwaltungs-Lösung flexibel sein will, für den könnte der Artikel interessant sein. 
@@ -82,7 +82,7 @@ Die Props-Klasse hat einen Konstruktor, der den aktuellen App-Zustand in die Pro
 Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
 Das Lauschen der Builder-Klasse auf selektive Änderungen und der Konstruktor der Props-Klasse repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
 
-## AppState, Reducer und Reduceable
+## AppState, Reducer und Reducible
 
 Das zweite Ziel ist, den Code so zu strukturieren, dass die App-Logik vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter allgemein separiert wird.
 Um das zu erreichen, wird das Reducer Pattern angewandt. 
@@ -114,7 +114,7 @@ Für die ersten beiden Anforderungen lässt sich leicht eine Schnittstelle defin
 2. eine reduce-Methode zum Ändern des App-Zustands 
 
 ```dart
-abstract class Reduceable<S> {
+abstract class Reducible<S> {
   S get state;
   Reduce<S> get reduce;
 }
@@ -125,7 +125,7 @@ abstract class Reducer<S> {
   S call(S state);
 }
 ```
-Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- und eine Set-Methode für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reduceable` einfach implementieren:
+Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- und eine Set-Methode für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reducible` einfach implementieren:
 
 ```dart
   void reduce(Reducer<MyAppState> reducer) => 
@@ -138,8 +138,8 @@ Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand ben
 
 ![](images/reducer_action.png)
 
-Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reduceable sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
-Der Rest der App-Logik liegt in den Konvertern, die aus einem Reduceable und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
+Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
+Der Rest der App-Logik liegt in den Konvertern, die aus einem Reducible und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
 
 ## Tutorial
 
@@ -257,11 +257,11 @@ class MyHomePageProps {
     required this.onIncrementPressed,
   });
 
-  MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
-      : title = reduceable.state.title,
-        counterText = '${reduceable.state.counter}',
+  MyHomePageProps.reducible(Reducible<MyAppState> reducible)
+      : title = reducible.state.title,
+        counterText = '${reducible.state.counter}',
         onIncrementPressed = VoidCallable(
-          reduceable,
+          reducible,
           IncrementCounterReducer(),
         );
 
@@ -277,7 +277,7 @@ class MyHomePageProps {
 }
 ``` 
 
-Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Konvertierung. Diese Konvertierung ist in Form des Props-Konstruktors `MyHomePageProps.reduceable` implementiert. In diesem Konvertierungs-Konstruktor wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
+Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Konvertierung. Diese Konvertierung ist in Form des Props-Konstruktors `MyHomePageProps.reducible` implementiert. In diesem Konvertierungs-Konstruktor wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
 </br>
 Damit die Props als Wert für selektive Benachrichtigungen über App-Zustands-Änderungen eingesetzt werden können, müssen die [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden der Props-Klasse nach Wertsemantik [^12] funktionieren. Das setzt voraus, dass diese Methoden bei allen Properties ebenfalls nach Wertsemantik funktionieren. Da mir nicht ganz klar ist, wie dies bei Funktionsobjekten gewährleistet werden kann, habe ich für das Callback-Property nicht den Standard-Flutter-Typ [VoidCallback](https://api.flutter.dev/flutter/dart-ui/VoidCallback.html) verwendet, sondern eine eigene Klasse `VoidCallable` mit überschriebenen [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden.  
 
@@ -287,22 +287,22 @@ abstract class Callable<T> {
 }
 
 class VoidCallable<S> extends Callable<void> {
-  VoidCallable(this.reduceable, this.reducer);
+  VoidCallable(this.reducible, this.reducer);
 
-  final Reduceable<S> reduceable;
+  final Reducible<S> reducible;
   final Reducer<S> reducer;
 
   @override
-  void call() => reduceable.reduce(reducer);
+  void call() => reducible.reduce(reducer);
 
   @override
-  int get hashCode => hash2(reduceable, reducer);
+  int get hashCode => hash2(reducible, reducer);
 
   @override
   bool operator ==(Object other) =>
       other is VoidCallable<S> &&
       reducer == other.reducer &&
-      reduceable == other.reduceable;
+      reducible == other.reducible;
 }
 ```
 
@@ -415,11 +415,11 @@ Für die Implementierung der App-Zustands-Verwaltung mit einer Kombination aus S
 
 #### AppStateBinder
 
-Die Klasse `AppStateBinder` erbt von StatefulWidget und hält im Feld _state den veränderlichen App-Zustand. Sie stellt eine get-state-Methode für den App-Zustand sowie eine reduce-Methode, um den App-Zustand von außen mit einem Reducer verändern zu können, bereit. Die beiden Methoden `get state` und `reduce` werden in ein `Reduceable` verpackt und sind in der hier vorgestellten Code-Struktur die generelle Schnittstelle der App-Zustands-Verwaltung nach außen. Das `Reduceable` wird von `AppStateBinder` an den im Konstruktor hereingereichten `builder` zum Bau des child-Widgets übergeben. Dieser `builder` wird im später vorgestellten  `MyAppStateBinder` dazu genutzt werden, InheritedWidget-Kinder zu erzeugen und sie dabei mit dem `Reduceable` zu versorgen. 
+Die Klasse `AppStateBinder` erbt von StatefulWidget und hält im Feld _state den veränderlichen App-Zustand. Sie stellt eine get-state-Methode für den App-Zustand sowie eine reduce-Methode, um den App-Zustand von außen mit einem Reducer verändern zu können, bereit. Die beiden Methoden `get state` und `reduce` werden in ein `Reducible` verpackt und sind in der hier vorgestellten Code-Struktur die generelle Schnittstelle der App-Zustands-Verwaltung nach außen. Das `Reducible` wird von `AppStateBinder` an den im Konstruktor hereingereichten `builder` zum Bau des child-Widgets übergeben. Dieser `builder` wird im später vorgestellten  `MyAppStateBinder` dazu genutzt werden, InheritedWidget-Kinder zu erzeugen und sie dabei mit dem `Reducible` zu versorgen. 
 
 ```dart
-typedef ReduceableWidgetBuilder<S> = Widget Function(
-  Reduceable<S> value,
+typedef ReducibleWidgetBuilder<S> = Widget Function(
+  Reducible<S> value,
   Widget child,
 );
 ```
@@ -435,7 +435,7 @@ class AppStateBinder<S> extends StatefulWidget {
 
   final S initialState;
   final Widget child;
-  final ReduceableWidgetBuilder<S> builder;
+  final ReducibleWidgetBuilder<S> builder;
 
   @override
   State<AppStateBinder> createState() =>
@@ -451,14 +451,14 @@ class _AppStateBinderState<S> extends State<AppStateBinder<S>> {
 
   S getState() => _state;
 
-  late final reduceable = Reduceable(getState, reduce);
+  late final reducible = Reducible(getState, reduce);
 
   void reduce(Reducer<S> reducer) =>
       setState(() => _state = reducer(_state));
 
   @override
   Widget build(BuildContext context) => widget.builder(
-        reduceable,
+        reducible,
         widget.child,
       );
 }
@@ -511,9 +511,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: state,
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePageProps.reduceable(value),
+          value: MyHomePageProps.reducible(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetProps.reduceable(value),
+            value: MyCounterWidgetProps.reducible(value),
             child: child,
           ),
         ),
@@ -521,9 +521,9 @@ class MyAppStateBinder extends StatelessWidget {
 }
 ```
 
-Das `MyAppStateBinder`-Widget bildet die Wurzel der Widget-Hierarchie der App und ist für die Bindung der App-Zustands-Verwaltung an die UI verantwortlich. Es stellt der nachfolgenden Widget-Hierarchie den Zugang zur App-Zustands-Verwaltung in Form des Interfaces `Reduceable` bereit. 
+Das `MyAppStateBinder`-Widget bildet die Wurzel der Widget-Hierarchie der App und ist für die Bindung der App-Zustands-Verwaltung an die UI verantwortlich. Es stellt der nachfolgenden Widget-Hierarchie den Zugang zur App-Zustands-Verwaltung in Form des Interfaces `Reducible` bereit. 
 </br>
-In diesem Fall haben wir die App-Zustands-Verwaltung einer Kombination aus StatefulWidget und InheritedWidget selbst implementiert und stellen das Interface `Reduceable`, wie bei InheritedWidgets üblich, mit einer statischen Methode `T of<T>(BuildContext context)` bereit.
+In diesem Fall haben wir die App-Zustands-Verwaltung einer Kombination aus StatefulWidget und InheritedWidget selbst implementiert und stellen das Interface `Reducible`, wie bei InheritedWidgets üblich, mit einer statischen Methode `T of<T>(BuildContext context)` bereit.
 
 ### main
 
@@ -557,7 +557,7 @@ Wir wollen nun die App so refaktorisieren, dass bei Änderungen des Properties `
 genutzt werden. Der Umbau erfolgt in 5 Schritten:
 
 1\. **Props**</br>
-Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText` in eine neue Klasse `MyCounterWidgetProps` und definieren den benannten Konstruktor `MyCounterWidgetProps.reduceable`.
+Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText` in eine neue Klasse `MyCounterWidgetProps` und definieren den benannten Konstruktor `MyCounterWidgetProps.reducible`.
 
 ```dart
 class MyHomePageProps {
@@ -569,10 +569,10 @@ class MyHomePageProps {
     required this.onIncrementPressed,
   });
 
-  MyHomePageProps.reduceable(Reduceable<MyAppState> reduceable)
-      : title = reduceable.state.title,
+  MyHomePageProps.reducible(Reducible<MyAppState> reducible)
+      : title = reducible.state.title,
         onIncrementPressed = VoidCallable(
-          reduceable,
+          reducible,
           IncrementCounterReducer(),
         );
 
@@ -595,8 +595,8 @@ class MyCounterWidgetProps {
     required this.counterText,
   });
 
-  MyCounterWidgetProps.reduceable(Reduceable<MyAppState> reduceable)
-      : counterText = '${reduceable.state.counter}';
+  MyCounterWidgetProps.reducible(Reducible<MyAppState> reducible)
+      : counterText = '${reducible.state.counter}';
 
   @override
   int get hashCode => counterText.hashCode;
@@ -626,9 +626,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: state,
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePageProps.reduceable(value),
+          value: MyHomePageProps.reducible(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetProps.reduceable(value),
+            value: MyCounterWidgetProps.reducible(value),
             child: child,
           ),
         ),
@@ -709,7 +709,7 @@ Die App ist sauber nach UI-Code und App-Logik-Code getrennt. Diese Trennung woll
 
 #### App-Logik-Tests
 
-In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den reduceable-Konstruktoren der Props-Klassen. In unserem Beispiel-Projekt sind das die Klassen `IncrementCounterReducer`, `MyHomePageProps` und `MyCounterWidgetProps`. Da diese Klassen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
+In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den reducible-Konstruktoren der Props-Klassen. In unserem Beispiel-Projekt sind das die Klassen `IncrementCounterReducer`, `MyHomePageProps` und `MyCounterWidgetProps`. Da diese Klassen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
 
 Hier ein Beispiel-Test für den call-Methode der Klasse `IncrementCounterReducer`:
 
@@ -723,36 +723,36 @@ Hier ein Beispiel-Test für den call-Methode der Klasse `IncrementCounterReducer
   });
 ```
 
-Hier ein Beispiel-Test für den reduceable-Konstruktor der Klasse `MyCounterWidgetProps`:
+Hier ein Beispiel-Test für den reducible-Konstruktor der Klasse `MyCounterWidgetProps`:
 
 ```dart
   test('testMyCounterWidgetProps', () {
-    Reduceable<MyAppState> reduceable = Reduceable(
+    Reducible<MyAppState> reducible = Reducible(
       () => const MyAppState(counter: 0, title: ''),
       (_) {},
     );
     final objectUnderTest =
-        MyCounterWidgetProps.reduceable(reduceable);
+        MyCounterWidgetProps.reducible(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
 ```
 
-Hier ein Beispiel-Test für den reduceable-Konstruktor der Klasse `MyHomePageProps`:
+Hier ein Beispiel-Test für den reducible-Konstruktor der Klasse `MyHomePageProps`:
 
 ```dart
   test('testMyHomePageProps', () {
     const title = 'Flutter Demo App';
     final incrementReducer = IncrementCounterReducer();
     final decrementReducer = DecrementCounterReducer();
-    final reduceable = Reduceable(
+    final reducible = Reducible(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
     );
     final onIncrementPressed =
-        VoidCallable(reduceable, incrementReducer);
+        VoidCallable(reducible, incrementReducer);
     final onDecrementPressed =
-        VoidCallable(reduceable, decrementReducer);
-    final objectUnderTest = MyHomePageProps.reduceable(reduceable);
+        VoidCallable(reducible, decrementReducer);
+    final objectUnderTest = MyHomePageProps.reducible(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,
@@ -966,7 +966,7 @@ class MyAppStateNotifier extends StateNotifier<MyAppState> {
           counter: 0,
         ));
 
-  late final reduceable = Reduceable(getState, reduce);
+  late final reducible = Reducible(getState, reduce);
 
   MyAppState getState() => super.state;
 
@@ -989,8 +989,8 @@ final counterWidgetPropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyCounterWidgetProps.reduceable(
-          appStateNotifier.reduceable,
+        (state) => MyCounterWidgetProps.reducible(
+          appStateNotifier.reducible,
         ),
       ),
     );
@@ -1004,8 +1004,8 @@ final homePagePropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyHomePageProps.reduceable(
-          appStateNotifier.reduceable,
+        (state) => MyHomePageProps.reducible(
+          appStateNotifier.reducible,
         ),
       ),
     );
@@ -1072,7 +1072,7 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
 
   MyAppState getState() => state;
 
-  late final reduceable = Reduceable(getState, add);
+  late final reducible = Reducible(getState, add);
 
 }
 ```
@@ -1111,8 +1111,8 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) =>
       BlocSelector<MyAppStateBloc, MyAppState, MyHomePageProps>(
-        selector: (state) => MyHomePageProps.reduceable(
-          context.appStateBloc.reduceable,
+        selector: (state) => MyHomePageProps.reducible(
+          context.appStateBloc.reducible,
         ),
         builder: (context, props) => MyHomePageBuilder(
           props: props,
@@ -1128,8 +1128,8 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) =>
       BlocSelector<MyAppStateBloc, MyAppState, MyCounterWidgetProps>(
-        selector: (state) => MyCounterWidgetProps.reduceable(
-          context.appStateBloc.reduceable,
+        selector: (state) => MyCounterWidgetProps.reducible(
+          context.appStateBloc.reducible,
         ),
         builder: (context, props) => MyCounterWidgetBuilder(
           props: props,

@@ -4,7 +4,7 @@ import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
 // ignore: implementation_imports
 import 'package:binder/src/build_context_extensions.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 class ReducibleLogic<S> with Logic {
   ReducibleLogic(this.scope, this.state);

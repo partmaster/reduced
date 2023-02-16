@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 import '../../util/inherited_value_widget.dart';
 import '../../util/stateful_inherited_value_widget.dart';

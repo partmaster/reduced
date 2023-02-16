@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:examples/logic.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 import 'package:test/test.dart';
 
 class DecrementCounterReducer extends Reducer<MyAppState> {

@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 extension ReduceableValueNotifier<S> on ValueNotifier<S> {
   S getState() => value;

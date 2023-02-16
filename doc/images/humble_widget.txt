@@ -22,7 +22,7 @@ class MyHomePageProps
 MyHomePageProps : String title
 MyHomePageProps : Callable<void> onIncrementPressed
 MyHomePageProps : String counterText
-MyHomePageProps : MyHomePageProps.reduceable(Reduceable<MyAppState>)
+MyHomePageProps : MyHomePageProps.reducible(Reducible<MyAppState>)
 
 
 note top of MyHomePageProps
@@ -34,7 +34,7 @@ end note
 
 
 note bottom of MyHomePageProps
-    reduceable-Konstruktor für Konvertierung
+    reducible-Konstruktor für Konvertierung
     vom MyAppState nach MyHomePageProps
     und die Abbildung der Callbacks auf Reducer
 end note

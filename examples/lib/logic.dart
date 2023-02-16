@@ -1,6 +1,6 @@
 // logic.dart
 
-import 'package:reduceable/reducible.dart';
+import 'package:reducible/reducible.dart';
 
 class MyAppState {
   const MyAppState({required this.title, this.counter=0});
