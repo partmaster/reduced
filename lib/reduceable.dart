@@ -1,3 +1,5 @@
+library reduceable;
+
 // reduceable.dart
 
 abstract class Callable<T> {
