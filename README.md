@@ -53,13 +53,13 @@ Die Zusammenfassung des Humble Object Pattern lautet:
 
 #### Ausgangslage des Humble Object Pattern
 </br>
-![humble1](images/humble1.jpg)
+![humble1](images/humble1.png)
 </br>
 *Bildquelle: manning.com*
 
 #### Lage nach Anwendung des Humble Object Pattern
 </br> 
-![humble2](images/humble2.jpg)
+![humble2](images/humble2.png)
 </br>
 *Bildquelle: manning.com*
 
