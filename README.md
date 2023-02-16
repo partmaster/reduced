@@ -80,7 +80,7 @@ Die Props-Klasse hat einen Konstruktor, der den aktuellen App-Zustand in die Pro
 ![humble_widget](images/humble_widget.png)
 
 Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
-Das Lauschen der Builder-Klasse auf selektive Änderungen und der Konstruktor der Props-Klasse repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
+Das Lauschen der Binder-Klasse auf selektive Änderungen und der Konstruktor der Props-Klasse repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
 
 ## AppState, Reducer und Reducible
 
@@ -93,7 +93,7 @@ Oder etwas analytischer ausgedrückt: Das Reducer Pattern modelliert den App-Zus
 <br>
 Dan Abramov und Andrew Clark haben dieses Konzept im Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^8]:  
 
-> Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben. Mit anderen Worten: `(state, action) => newState`.
+> Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben.</br> Mit anderen Worten: `(state, action) => newState`.
 
 ![reducer](images/reducer_killalldefectscom.png)
 </br>
@@ -114,15 +114,27 @@ Für die ersten beiden Anforderungen lässt sich leicht eine Schnittstelle defin
 2. eine reduce-Methode zum Ändern des App-Zustands 
 
 ```dart
-abstract class Reducible<S> {
-  S get state;
-  Reduce<S> get reduce;
+abstract class Reducer<S> {
+  const Reducer();
+
+  S call(S state);
 }
 
 typedef Reduce<S> = void Function(Reducer<S>);
 
-abstract class Reducer<S> {
-  S call(S state);
+class Reducible<S> {
+  const Reducible(this.getState, this.reduce, this.identity);
+
+  final S Function() getState;
+  final Reduce<S> reduce;
+  final Object identity;
+
+  @override
+  int get hashCode => identity.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      other is Reducible<S> && identity == other.identity;
 }
 ```
 Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- und eine Set-Methode für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reducible` einfach implementieren:
@@ -139,7 +151,11 @@ Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand ben
 ![reducer_action](images/reducer_action.png)
 
 Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
-Der Rest der App-Logik liegt in den Konvertern, die aus einem Reducible und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
+Der Rest der App-Logik liegt in den Konvertern, die 
+
+1. aus einem Reducible und den Reducern die verschiedenen Props-Klassen für die Builder-Widgets aus dem vorherigen Kapitel 
+
+2. und für die selektiven Benachrichtigungen aus diesem Kapitel konstruieren können.
 
 ## Tutorial
 
@@ -241,7 +257,7 @@ Die Klasse _MyHomePageState trägt die verschiedensten Verantwortungen:
 ### Props
 
 Wir wollen nun die Code-Struktur von `_MyHomePageState` verbessern und beginnen mit der Definition einer neuen Klasse, der Props. Die Props sind eine Datenklasse für eine korrespondierende Widget-Klasse, die alle in der build-Methode der Widget-Klasse zur Erstellung des Widget-Baums benötigten Properties enthält. Die Property-Namen in der Props-Klasse werden so gewählt, dass eine leichte Zuordnung zu den Properties im Widget-Baum, denen sie zugewiesen werden sollen, möglich ist.
-Der Name *Props* ist eine in React [^18] übliche Abkürzung für die  Properties von StatelessWidgets und die unveränderlichen Properties (im Gegensatz zu veränderbaren Status-Properties) von StatefulWidgets.
+Der Name *Props* ist eine in React [^18] übliche Abkürzung für die Properties von StatelessWidgets und die unveränderlichen Properties (im Gegensatz zu veränderbaren Status-Properties) von StatefulWidgets.
 </br>
 Für die Klasse `_MyHomePageState` könnte die zugehörige Props-Klasse so aussehen:
 

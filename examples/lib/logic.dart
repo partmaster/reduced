@@ -37,7 +37,7 @@ class MyHomePageProps {
 
   MyHomePageProps.reducible(Reducible<MyAppState> reducible)
       : title = reducible.getState().title,
-        onIncrementPressed = Action(
+        onIncrementPressed = BondedReducer(
           reducible,
           IncrementCounterReducer(),
         );
