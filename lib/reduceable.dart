@@ -26,11 +26,6 @@ class Reduceable<S> {
   @override
   bool operator ==(Object other) =>
       other is Reduceable<S> && identity == other.identity;
-
-  @override
-  String toString() {
-    return 'Reduceable(${identity.hashCode})';
-  }
 }
 
 class Action<S> extends VoidCallable {

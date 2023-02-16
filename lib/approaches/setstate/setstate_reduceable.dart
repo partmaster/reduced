@@ -23,6 +23,7 @@ class ReduceableStatefulWidget<S> extends StatefulWidget {
 
   @override
   State<ReduceableStatefulWidget> createState() =>
+      // ignore: no_logic_in_create_state
       _ReduceableStatefulWidgetState<S>(initialState);
 }
 
