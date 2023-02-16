@@ -1,0 +1,39 @@
+@startuml
+
+interface Reducible<S>
+Reducible : S get state
+Reducible : void reduce(Reducer<S >)
+
+interface Reducer<S>
+Reducer : S call(S)
+
+class MyAppStateBloc 
+class MyAppStateNotifier 
+class MyAppStateBinder 
+
+class StateNotifier<S> <<riverpod>>
+MyAppStateNotifier -down-> StateNotifier
+
+class StatefulWidget <<flutter>>
+MyAppStateBinder -down-> StatefulWidget
+
+class Bloc<R, S> <<bloc>>
+MyAppStateBloc -down-> Bloc
+
+Reducible .up.> Reducer : accept
+MyAppStateBloc .up.> Reducible : provide
+MyAppStateNotifier .up.> Reducible : provide
+MyAppStateBinder .up.> Reducible : provide
+
+note right of Reducible
+    wird vom Props.reducible Konstruktor verwendet 
+    um die Callback-Properties zu erzeugen  
+end note 
+
+object IncrementCounterReducer
+object DecrementCounterReducer
+
+IncrementCounterReducer -down-> Reducer
+DecrementCounterReducer -down-> Reducer
+
+@enduml

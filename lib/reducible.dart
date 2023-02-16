@@ -1,5 +1,7 @@
 // reducible.dart
 
+/// Abstractions for a state management instance.
+/// Enables decoupling of UI and logic from the state management framework used.
 library reducible;
 
 /// An abstraction for callbacks in the form of a class to easily implement value semantics.
@@ -13,31 +15,37 @@ library reducible;
 /// To achieve value semantics, classes rather than methods should be used for callbacks.
 /// The type parameter T defines the return type of the call method.
 abstract class Callable<T> {
+
+  const Callable(); 
+
   /// Allows to use this class like a method.
   T call();
 }
 
-/// The equivalent of the VoidCallback as a class instead of a method.
+/// The equivalent of the [VoidCallback] as a class instead of a function.
 typedef VoidCallable = Callable<void>;
 
-/// A reducer creates a new state of the same type from a given state.
+/// A Reducer creates a new state of the same type from a given state.
 ///
-/// For the same reasons as for the callable, the reducer is modeled as a class and not as a method.
+/// Because the Reducer is used as a property in [Callable] implementations for callbacks and therefore requires value semantics, Reducers are modeled as a class rather than a function.
 abstract class Reducer<S> {
-  /// The call method creates a new state of the same type S from a given state.
+  const Reducer();
+
+  /// The call method creates a new state of the same type `S` from a given state.
   ///
-  /// Allows to use this class like a method.
+  /// Allows to use this class like a function.
   S call(S state);
 }
 
-/// A method that accepts a parameter of type Reducer.
+/// A function that accepts a parameter of type [Reducer].
 ///
 /// State management instances can provide this method so that the state can be changed from outside.
+/// The type parameter `S` is the type of the state of the state management instance.
 typedef Reduce<S> = void Function(Reducer<S>);
 
-/// A Reducible is an abstraction for a State Management instance.
+/// A Reducible is an abstraction for a state management instance.
 ///
-/// The type parameter S is the type of the state of the state management instance.
+/// The type parameter `S` is the type of the state of the state management instance.
 class Reducible<S> {
   const Reducible(
     this.getState,
@@ -52,46 +60,46 @@ class Reducible<S> {
 
   /// Updates the state of the state management instance.
   ///
-  /// When the method is executed, the passed reducer is called with the current state of the state management instance and the return value is taken as the new state of the state management instance.
-  /// The reducer must be synchronous.
+  /// When the method is executed, the passed `reducer` is called with the current state of the state management instance and the return value is taken as the new state of the state management instance.
+  /// The reducer must be executed synchronously.
   final Reduce<S> reduce;
 
-  /// Controls the value semantics of the Reducible.
+  /// Controls the value semantics of this class.
   ///
-  /// The Reducible delegates its hashCode and operator== methods to the identity object.  */
+  /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
   final Object identity;
 
-  /// The reducible delegates the hashCode method to the identity constructor parameter.
+  /// This class delegates the [hashCode] method to the [identity] object.
   @override
   int get hashCode => identity.hashCode;
 
-  /// The reducible delegates the operator== method to the identity constructor parameter.
+  /// This class delegates the [operator==] method to the [identity] object.
   @override
   bool operator ==(Object other) =>
       other is Reducible<S> && identity == other.identity;
 }
 
-/// An implementation of a callback as a reducer of a reducible.
+/// An implementation of a callback as a `reducer` for a `reducible`.
 ///
-/// The type parameter S is the type of the state of the reducible.
+/// The type parameter `S` is the type of the state of the [Reducible].
 class Action<S> extends VoidCallable {
-  Action(this.reducible, this.reducer);
+  const Action(this.reducible, this.reducer);
 
-  /// The Reducible to whose method reduce the reducer is passed when the method call is called.
+  /// The reducible to whose method [reduce](Reducible.reduce) the [reducer] is passed when the method [call] is called.
   final Reducible<S> reducible;
 
-  /// The reducer that is passed as a parameter to the reduce method of the reducible when the call method is called.
+  /// The reducer that is passed as a parameter to the [reduce](Reducible.reduce) method of the [reducible] when the [call] method is called.
   final Reducer<S> reducer;
 
-  /// Executes the reduce method of the reducible with the reduce parameter.
+  /// Executes the [reduce](Reducible.reduce) method of the [reducible] with the [reducer] as parameter.
   @override
   void call() => reducible.reduce(reducer);
 
-  /// For the action to have value semantics, both constructor parameters reducible and reducer should have value semantics.
+  /// For this class to have value semantics, both constructor parameters [reducible] and [reducer] should have value semantics.
   @override
   int get hashCode => Object.hash(reducible, reducer);
 
-  /// For the action to have value semantics, both constructor parameters reducible and reducer should have value semantics.
+  /// For this class to have value semantics, both constructor parameters [reducible] and [reducer] should have value semantics.
   @override
   bool operator ==(Object other) =>
       other is Action &&
