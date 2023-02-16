@@ -23,10 +23,7 @@ abstract class Callable<T> {
   T call();
 }
 
-/// The equivalent of the [VoidCallback] as a class instead of a function.
-typedef VoidCallable = Callable<void>;
-
-/// A Reducer creates a new state of the same type from a given state.
+/// A Reducer creates from a given state a new state of the same type.
 ///
 /// Because the Reducer is used as a property in [Callable] implementations for callbacks, 
 /// and therefore requires value semantics, Reducers are modeled as a class rather than a function.
@@ -80,11 +77,12 @@ class Reducible<S> {
       other is Reducible<S> && identity == other.identity;
 }
 
-/// An implementation of a callback as a [reduce](Reducible.reduce) call with a [Reducer].
+/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer].
 ///
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
+/// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Reducible].
-class BondedReducer<S> extends VoidCallable {
+class BondedReducer<S> extends Callable<void> {
   const BondedReducer(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce) 

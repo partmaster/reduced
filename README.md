@@ -1,4 +1,4 @@
-# Eine vorteilhafte Code-Struktur</br> für Flutter-Apps
+# Eine Abstraktion für</br> das State Management in Flutter
 
 ## Autor
 
@@ -6,11 +6,13 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 ## Abstract
 
-Hier wird eine Code-Struktur vorgestellt, die durch die Anwendung von Entwurfsmustern [^1] die Trennung der Verantwortlichkeiten [^2] im Code von App-Projekten mit Flutter [^3] befördert. 
-Für die Code-Struktur werden die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reducible verwendet, die im Folgenden erklärt werden.
-Die Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten App-Zustands-Verwaltungs-Lösungen, wie Riverpod [^4] oder Bloc [^5]. Und sie kann auch für eigene Lösungen auf Basis der eingebauten Flutter-Klassen StatefulWidget und InheritedWidget eingesetzt werden.
+Hier wird eine Abstraktion vorgestellt, die UI und Logik einer Flutter-App 
+vom verwendeten State Management Framework entkoppelt. State Management Frameworks dienen der Trennung von UI und Logik [^2]. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Die hier vorgestellte Abstraktion soll das verhindern.
+Sie basiert auf der Kombination der Entwurfsmuster "Humble Objekt" und "State Reducer"
+und verwendet die Bausteine Binder, Builder und Props sowie AppState, Reducer und Reducible, die im Folgenden erklärt werden.
+Die entstehende Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten State Management Frameworks, wie Riverpod [^4] oder Bloc [^5]. 
 </br> 
-Wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will oder wer bei der Wahl einer App-Zustands-Verwaltungs-Lösung flexibel sein will, für den könnte der Artikel interessant sein. 
+Wer beim Einsatz von State Management Frameworks flexibel bleiben will oder wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will, für den könnte der Artikel interessant sein. 
 
 ## Einleitung
 
@@ -21,9 +23,9 @@ Viele Flutter-Frameworks wurden und werden entwickelt, um eine saubere Code-Stru
 Bei einem unbedachten Einsatz solcher Frameworks besteht die Gefahr, dass sie neben ihrer eigentlichen Aufgabe, der Trennung der Verantwortlichkeiten, die App-Logik und die UI infiltrieren und unerwünschte Abhängigkeiten schaffen.
 Weil es viele Frameworks gibt (in der offiziellen Flutter-Dokumentation sind aktuell 13 Frameworks gelistet [^6]) und die Entwicklung sicher noch nicht abgeschlossen ist, kann es besonders für große und langlebige App-Projekte zur Herausforderung werden, zwischen Frameworks migrieren oder verschiedene Frameworks integrieren zu müssen.  
 </br>
-Im Folgenden wird eine Code-Struktur für Flutter-Apps vorgestellt, die solche unerwünschten Infiltrationen vermeidet und so die Qualität von App-Logik- und UI-Code verbessert. Dabei geht es ausdrücklich nicht um die Einführung eines weiteren Frameworks sondern um die abgestimmte Anwendung von zwei Entwurfsmustern, Humble Object Pattern [^7] und Reducer Pattern [^8], auf den Flutter-App-Code. 
+Im Folgenden wird eine Code-Struktur für Flutter-Apps vorgestellt, die solche unerwünschten Infiltrationen vermeidet und so die Qualität von App-Logik- und UI-Code verbessert. Dabei geht es ausdrücklich nicht um die Einführung eines weiteren Frameworks sondern um die abgestimmte Anwendung von zwei Entwurfsmustern [^1], Humble Object Pattern [^7] und Reducer Pattern [^8], auf den Flutter-App-Code. 
 </br>
-Flutter beschreibt sich selbst mit dem Spruch "Alles ist ein Widget" [^9]. Damit ist gemeint, dass alle Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft mit einer kleinen Kehrseite: Wenn man nicht aufpasst, vermischen sich in den resultierenden Widget-Bäumen schnell die Verantwortlichkeiten. 
+Flutter [^3] beschreibt sich selbst mit dem Spruch "Alles ist ein Widget" [^9]. Damit ist gemeint, dass alle Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft mit einer kleinen Kehrseite: Wenn man nicht aufpasst, vermischen sich in den resultierenden Widget-Bäumen schnell die Verantwortlichkeiten. 
 
 Die Verantwortlichkeiten um die es in diesem Dokument geht, sind einerseits die klassischen UI-Aufgaben: 
 
