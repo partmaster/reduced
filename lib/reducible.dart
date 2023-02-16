@@ -1,6 +1,6 @@
 // reducible.dart
 
-library reduceable;
+library reducible;
 
 /// An abstraction for callbacks in the form of a class to easily implement value semantics.
 ///

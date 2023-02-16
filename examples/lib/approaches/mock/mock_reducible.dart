@@ -1,4 +1,4 @@
-// mock_reduceable.dart
+// mock_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:reducible/reducible.dart';
