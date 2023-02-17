@@ -1,11 +1,12 @@
-// logic.dart
+// converter.dart
 
 import 'package:reducible/reducible.dart';
 
 import 'props.dart';
+import 'reducer.dart';
 import 'state.dart';
 
-extension MyHomePagePropsExtension on Reducible<MyAppState> {
+extension MyHomePagePropsConverter on Reducible<MyAppState> {
   MyHomePageProps get myHomePageProps => MyHomePageProps(
         title: getState().title,
         onIncrementPressed: BondedReducer(
@@ -15,18 +16,8 @@ extension MyHomePagePropsExtension on Reducible<MyAppState> {
       );
 }
 
-extension MyCounterWidgetPropsExtension on Reducible<MyAppState> {
+extension MyCounterWidgetPropsConverter on Reducible<MyAppState> {
   MyCounterWidgetProps get myCounterWidgetProps => MyCounterWidgetProps(
         counterText: '${getState().counter}',
       );
-}
-
-class IncrementCounterReducer extends Reducer<MyAppState> {
-  IncrementCounterReducer._();
-  factory IncrementCounterReducer() => instance;
-
-  static final instance = IncrementCounterReducer._();
-
-  @override
-  MyAppState call(state) => state.copyWith(counter: state.counter + 1);
 }

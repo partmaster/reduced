@@ -7,7 +7,7 @@
 
 import 'package:examples/props.dart';
 import 'package:examples/state.dart';
-import 'package:examples/logic.dart';
+import 'package:examples/reducer.dart';
 import 'package:reducible/reducible.dart';
 import 'package:test/test.dart';
 

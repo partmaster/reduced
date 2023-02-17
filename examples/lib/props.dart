@@ -2,8 +2,8 @@
 
 import 'package:reducible/reducible.dart';
 
-import 'logic.dart';
 import 'state.dart';
+import 'converter.dart';
 
 class MyHomePageProps {
   final String title;
