@@ -26,7 +26,8 @@ class ReducibleStatefulWidget<S> extends StatefulWidget {
       _ReducibleStatefulWidgetState<S>(initialState);
 }
 
-class _ReducibleStatefulWidgetState<S> extends State<ReducibleStatefulWidget<S>> {
+class _ReducibleStatefulWidgetState<S>
+    extends State<ReducibleStatefulWidget<S>> {
   _ReducibleStatefulWidgetState(S initialState) : _state = initialState;
 
   S _state;
@@ -35,8 +36,7 @@ class _ReducibleStatefulWidgetState<S> extends State<ReducibleStatefulWidget<S>>
 
   late final reducible = Reducible(getState, reduce, this);
 
-  void reduce(Reducer<S> reducer) =>
-      setState(() => _state = reducer(_state));
+  void reduce(Reducer<S> reducer) => setState(() => _state = reducer(_state));
 
   @override
   Widget build(BuildContext context) => widget.builder(

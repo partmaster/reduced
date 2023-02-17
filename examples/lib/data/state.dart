@@ -17,7 +17,4 @@ class MyAppState {
   @override
   bool operator ==(Object other) =>
       other is MyAppState && title == other.title && counter == other.counter;
-
-  @override
-  String toString() => 'MyAppState#$hashCode(counter=$counter)';
 }
