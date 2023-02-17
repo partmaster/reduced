@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 
 import '../../builder.dart';
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 import 'getx_adapter.dart';
 
 class MyAppStateBinder extends StatelessWidget {

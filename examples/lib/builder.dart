@@ -1,8 +1,8 @@
 // builder.dart
 
+import 'package:examples/props.dart';
 import 'package:flutter/material.dart';
 
-import 'logic.dart';
 import 'binder.dart';
 
 class MyHomePageBuilder extends StatelessWidget {

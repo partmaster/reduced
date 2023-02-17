@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:examples/props.dart';
+import 'package:examples/state.dart';
 import 'package:examples/logic.dart';
 import 'package:reducible/reducible.dart';
 import 'package:test/test.dart';

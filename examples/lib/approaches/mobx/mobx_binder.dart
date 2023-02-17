@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../../builder.dart';
-import '../../logic.dart';
+import '../../state.dart';
 import '../../util/inherited_value_widget.dart';
 import 'mobx_adapter.dart';
 import 'mobx_reducible.dart';

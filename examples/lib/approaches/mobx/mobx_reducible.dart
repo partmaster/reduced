@@ -3,7 +3,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:reducible/reducible.dart';
 
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 
 part 'mobx_reducible.g.dart';
 

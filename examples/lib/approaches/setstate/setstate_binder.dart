@@ -2,7 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 import '../../builder.dart';
 import '../../util/inherited_value_widget.dart';
 import 'setstate_reducible.dart';

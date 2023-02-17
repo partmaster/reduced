@@ -3,7 +3,8 @@
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 import '../../builder.dart';
 import 'binder_reducible.dart';
 import 'binder_adapter.dart';

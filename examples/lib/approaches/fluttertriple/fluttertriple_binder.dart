@@ -2,7 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 import '../../builder.dart';
 import 'fluttertriple_adapter.dart';
 import 'fluttertriple_reducible.dart';

@@ -3,7 +3,8 @@
 import 'package:flutter/widgets.dart';
 
 import '../../builder.dart';
-import '../../logic.dart';
+import '../../props.dart';
+import '../../state.dart';
 import 'redux_adapter.dart';
 
 class MyAppStateBinder extends StatelessWidget {
