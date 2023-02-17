@@ -1,5 +1,5 @@
 name: reducible
-description: A new Flutter package project.
+description: A state management abstraction for flutter.
 version: 0.0.1
 homepage:
 

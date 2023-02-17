@@ -1170,29 +1170,20 @@ Nun können wir in der Klasse `examples/view/binder.dart`den Schalter umlegen un
 
 Unter examples/lib/approaches/ liegen neben den Portierungen auf Riverpod und Bloc  Portierungen auf weitere App-Zustands-Verwaltungs-Frameworks. Hier die komplette Liste:
 
-1. Binder
-
-2. Bloc
-
-3. Flutter Commands
-
-4. Flutter Triple
-
-5. GetIt
-
-6. GetX
-
-7. MobX
-
-8. Provider
-
-9. Redux
-
-10. Riverpod
-
-11. Solidart
-
-12. States Rebuilder 
+|Name|Publisher|Popularity|Published|
+|---|---|---|---|
+|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 25, 2021|
+|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 7, 2023|
+|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 7, 2021|
+|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 12, 2022|
+|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 13, 2021|
+|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 22, 2022|
+|MobX||||
+|Provider||||
+|Redux||||
+|Riverpod||||
+|Solidart||||
+|States Rebuilder|||| 
 
 Dies sind bis auf Fish Redux [^23] alle in der offiziellen Flutter-Dokumentation gelisteten Frameworks [^6]. Eine Portierung auf Fish Redux habe ich abgewählt, weil die verfügbare Version nicht 'Null safety' [^24] ist.
 
