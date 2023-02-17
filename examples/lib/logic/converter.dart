@@ -3,21 +3,23 @@
 import 'package:reducible/reducible.dart';
 
 import '../data/props.dart';
-import 'reducer.dart';
 import '../data/state.dart';
+import 'reducer.dart';
 
-extension MyHomePagePropsConverter on Reducible<MyAppState> {
-  MyHomePageProps get myHomePageProps => MyHomePageProps(
-        title: getState().title,
+class MyHomePagePropsConverter {
+  static MyHomePageProps convert(Reducible<MyAppState> reducible) =>
+      MyHomePageProps(
+        title: reducible.getState().title,
         onIncrementPressed: BondedReducer(
-          this,
+          reducible,
           IncrementCounterReducer(),
         ),
       );
 }
 
-extension MyCounterWidgetPropsConverter on Reducible<MyAppState> {
-  MyCounterWidgetProps get myCounterWidgetProps => MyCounterWidgetProps(
-        counterText: '${getState().counter}',
+class MyCounterWidgetPropsConverter {
+  static MyCounterWidgetProps convert(Reducible<MyAppState> reducible) =>
+      MyCounterWidgetProps(
+        counterText: '${reducible.getState().counter}',
       );
 }

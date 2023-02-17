@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../data/props.dart';
 import '../../data/state.dart';
+import '../../logic/converter.dart';
 import '../../view/builder.dart';
 import 'fluttertriple_adapter.dart';
 import 'fluttertriple_reducible.dart';
@@ -26,7 +26,7 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) => context.store<MyAppState>().stateConsumerAdapter(
         builder: MyHomePageBuilder.new,
-        converter: MyHomePageProps.reducible,
+        converter: MyHomePagePropsConverter.convert,
       );
 }
 
@@ -36,6 +36,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) => context.store<MyAppState>().stateConsumerAdapter(
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetProps.reducible,
+        converter: MyCounterWidgetPropsConverter.convert,
       );
 }

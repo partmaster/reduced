@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../data/props.dart';
 import '../../data/state.dart';
+import '../../logic/converter.dart';
 import '../../view/builder.dart';
 import '../../widget/inherited_value_widget.dart';
 import 'setstate_reducible.dart';
@@ -18,9 +19,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: const MyAppState(title: 'setState'),
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePageProps.reducible(value),
+          value: MyHomePagePropsConverter.convert(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetProps.reducible(value),
+            value: MyCounterWidgetPropsConverter.convert(value),
             child: child,
           ),
         ),

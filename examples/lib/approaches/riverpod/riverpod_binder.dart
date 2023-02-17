@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../logic/converter.dart';
 import '../../view/builder.dart';
-import '../../data/props.dart';
 import '../../data/state.dart';
 import 'riverpod_adapter.dart';
 import 'riverpod_reducible.dart';
@@ -23,7 +23,7 @@ final counterWidgetPropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyCounterWidgetProps.reducible(
+        (state) => MyCounterWidgetPropsConverter.convert(
           appStateNotifier.reducible,
         ),
       ),
@@ -36,7 +36,7 @@ final homePagePropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyHomePageProps.reducible(
+        (state) => MyHomePagePropsConverter.convert(
           appStateNotifier.reducible,
         ),
       ),

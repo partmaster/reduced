@@ -5,6 +5,7 @@ import 'package:reducible/reducible.dart';
 
 import '../../data/props.dart';
 import '../../data/state.dart';
+import '../../logic/converter.dart';
 
 part 'mobx_reducible.g.dart';
 
@@ -28,9 +29,9 @@ abstract class MyStoreBase with Store {
 
   @computed
   MyHomePageProps get homePageProps =>
-      MyHomePageProps.reducible(reducible);
+      MyHomePagePropsConverter.convert(reducible);
 
   @computed
   MyCounterWidgetProps get conterWidgetProps =>
-      MyCounterWidgetProps.reducible(reducible);
+      MyCounterWidgetPropsConverter.convert(reducible);
 }

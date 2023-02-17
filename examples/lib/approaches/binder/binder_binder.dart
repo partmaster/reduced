@@ -3,8 +3,8 @@
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../data/props.dart';
 import '../../data/state.dart';
+import '../../logic/converter.dart';
 import '../../view/builder.dart';
 import 'binder_reducible.dart';
 import 'binder_adapter.dart';
@@ -33,7 +33,7 @@ class MyHomePageBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).stateConsumerAdapter(
         stateRef: stateRef,
         builder: MyHomePageBuilder.new,
-        converter: MyHomePageProps.reducible,
+        converter: MyHomePagePropsConverter.convert,
       );
 }
 
@@ -44,6 +44,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).stateConsumerAdapter(
         stateRef: stateRef,
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetProps.reducible,
+        converter: MyCounterWidgetPropsConverter.convert,
       );
 }

@@ -2,9 +2,6 @@
 
 import 'package:reducible/reducible.dart';
 
-import 'state.dart';
-import '../logic/converter.dart';
-
 class MyHomePageProps {
   final String title;
   final Callable onIncrementPressed;
@@ -13,9 +10,6 @@ class MyHomePageProps {
     required this.title,
     required this.onIncrementPressed,
   });
-
-  factory MyHomePageProps.reducible(Reducible<MyAppState> reducible) =>
-      reducible.myHomePageProps;
 
   @override
   int get hashCode => Object.hash(title, onIncrementPressed);
@@ -36,9 +30,6 @@ class MyCounterWidgetProps {
   const MyCounterWidgetProps({
     required this.counterText,
   });
-
-  factory MyCounterWidgetProps.reducible(Reducible<MyAppState> reducible) =>
-      reducible.myCounterWidgetProps;
 
   @override
   int get hashCode => counterText.hashCode;

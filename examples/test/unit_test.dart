@@ -7,6 +7,7 @@
 
 import 'package:examples/data/props.dart';
 import 'package:examples/data/state.dart';
+import 'package:examples/logic/converter.dart';
 import 'package:examples/logic/reducer.dart';
 import 'package:reducible/reducible.dart';
 import 'package:test/test.dart';
@@ -37,7 +38,7 @@ void main() {
       false,
     );
     final objectUnderTest =
-        MyCounterWidgetProps.reducible(reducible);
+        MyCounterWidgetPropsConverter.convert(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
@@ -53,7 +54,7 @@ void main() {
         BondedReducer(reducible, incrementReducer);
     final onDecrementPressed =
         BondedReducer(reducible, decrementReducer);
-    final objectUnderTest = MyHomePageProps.reducible(reducible);
+    final objectUnderTest = MyHomePagePropsConverter.convert(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,
