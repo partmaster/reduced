@@ -1,16 +1,16 @@
 import 'package:examples/approaches/mock/mock_reducible.dart';
 import 'package:examples/builder.dart';
+import 'package:examples/util/inherited_value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 
 void main() {
   testWidgets('testBuilder', (tester) async {
     const title = 'title';
     const counterText = '0';
     final onIncrementPressed = MockCallable();
-    final app = MyMockPropsBinder(
-      props: MyMockProps(
+    final app = InheritedValueWidget(
+      value: MyMockProps(
         title: title,
         counterText: '0',
         onIncrementPressed: onIncrementPressed,

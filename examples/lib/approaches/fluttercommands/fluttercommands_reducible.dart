@@ -5,7 +5,6 @@ import 'package:flutter_command/flutter_command.dart';
 import 'package:reducible/reducible.dart';
 
 import '../../util/inherited_value_widget.dart';
-import '../../util/stateful_inherited_value_widget.dart';
 
 class ReducibleCommandStore<S> {
   ReducibleCommandStore(S initialState) : _state = initialState;
@@ -20,28 +19,7 @@ class ReducibleCommandStore<S> {
   late final Reducible<S> reducible = Reducible(() => _state, command, this);
 }
 
-Widget binderWidget<S>({
-  required S initialState,
-  required Widget child,
-}) =>
-    StatefulInheritedValueWidget(
-      builder: (initialState) => ReducibleCommandStore(initialState),
-      initializer: initialState,
-      child: child,
-    );
-
-extension BuilderWidgetExtension<S> on ReducibleCommandStore<S> {
-  Widget builderWidget<P>({
-    required P Function(Reducible<S>) converter,
-    required Widget Function({required P props}) builder,
-  }) =>
-      ValueListenableBuilder<P>(
-        valueListenable: command.map((state) => converter(reducible)),
-        builder: (_, props, ___) => builder(props: props),
-      );
-}
-
-extension StoreOnBuildContext on BuildContext {
+extension CommandsBuildContextExtension on BuildContext {
   ReducibleCommandStore<S> store<S>() =>
       InheritedValueWidget.of<ReducibleCommandStore<S>>(this);
 }

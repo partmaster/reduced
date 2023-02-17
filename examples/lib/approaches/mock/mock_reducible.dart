@@ -27,23 +27,6 @@ extension MockPropsOnBuildContext on BuildContext {
   MyMockProps get mock => InheritedValueWidget.of<MyMockProps>(this);
 }
 
-class MyMockPropsBinder extends StatelessWidget {
-  const MyMockPropsBinder({
-    super.key,
-    required this.child,
-    required this.props,
-  });
-
-  final Widget child;
-  final MyMockProps props;
-
-  @override
-  Widget build(context) => InheritedValueWidget(
-        value: props,
-        child: child,
-      );
-}
-
 class MockCallable extends Callable {
   int count = 0;
   

@@ -25,28 +25,7 @@ class ReducibleLogic<S> with Logic {
       Reducible(getState, reduce, this);
 }
 
-Widget binderWidget({Key? key, required Widget child}) =>
-    BinderScope(child: child);
-
-extension BuilderWidgetExtension<S> on ReducibleLogic<S> {
-  Widget builderWidget<P>({
-    required StateRef<S> stateRef,
-    required P Function(Reducible<S>) converter,
-    required Widget Function({required P props}) builder,
-  }) =>
-      Consumer<P>(
-        watchable: stateRef.select(
-          (state) => converter(
-            Reducible(() => state, reducible.reduce, this),
-          ),
-        ),
-        builder: (_, __, ___) => builder(
-          props: converter(reducible),
-        ),
-      );
-}
-
-extension LogicOnBuildContext on BuildContext {
+extension BinderBuildContextExtension on BuildContext {
   ReducibleLogic<S> logic<S>(LogicRef<ReducibleLogic<S>> ref) =>
       readScope().use(ref);
 }

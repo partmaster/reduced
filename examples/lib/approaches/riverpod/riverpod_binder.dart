@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../builder.dart';
 import '../../logic.dart';
+import 'riverpod_adapter.dart';
 import 'riverpod_reducible.dart';
 
 typedef MyAppStateNotifier = ReducibleStateNotifier<MyAppState>;
@@ -48,14 +49,14 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => binderWidget(child: child);
+  Widget build(context) => stateProviderAdapter(child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => builderWidget(
+  Widget build(context) => stateConsumerAdapter(
         builder: MyHomePageBuilder.new,
         provider: homePagePropsProvider,
       );
@@ -65,7 +66,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => builderWidget(
+  Widget build(context) => stateConsumerAdapter(
         builder: MyCounterWidgetBuilder.new,
         provider: counterWidgetPropsProvider,
       );

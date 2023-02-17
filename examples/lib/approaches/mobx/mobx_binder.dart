@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../builder.dart';
 import '../../logic.dart';
 import '../../util/inherited_value_widget.dart';
+import 'mobx_adapter.dart';
 import 'mobx_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   static final store = MyStore(const MyAppState(title: 'mobx'));
 
   @override
-  Widget build(context) => binderWidget(store: store, child: child);
+  Widget build(context) => stateProviderAdapter(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {
@@ -23,7 +24,7 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).builderWidget(
+      InheritedValueWidget.of<MyStore>(context).stateProviderConsumer(
         props: (store) => store.homePageProps,
         builder: MyHomePageBuilder.new,
       );
@@ -34,7 +35,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).builderWidget(
+      InheritedValueWidget.of<MyStore>(context).stateProviderConsumer(
         props: (store) => store.conterWidgetProps,
         builder: MyCounterWidgetBuilder.new,
       );
