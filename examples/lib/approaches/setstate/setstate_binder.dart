@@ -2,10 +2,10 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../props.dart';
-import '../../state.dart';
-import '../../builder.dart';
-import '../../util/inherited_value_widget.dart';
+import '../../data/props.dart';
+import '../../data/state.dart';
+import '../../view/builder.dart';
+import '../../widget/inherited_value_widget.dart';
 import 'setstate_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {

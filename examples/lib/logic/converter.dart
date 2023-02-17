@@ -2,9 +2,9 @@
 
 import 'package:reducible/reducible.dart';
 
-import 'props.dart';
+import '../data/props.dart';
 import 'reducer.dart';
-import 'state.dart';
+import '../data/state.dart';
 
 extension MyHomePagePropsConverter on Reducible<MyAppState> {
   MyHomePageProps get myHomePageProps => MyHomePageProps(

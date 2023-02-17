@@ -1,6 +1,6 @@
 // builder.dart
 
-import 'package:examples/props.dart';
+import 'package:examples/data/props.dart';
 import 'package:flutter/material.dart';
 
 import 'binder.dart';

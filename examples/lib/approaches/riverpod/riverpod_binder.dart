@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../builder.dart';
-import '../../props.dart';
-import '../../state.dart';
+import '../../view/builder.dart';
+import '../../data/props.dart';
+import '../../data/state.dart';
 import 'riverpod_adapter.dart';
 import 'riverpod_reducible.dart';
 

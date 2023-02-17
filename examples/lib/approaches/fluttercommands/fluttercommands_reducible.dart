@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:reducible/reducible.dart';
 
-import '../../util/inherited_value_widget.dart';
+import '../../widget/inherited_value_widget.dart';
 
 class ReducibleCommandStore<S> {
   ReducibleCommandStore(S initialState) : _state = initialState;

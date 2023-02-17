@@ -1,6 +1,6 @@
 // @dart=2.9
 
-import 'package:examples/state.dart';
+import 'package:examples/data/state.dart';
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart' hide Action, Page;
 

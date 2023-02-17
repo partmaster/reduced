@@ -2,7 +2,7 @@
 
 import 'package:reducible/reducible.dart';
 
-import 'state.dart';
+import '../data/state.dart';
 
 class IncrementCounterReducer extends Reducer<MyAppState> {
   IncrementCounterReducer._();

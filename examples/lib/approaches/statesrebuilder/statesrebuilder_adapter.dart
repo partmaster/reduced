@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:reducible/reducible.dart';
 
-import '../../util/inherited_value_widget.dart';
+import '../../widget/inherited_value_widget.dart';
 import 'statesrebuilder_reducible.dart';
 
 typedef StateToPropsConverter<S, P> = P Function(Reducible<S>);

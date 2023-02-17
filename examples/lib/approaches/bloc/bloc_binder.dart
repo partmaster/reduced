@@ -2,9 +2,9 @@
 
 import 'package:flutter/widgets.dart';
 
-import '../../props.dart';
-import '../../state.dart';
-import '../../builder.dart';
+import '../../data/props.dart';
+import '../../data/state.dart';
+import '../../view/builder.dart';
 import 'bloc_reducible.dart';
 import 'bloc_adapter.dart';
 

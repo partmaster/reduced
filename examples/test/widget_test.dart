@@ -1,5 +1,5 @@
-import 'package:examples/binder.dart';
-import 'package:examples/builder.dart';
+import 'package:examples/view/binder.dart';
+import 'package:examples/view/builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

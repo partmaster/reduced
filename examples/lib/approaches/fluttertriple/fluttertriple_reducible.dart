@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:reducible/reducible.dart';
 
-import '../../util/inherited_value_widget.dart';
+import '../../widget/inherited_value_widget.dart';
 
 class ReducibleStreamStore<S extends Object>
     extends StreamStore<Object, S> {

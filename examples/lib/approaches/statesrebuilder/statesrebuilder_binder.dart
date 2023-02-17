@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../../builder.dart';
-import '../../props.dart';
-import '../../state.dart';
+import '../../view/builder.dart';
+import '../../data/props.dart';
+import '../../data/state.dart';
 import 'statesrebuilder_adapter.dart';
 import 'statesrebuilder_reducible.dart';
 

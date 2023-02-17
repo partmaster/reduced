@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 
-import 'binder.dart';
-import 'builder.dart';
+import 'view/binder.dart';
+import 'view/builder.dart';
 
 void main() {
   runApp(const MyAppStateBinder(child: MyAppBuilder()));

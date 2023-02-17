@@ -3,7 +3,7 @@
 import 'package:reducible/reducible.dart';
 
 import 'state.dart';
-import 'converter.dart';
+import '../logic/converter.dart';
 
 class MyHomePageProps {
   final String title;

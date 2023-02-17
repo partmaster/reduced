@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:reducible/reducible.dart';
 
-import '../../util/stateful_inherited_value_widget.dart';
+import '../../widget/stateful_inherited_value_widget.dart';
 import 'fluttertriple_reducible.dart';
 
 Widget stateProviderAdapter<S extends Object>({
