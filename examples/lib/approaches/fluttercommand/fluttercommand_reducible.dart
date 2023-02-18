@@ -1,4 +1,4 @@
-// fluttercommands_reducible.dart
+// fluttercommand_reducible.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';

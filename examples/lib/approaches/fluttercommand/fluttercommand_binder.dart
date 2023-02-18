@@ -1,12 +1,12 @@
-// fluttercommands_binder.dart
+// fluttercommand_binder.dart
 
 import 'package:flutter/widgets.dart';
 
 import '../../data/state.dart';
 import '../../logic/converter.dart';
 import '../../view/builder.dart';
-import 'fluttercommands_reducible.dart';
-import 'fluttercommands_injector.dart';
+import 'fluttercommand_reducible.dart';
+import 'fluttercommand_injector.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
