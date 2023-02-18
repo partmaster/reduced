@@ -1,4 +1,4 @@
-// fluttercommand_injector.dart
+// fluttercommand_wrapper.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';

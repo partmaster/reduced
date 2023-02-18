@@ -1,4 +1,4 @@
-// redux_injector.dart
+// redux_wrapper.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
