@@ -14,7 +14,7 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => injectStateProvider(
+  Widget build(context) => wrapWithProvider(
         initialState: const MyAppState(title: 'flutter_bloc'),
         child: child,
       );
@@ -24,7 +24,7 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => context.bloc<MyAppState>().injectStateConsumer(
+  Widget build(context) => context.bloc<MyAppState>().wrapWithConsumer(
         builder: MyHomePageBuilder.new,
         converter: MyHomePagePropsConverter.convert,
       );
@@ -34,7 +34,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => context.bloc<MyAppState>().injectStateConsumer(
+  Widget build(context) => context.bloc<MyAppState>().wrapWithConsumer(
         builder: MyCounterWidgetBuilder.new,
         converter: MyCounterWidgetPropsConverter.convert,
       );

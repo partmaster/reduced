@@ -8,14 +8,14 @@ import '../../widget/inherited_value_widget.dart';
 import 'mobx_reducible.dart';
 
 
-Widget injectStateProvider({
+Widget wrapWithProvider({
   required MyStore store,
   required Widget child,
 }) =>
     InheritedValueWidget(value: store, child: child);
 
-extension InjectStateConsumer on MyStore {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer on MyStore {
+  Widget wrapWithConsumer<P>({
     required P Function(MyStore) props,
     required PropsWidgetBuilder<P> builder,
   }) =>

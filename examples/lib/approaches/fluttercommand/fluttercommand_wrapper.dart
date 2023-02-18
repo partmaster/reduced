@@ -7,7 +7,7 @@ import '../../typedefs.dart';
 import '../../widget/stateful_inherited_value_widget.dart';
 import 'fluttercommand_reducible.dart';
 
-Widget injectStateProvider<S>({
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
 }) =>
@@ -17,8 +17,8 @@ Widget injectStateProvider<S>({
       child: child,
     );
 
-extension InjectStateConsumer<S> on ReducibleCommandStore<S> {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer<S> on ReducibleCommandStore<S> {
+  Widget wrapWithConsumer<P>({
     required ReducibleConverter<S, P> converter,
     required PropsWidgetBuilder<P> builder,
   }) =>

@@ -8,7 +8,7 @@ import '../../typedefs.dart';
 import '../../widget/inherited_value_widget.dart';
 import 'statesrebuilder_reducible.dart';
 
-Widget injectStateProvider<S>({
+Widget wrapWithProvider<S>({
   required Store<S> store,
   required Widget child,
 }) =>
@@ -17,8 +17,8 @@ Widget injectStateProvider<S>({
       child: child,
     );
 
-extension InjectStateConsumer<S> on Store<S> {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer<S> on Store<S> {
+  Widget wrapWithConsumer<P>({
     required ReducibleConverter<S, P> converter,
     required PropsWidgetBuilder<P> builder,
   }) =>

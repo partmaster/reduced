@@ -6,15 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../typedefs.dart';
 import 'bloc_reducible.dart';
 
-Widget injectStateProvider<S>(
+Widget wrapWithProvider<S>(
         {required S initialState, required Widget child}) =>
     BlocProvider(
       create: (_) => ReducibleBloc(initialState),
       child: child,
     );
 
-extension InjectStateConsumer<S> on ReducibleBloc<S> {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer<S> on ReducibleBloc<S> {
+  Widget wrapWithConsumer<P>({
     required ReducibleConverter<S, P> converter,
     required PropsWidgetBuilder<P> builder,
   }) =>

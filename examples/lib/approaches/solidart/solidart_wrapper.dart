@@ -8,7 +8,7 @@ import 'package:solidart/src/core/signal_selector.dart';
 import '../../typedefs.dart';
 import 'solidart_reducible.dart';
 
-Widget injectStateProvider<S>({
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
 }) =>
@@ -17,8 +17,8 @@ Widget injectStateProvider<S>({
       child: Builder(builder: (context) => child),
     );
 
-extension InjectStateConsumer<S> on Signal<S> {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer<S> on Signal<S> {
+  Widget wrapWithConsumer<P>({
     required ReducibleConverter<S, P> converter,
     required PropsWidgetBuilder<P> builder,
   }) =>

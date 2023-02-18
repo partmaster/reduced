@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../typedefs.dart';
 
-Widget injectStateProvider({required Widget child}) =>
+Widget wrapWithProvider({required Widget child}) =>
     ProviderScope(child: child);
 
-Widget injectStateConsumer<S, P>({
+Widget wrapWithConsumer<S, P>({
   required StateProvider<P> provider,
   required PropsWidgetBuilder<P> builder,
 }) =>

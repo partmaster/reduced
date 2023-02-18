@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../view/builder.dart';
 import '../../data/state.dart';
 import '../../widget/inherited_value_widget.dart';
-import 'mobx_injector.dart';
+import 'mobx_wrapper.dart';
 import 'mobx_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -16,7 +16,7 @@ class MyAppStateBinder extends StatelessWidget {
   static final store = MyStore(const MyAppState(title: 'mobx'));
 
   @override
-  Widget build(context) => injectStateProvider(store: store, child: child);
+  Widget build(context) => wrapWithProvider(store: store, child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {
@@ -24,7 +24,7 @@ class MyHomePageBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).injectStateConsumer(
+      InheritedValueWidget.of<MyStore>(context).wrapWithConsumer(
         props: (store) => store.homePageProps,
         builder: MyHomePageBuilder.new,
       );
@@ -35,7 +35,7 @@ class MyCounterWidgetBinder extends StatelessWidget {
 
   @override
   Widget build(context) =>
-      InheritedValueWidget.of<MyStore>(context).injectStateConsumer(
+      InheritedValueWidget.of<MyStore>(context).wrapWithConsumer(
         props: (store) => store.conterWidgetProps,
         builder: MyCounterWidgetBuilder.new,
       );

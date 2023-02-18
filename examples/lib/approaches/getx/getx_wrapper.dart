@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../typedefs.dart';
 import 'getx_reducible.dart';
 
-Widget injectStateProvider<S>({
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
 }) {
@@ -14,7 +14,7 @@ Widget injectStateProvider<S>({
   return child;
 }
 
-Widget injectStateConsumer<S, P extends Object>({
+Widget wrapWithConsumer<S, P extends Object>({
   required ReducibleConverter<S, P> converter,
   required PropsWidgetBuilder<P> builder,
 }) =>

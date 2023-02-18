@@ -8,11 +8,11 @@ import 'package:reducible/reducible.dart';
 import '../../typedefs.dart';
 import 'binder_reducible.dart';
 
-Widget injectStateProvider({Key? key, required Widget child}) =>
+Widget wrapWithProvider({Key? key, required Widget child}) =>
     BinderScope(child: child);
 
-extension InjectStateConsumer<S> on ReducibleLogic<S> {
-  Widget injectStateConsumer<P>({
+extension WrapWithConsumer<S> on ReducibleLogic<S> {
+  Widget wrapWithConsumer<P>({
     required StateRef<S> stateRef,
     required ReducibleConverter<S, P> converter,
     required PropsWidgetBuilder<P> builder,

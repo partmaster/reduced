@@ -7,7 +7,7 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import '../../typedefs.dart';
 import 'getit_reducible.dart';
 
-Widget injectStateProvider<S>({
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
 }) {
@@ -17,20 +17,20 @@ Widget injectStateProvider<S>({
   return child;
 }
 
-Widget injectStateConsumer<S, P>({
+Widget wrapWithConsumer<S, P>({
   required ReducibleConverter<S, P> converter,
   required PropsWidgetBuilder<P> builder,
 }) =>
-    _InjectStateConsumer(
+    _WrapWithConsumer(
       builder: builder,
       converter: converter,
     );
 
-class _InjectStateConsumer<S, P> extends StatelessWidget with GetItMixin {
+class _WrapWithConsumer<S, P> extends StatelessWidget with GetItMixin {
   final ReducibleConverter<S, P> converter;
   final PropsWidgetBuilder<P> builder;
 
-  _InjectStateConsumer({
+  _WrapWithConsumer({
     super.key,
     required this.converter,
     required this.builder,
