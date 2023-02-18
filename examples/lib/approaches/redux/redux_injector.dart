@@ -7,7 +7,7 @@ import 'package:redux/redux.dart' hide Reducer;
 
 import 'redux_reducible.dart';
 
-Widget stateProviderAdapter<S>({
+Widget injectStateProvider<S>({
   required S initialState,
   required Widget child,
 }) =>
@@ -19,8 +19,8 @@ Widget stateProviderAdapter<S>({
         ),
         child: child);
 
-Widget stateConsumerAdapter<S, P>({
-  required P Function(Reducible<S>) converter,
+Widget injectStateConsumer<S, P>({
+  required ReducibleConverter<S, P> converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
     StoreConnector<S, P>(

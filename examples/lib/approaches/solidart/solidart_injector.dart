@@ -8,7 +8,7 @@ import 'package:reducible/reducible.dart';
 
 import 'solidart_reducible.dart';
 
-Widget stateProviderAdapter<S>({
+Widget injectStateProvider<S>({
   required S initialState,
   required Widget child,
 }) =>
@@ -17,9 +17,9 @@ Widget stateProviderAdapter<S>({
       child: Builder(builder: (context) => child),
     );
 
-extension StateConsumerAdapter<S> on Signal<S> {
-  Widget stateConsumerAdapter<P>({
-    required P Function(Reducible<S>) converter,
+extension InjectStateConsumer<S> on Signal<S> {
+  Widget injectStateConsumer<P>({
+    required ReducibleConverter<S, P> converter,
     required Widget Function({Key? key, required P props}) builder,
   }) =>
       SignalBuilder(

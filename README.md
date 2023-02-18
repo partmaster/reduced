@@ -1099,7 +1099,6 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
   MyAppState getState() => state;
 
   late final reducible = Reducible(getState, add);
-
 }
 ```
 
@@ -1168,22 +1167,22 @@ Nun können wir in der Klasse `examples/view/binder.dart`den Schalter umlegen un
 
 ### Portierung auf weitere App-Zustands-Verwaltungs-Frameworks
 
-Unter examples/lib/approaches/ liegen neben den Portierungen auf Riverpod und Bloc  Portierungen auf weitere App-Zustands-Verwaltungs-Frameworks. Hier die komplette Liste:
+Unter [examples/lib/approaches/](https://github.com/partmaster/reducible/tree/main/examples/lib/approaches) liegen neben den Portierungen auf Riverpod und Bloc  Portierungen auf weitere App-Zustands-Verwaltungs-Frameworks. Hier die komplette Liste der App-Zustands-Verwaltungs-Frameworks, auf die die Reducible Abstraktion portiert wurde:
 
 |Name|Publisher|Popularity|Published|
 |---|---|---|---|
-|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 25, 2021|
-|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 7, 2023|
-|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 7, 2021|
-|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 12, 2022|
-|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 13, 2021|
-|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 22, 2022|
-|MobX||||
-|Provider||||
-|Redux||||
-|Riverpod||||
-|Solidart||||
-|States Rebuilder|||| 
+|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 2021|
+|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 2023|
+|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 2021|
+|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 2022|
+|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 2021|
+|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 2022|
+|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|99%|Nov 2022|
+|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|100%|Dec 2022|
+|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|98%|May 2022|
+|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|99%|Feb 2023|
+|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|58%|Jan 2023|
+|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|93%|Dec 2022| 
 
 Dies sind bis auf Fish Redux [^23] alle in der offiziellen Flutter-Dokumentation gelisteten Frameworks [^6]. Eine Portierung auf Fish Redux habe ich abgewählt, weil die verfügbare Version nicht 'Null safety' [^24] ist.
 

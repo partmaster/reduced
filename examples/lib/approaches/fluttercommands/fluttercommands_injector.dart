@@ -7,7 +7,7 @@ import 'package:reducible/reducible.dart';
 import '../../widget/stateful_inherited_value_widget.dart';
 import 'fluttercommands_reducible.dart';
 
-Widget stateProviderAdapter<S>({
+Widget injectStateProvider<S>({
   required S initialState,
   required Widget child,
 }) =>
@@ -17,9 +17,9 @@ Widget stateProviderAdapter<S>({
       child: child,
     );
 
-extension StateConsumerAdapter<S> on ReducibleCommandStore<S> {
-  Widget stateConsumerAdapter<P>({
-    required P Function(Reducible<S>) converter,
+extension InjectStateConsumer<S> on ReducibleCommandStore<S> {
+  Widget injectStateConsumer<P>({
+    required ReducibleConverter<S, P> converter,
     required Widget Function({required P props}) builder,
   }) =>
       ValueListenableBuilder<P>(

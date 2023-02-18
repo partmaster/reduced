@@ -111,3 +111,8 @@ class BondedReducer<S> extends Callable<void> {
       reducer == other.reducer &&
       reducible == other.reducible;
 }
+
+/// A function that converts a Reducible to another type. 
+/// The type parameter `S` is the type of the state of the [Reducible].
+/// The type parameter `P` is the return type of function.
+typedef ReducibleConverter<S, P> = P Function(Reducible<S>);

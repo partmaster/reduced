@@ -3,10 +3,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Widget stateProviderAdapter({required Widget child}) =>
+Widget injectStateProvider({required Widget child}) =>
     ProviderScope(child: child);
 
-Widget stateConsumerAdapter<S, P>({
+Widget injectStateConsumer<S, P>({
   required StateProvider<P> provider,
   required Widget Function({Key? key, required P props}) builder,
 }) =>

@@ -6,7 +6,7 @@ import 'package:reducible/reducible.dart';
 
 import 'getx_reducible.dart';
 
-Widget stateProviderAdapter<S>({
+Widget injectStateProvider<S>({
   required S initialState,
   required Widget child,
 }) {
@@ -14,8 +14,8 @@ Widget stateProviderAdapter<S>({
   return child;
 }
 
-Widget stateConsumerAdapter<S, P extends Object>({
-  required P Function(Reducible<S>) converter,
+Widget injectStateConsumer<S, P extends Object>({
+  required ReducibleConverter<S, P> converter,
   required Widget Function({Key? key, required P props}) builder,
 }) =>
     GetBuilder<ReducibleGetx<S>>(

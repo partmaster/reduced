@@ -7,7 +7,7 @@ import 'package:reducible/reducible.dart';
 
 import 'getit_reducible.dart';
 
-Widget stateProviderAdapter<S>({
+Widget injectStateProvider<S>({
   required S initialState,
   required Widget child,
 }) {
@@ -17,20 +17,20 @@ Widget stateProviderAdapter<S>({
   return child;
 }
 
-Widget stateConsumerAdapter<S, P>({
-  required P Function(Reducible<S>) converter,
+Widget injectStateConsumer<S, P>({
+  required ReducibleConverter<S, P> converter,
   required Widget Function({required P props}) builder,
 }) =>
-    StateConsumerAdapter(
+    _InjectStateConsumer(
       builder: builder,
       converter: converter,
     );
 
-class StateConsumerAdapter<S, P> extends StatelessWidget with GetItMixin {
-  final P Function(Reducible<S>) converter;
+class _InjectStateConsumer<S, P> extends StatelessWidget with GetItMixin {
+  final ReducibleConverter<S, P> converter;
   final Widget Function({required P props}) builder;
 
-  StateConsumerAdapter({
+  _InjectStateConsumer({
     super.key,
     required this.converter,
     required this.builder,
