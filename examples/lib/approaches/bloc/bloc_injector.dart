@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../logic/converter.dart';
+import '../../typedefs.dart';
 import 'bloc_reducible.dart';
 
 Widget injectStateProvider<S>(
@@ -16,7 +16,7 @@ Widget injectStateProvider<S>(
 extension InjectStateConsumer<S> on ReducibleBloc<S> {
   Widget injectStateConsumer<P>({
     required ReducibleConverter<S, P> converter,
-    required Widget Function({required P props}) builder,
+    required PropsWidgetBuilder<P> builder,
   }) =>
       BlocSelector<ReducibleBloc<S>, S, P>(
         selector: (state) => converter(reducible),

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:reducible/reducible.dart';
 
-import '../../logic/converter.dart';
+import '../../typedefs.dart';
 import 'binder_reducible.dart';
 
 Widget injectStateProvider({Key? key, required Widget child}) =>
@@ -15,7 +15,7 @@ extension InjectStateConsumer<S> on ReducibleLogic<S> {
   Widget injectStateConsumer<P>({
     required StateRef<S> stateRef,
     required ReducibleConverter<S, P> converter,
-    required Widget Function({required P props}) builder,
+    required PropsWidgetBuilder<P> builder,
   }) =>
       Consumer<P>(
         watchable: stateRef.select(

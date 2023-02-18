@@ -3,8 +3,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:reducible/reducible.dart';
 
+import '../../typedefs.dart';
 import 'getit_reducible.dart';
 
 Widget injectStateProvider<S>({
@@ -19,7 +19,7 @@ Widget injectStateProvider<S>({
 
 Widget injectStateConsumer<S, P>({
   required ReducibleConverter<S, P> converter,
-  required Widget Function({required P props}) builder,
+  required PropsWidgetBuilder<P> builder,
 }) =>
     _InjectStateConsumer(
       builder: builder,
@@ -28,7 +28,7 @@ Widget injectStateConsumer<S, P>({
 
 class _InjectStateConsumer<S, P> extends StatelessWidget with GetItMixin {
   final ReducibleConverter<S, P> converter;
-  final Widget Function({required P props}) builder;
+  final PropsWidgetBuilder<P> builder;
 
   _InjectStateConsumer({
     super.key,

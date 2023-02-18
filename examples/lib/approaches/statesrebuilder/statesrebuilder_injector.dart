@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:reducible/reducible.dart';
 
+import '../../typedefs.dart';
 import '../../widget/inherited_value_widget.dart';
 import 'statesrebuilder_reducible.dart';
 
@@ -19,7 +20,7 @@ Widget injectStateProvider<S>({
 extension InjectStateConsumer<S> on Store<S> {
   Widget injectStateConsumer<P>({
     required ReducibleConverter<S, P> converter,
-    required Widget Function({Key? key, required P props}) builder,
+    required PropsWidgetBuilder<P> builder,
   }) =>
       _ReactiveStatelessBuilder(
         builder: (_) => OnBuilder<S>(

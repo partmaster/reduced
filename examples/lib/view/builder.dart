@@ -34,13 +34,6 @@ class MyHomePageBuilder extends StatelessWidget {
       );
 }
 
-//
-//
-//
-//
-//
-//
-// </br>
 class MyCounterWidgetBuilder extends StatelessWidget {
   const MyCounterWidgetBuilder({super.key, required this.props});
 

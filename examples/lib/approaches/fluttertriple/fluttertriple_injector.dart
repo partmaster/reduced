@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:reducible/reducible.dart';
 
+import '../../typedefs.dart';
 import '../../widget/stateful_inherited_value_widget.dart';
 import 'fluttertriple_reducible.dart';
 
@@ -20,7 +20,7 @@ Widget injectStateProvider<S extends Object>({
 extension InjectStateConsumer<S extends Object> on ReducibleStreamStore<S> {
   Widget injectStateConsumer<P>({
     required ReducibleConverter<S, P> converter,
-    required Widget Function({required P props}) builder,
+    required PropsWidgetBuilder<P> builder,
   }) =>
       ScopedBuilder<ReducibleStreamStore<S>, Object, S>(
         store: this,

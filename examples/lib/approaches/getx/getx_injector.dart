@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:reducible/reducible.dart';
 
+import '../../typedefs.dart';
 import 'getx_reducible.dart';
 
 Widget injectStateProvider<S>({
@@ -16,7 +16,7 @@ Widget injectStateProvider<S>({
 
 Widget injectStateConsumer<S, P extends Object>({
   required ReducibleConverter<S, P> converter,
-  required Widget Function({Key? key, required P props}) builder,
+  required PropsWidgetBuilder<P> builder,
 }) =>
     GetBuilder<ReducibleGetx<S>>(
       filter: (controller) => converter(controller.reducible),

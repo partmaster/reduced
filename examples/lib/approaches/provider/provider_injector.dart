@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:reducible/reducible.dart';
 
+import '../../typedefs.dart';
 import 'provider_reducible.dart';
 
 Widget injectStateProvider<S>({
@@ -17,7 +17,7 @@ Widget injectStateProvider<S>({
 
 Widget injectStateConsumer<S, P>({
   required ReducibleConverter<S, P> converter,
-  required Widget Function({Key? key, required P props}) builder,
+  required PropsWidgetBuilder<P> builder,
 }) =>
     Selector<ValueNotifier<S>, P>(
       builder: (context, props, _) => builder(props: props),
