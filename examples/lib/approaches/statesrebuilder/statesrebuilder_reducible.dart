@@ -21,6 +21,6 @@ class Store<S> {
       Reducible(getState, reduce, this);
 }
 
-extension StoreOnBuildContext on BuildContext {
+extension ExtensionStoreOnBuildContext on BuildContext {
   Store<S> store<S>() => InheritedValueWidget.of<Store<S>>(this);
 }

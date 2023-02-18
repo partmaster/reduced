@@ -1,4 +1,4 @@
-// statesrebuilder_adapter.dart
+// statesrebuilder_injector.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';

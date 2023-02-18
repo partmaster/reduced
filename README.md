@@ -842,7 +842,7 @@ class MyMockProps {
 ```
 
 ```dart
-extension MockPropsOnBuildContext on BuildContext {
+extension ExtensionMockOnBuildContext on BuildContext {
   MyMockProps get mock => InheritedValueWidget.of<MyMockProps>(this);
 }
 ```
@@ -980,7 +980,7 @@ extension SingleWidgetByType on CommonFinders {
 
 Zum Abschluss des Tutorials soll die App von der selbstgebauten App-Zustands-Verwaltung nacheinander auf die bekannten App-Zustands-Verwaltungs-Frameworks Riverpod und Bloc portiert werden. Wir beginnen mit der Portierung auf Riverpod.
 
-Dazu legen wir im Ordner `examples/lib/approaches` einen Unterordner `riverpod` an und darin die Dateien `riverpod_reducible.dart`, `riverpod_adapter.dart` und `riverpod_binder.dart`.
+Dazu legen wir im Ordner `examples/lib/approaches` einen Unterordner `riverpod` an und darin die Dateien `riverpod_reducible.dart`, `riverpod_injector.dart` und `riverpod_binder.dart`.
 
 In der Datei `riverpod_reducible.dart` definieren wir die Klasse `MyAppStateNotifier` und die finale Variable `appStateProvider` für den App-Zustand.
 
@@ -1079,7 +1079,7 @@ Nun können wir in der Datei `examples/lib/view/binder.dart` den Schalter umlege
 ### Portierung auf Bloc
 
 Den Abschluss des Tutorials bildet die Portierung auf Bloc.
-Dazu legen wir im Ordner `examples/lib/approaches` einen Unterordner `bloc` an und darin die Dateien `bloc_reducible.dart`, `blc_adapter.dart` und `bloc_binder.dart`.
+Dazu legen wir im Ordner `examples/lib/approaches` einen Unterordner `bloc` an und darin die Dateien `bloc_reducible.dart`, `blc_injector.dart` und `bloc_binder.dart`.
 
 In der Datei `bloc_reducible.dart` definieren wir die Klasse `MyAppStateBloc`
 und eine BuildContext-Extension für den bequemen Zugriff auf die Instanz dieser Klasse.
@@ -1103,7 +1103,7 @@ class MyAppStateBloc extends Bloc<Reducer<MyAppState>, MyAppState> {
 ```
 
 ```dart
-extension MyAppStateBlocOnBuildContext on BuildContext {
+extension MyAppStateBlocOnBuildContextExtension on BuildContext {
   MyAppStateBloc get appStateBloc =>
       BlocProvider.of<MyAppStateBloc>(this);
 }

@@ -1,11 +1,11 @@
-// fluttercommands_adapter.dart
+// fluttercommand_injector.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
 
 import '../../typedefs.dart';
 import '../../widget/stateful_inherited_value_widget.dart';
-import 'fluttercommands_reducible.dart';
+import 'fluttercommand_reducible.dart';
 
 Widget injectStateProvider<S>({
   required S initialState,

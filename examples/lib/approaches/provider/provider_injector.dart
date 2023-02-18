@@ -1,4 +1,4 @@
-// provider_adapter.dart
+// provider_injector.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

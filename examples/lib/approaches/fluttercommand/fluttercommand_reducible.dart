@@ -11,15 +11,17 @@ class ReducibleCommandStore<S> {
 
   S _state;
 
-  late final command = Command.createSync((Reducer<S> reducer) {
+  S _reduce(Reducer<S> reducer) {
     _state = reducer(_state);
     return _state;
-  }, _state);
+  }
+
+  late final command = Command.createSync(_reduce, _state);
 
   late final Reducible<S> reducible = Reducible(() => _state, command, this);
 }
 
-extension CommandsBuildContextExtension on BuildContext {
+extension ExtensionStoreOnBuildContext on BuildContext {
   ReducibleCommandStore<S> store<S>() =>
       InheritedValueWidget.of<ReducibleCommandStore<S>>(this);
 }

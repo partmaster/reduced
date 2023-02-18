@@ -25,7 +25,7 @@ class ReducibleLogic<S> with Logic {
       Reducible(getState, reduce, this);
 }
 
-extension BinderBuildContextExtension on BuildContext {
+extension ExtensionLogicOnBuildContext on BuildContext {
   ReducibleLogic<S> logic<S>(LogicRef<ReducibleLogic<S>> ref) =>
       readScope().use(ref);
 }

@@ -18,7 +18,7 @@ class ReducibleStreamStore<S extends Object>
       Reducible(getState, reduce, this);
 }
 
-extension StoreOnBuildContext on BuildContext {
+extension ExtensionStoreOnBuildContext on BuildContext {
   ReducibleStreamStore<S> store<S extends Object>() =>
       InheritedValueWidget.of<ReducibleStreamStore<S>>(this);
 }

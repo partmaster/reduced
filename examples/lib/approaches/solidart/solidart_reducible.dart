@@ -12,6 +12,6 @@ extension ReducibleSignal<S> on Signal<S> {
   Reducible<S> get reducible => Reducible(getState, reduce, this);
 }
 
-extension StoreOnBuildContext on BuildContext {
-  Signal<S> store<S>() => get<Signal<S>>(S);
+extension ExtensionSignalOnBuildContext on BuildContext {
+  Signal<S> signal<S>() => get<Signal<S>>(S);
 }

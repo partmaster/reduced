@@ -1,4 +1,4 @@
-// binder_adapter.dart
+// binder_injector.dart
 
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';

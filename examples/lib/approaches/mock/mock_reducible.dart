@@ -23,7 +23,7 @@ class MyMockProps {
         );
 }
 
-extension MockPropsOnBuildContext on BuildContext {
+extension ExtensionMockOnBuildContext on BuildContext {
   MyMockProps get mock => InheritedValueWidget.of<MyMockProps>(this);
 }
 

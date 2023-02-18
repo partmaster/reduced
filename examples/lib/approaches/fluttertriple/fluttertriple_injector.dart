@@ -1,4 +1,4 @@
-// fluttertriple_adapter.dart
+// fluttertriple_injector.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';

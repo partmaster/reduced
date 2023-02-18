@@ -1,4 +1,4 @@
-// solidart_adapter.dart
+// solidart_injector.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';

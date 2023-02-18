@@ -14,6 +14,6 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
   late final reducible = Reducible(getState, add, this);
 }
 
-extension BlocBuildContextExtension on BuildContext {
+extension ExtensionBlocOnBuildContext on BuildContext {
   ReducibleBloc<S> bloc<S>() => BlocProvider.of<ReducibleBloc<S>>(this);
 }
