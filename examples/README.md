@@ -1,6 +1,6 @@
 # examples
 
-A new Flutter project.
+An example app using 'reduced' abstraction.
 
 ## Getting Started
 

@@ -1,5 +1,5 @@
-name: reducible
-description: A state management abstraction for flutter.
+name: reduced
+description: An abstraction for flutter state management.
 version: 0.0.1
 homepage:
 

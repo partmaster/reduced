@@ -1,8 +1,8 @@
 import 'package:examples/approaches/mock/mock_reducible.dart';
 import 'package:examples/view/builder.dart';
-import 'package:examples/widget/inherited_value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:reduced/inherited_value_widget.dart';
 
 void main() {
   testWidgets('testBuilder', (tester) async {

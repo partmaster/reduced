@@ -1,6 +1,6 @@
 // props.dart
 
-import 'package:reducible/reducible.dart';
+import 'package:reduced/reduced.dart';
 
 class MyHomePageProps {
   final String title;

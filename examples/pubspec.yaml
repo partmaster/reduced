@@ -31,11 +31,32 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reducible:
+  reduced:
     path: ../
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  reduced_statesrebuilder:
+    path: ../approaches/reduced_statesrebuilder
+  reduced_binder:
+    path: ../approaches/reduced_binder
+  reduced_bloc:
+    path: ../approaches/reduced_bloc
+  reduced_fluttercommand:
+    path: ../approaches/reduced_fluttercommand
+  reduced_fluttertriple:
+    path: ../approaches/reduced_fluttertriple
+  reduced_getit:
+    path: ../approaches/reduced_getit
+  reduced_getx:
+    path: ../approaches/reduced_getx
+  reduced_mobx:
+    path: ../approaches/reduced_mobx
+  reduced_provider:
+    path: ../approaches/reduced_provider
+  reduced_redux:
+    path: ../approaches/reduced_redux
+  reduced_riverpod:
+    path: ../approaches/reduced_riverpod
+  reduced_solidart:
+    path: ../approaches/reduced_solidart
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^2.1.3
   flutter_bloc: ^8.1.1

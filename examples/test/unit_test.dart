@@ -9,7 +9,7 @@ import 'package:examples/data/props.dart';
 import 'package:examples/data/state.dart';
 import 'package:examples/logic/converter.dart';
 import 'package:examples/logic/reducer.dart';
-import 'package:reducible/reducible.dart';
+import 'package:reduced/reduced.dart';
 import 'package:test/test.dart';
 
 class DecrementCounterReducer extends Reducer<MyAppState> {

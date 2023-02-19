@@ -1,6 +1,6 @@
 // reducer.dart
 
-import 'package:reducible/reducible.dart';
+import 'package:reduced/reduced.dart';
 
 import '../data/state.dart';
 

@@ -1,7 +1,7 @@
 // setstate_reducible.dart
 
 import 'package:flutter/material.dart';
-import 'package:reducible/reducible.dart';
+import 'package:reduced/reduced.dart';
 
 typedef ReducibleWidgetBuilder<S> = Widget Function(
   Reducible<S> value,

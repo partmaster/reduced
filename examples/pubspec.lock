@@ -560,10 +560,94 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  reducible:
+  reduced:
     dependency: "direct main"
     description:
       path: ".."
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_binder:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_binder"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_bloc:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_bloc"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_fluttercommand:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_fluttercommand"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_fluttertriple:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_fluttertriple"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_getit:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_getit"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_getx:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_getx"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_mobx:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_mobx"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_provider:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_provider"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_redux:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_redux"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_riverpod:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_riverpod"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_solidart:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_solidart"
+      relative: true
+    source: path
+    version: "0.0.1"
+  reduced_statesrebuilder:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_statesrebuilder"
       relative: true
     source: path
     version: "0.0.1"
