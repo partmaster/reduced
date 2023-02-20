@@ -1,4 +1,6 @@
-// setstate_reducible.dart
+// reduced_setstate.dart
+
+library reduced_setstate;
 
 import 'package:flutter/material.dart';
 import 'package:reduced/reduced.dart';

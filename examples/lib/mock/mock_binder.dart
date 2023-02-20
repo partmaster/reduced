@@ -1,8 +1,8 @@
-// stateful_binder.dart
+// mock_binder.dart
 
+import 'package:examples/view/builder.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../view/builder.dart';
 import 'mock_reducible.dart';
 
 class MyAppStateBinder extends StatelessWidget {

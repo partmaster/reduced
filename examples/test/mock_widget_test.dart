@@ -1,4 +1,4 @@
-import 'package:examples/approaches/mock/mock_reducible.dart';
+import 'package:examples/mock/mock_reducible.dart';
 import 'package:examples/view/builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

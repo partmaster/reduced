@@ -1,10 +1,10 @@
 // mock_reducible.dart
 
+import 'package:examples/data/props.dart';
 import 'package:flutter/widgets.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced/reduced.dart';
 
-import '../../data/props.dart';
 
 class MyMockProps {
   final MyHomePageProps myHomePageProps;

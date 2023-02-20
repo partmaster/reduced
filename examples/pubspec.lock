@@ -644,6 +644,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  reduced_setstate:
+    dependency: "direct main"
+    description:
+      path: "../approaches/reduced_setstate"
+      relative: true
+    source: path
+    version: "0.0.1"
   reduced_solidart:
     dependency: "direct main"
     description:

@@ -2,12 +2,12 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
+import 'package:reduced_setstate/reduced_setstate.dart';
 
 import '../../data/props.dart';
 import '../../data/state.dart';
 import '../../logic/converter.dart';
-import '../../view/builder.dart';
-import 'setstate_reducible.dart';
+import '../builder.dart';
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
