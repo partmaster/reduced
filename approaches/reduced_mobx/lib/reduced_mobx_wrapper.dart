@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:reduced/inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced/reduced_typedefs.dart';
 
 import 'reduced_mobx.dart';

@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   reduced:
     path: ../../
+  inherited_widgets:
+    path: ../../inherited_widgets
   flutter_triple: ^1.2.7+4
 
 dev_dependencies:

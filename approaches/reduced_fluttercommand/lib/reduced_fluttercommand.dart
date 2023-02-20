@@ -5,7 +5,7 @@ library reduced_fluttercommand;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 
 class ReducibleCommandStore<S> {
   ReducibleCommandStore(S initialState) : _state = initialState;

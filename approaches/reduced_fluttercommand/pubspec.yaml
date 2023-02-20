@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   reduced:
     path: ../../
+  inherited_widgets:
+    path: ../../inherited_widgets
   flutter_command: ^2.0.1
 
 dev_dependencies:

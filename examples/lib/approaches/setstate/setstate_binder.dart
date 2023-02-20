@@ -1,7 +1,7 @@
 // setstate_binder.dart
 
 import 'package:flutter/widgets.dart';
-import 'package:reduced/inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 
 import '../../data/props.dart';
 import '../../data/state.dart';

@@ -6,8 +6,10 @@ import 'package:reduced/reduced_typedefs.dart';
 
 import 'reduced_bloc.dart';
 
-Widget wrapWithProvider<S>(
-        {required S initialState, required Widget child}) =>
+Widget wrapWithProvider<S>({
+  required S initialState,
+  required Widget child,
+}) =>
     BlocProvider(
       create: (_) => ReducibleBloc(initialState),
       child: child,

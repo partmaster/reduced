@@ -33,6 +33,8 @@ dependencies:
     sdk: flutter
   reduced:
     path: ../
+  inherited_widgets:
+    path: ../inherited_widgets
   reduced_statesrebuilder:
     path: ../approaches/reduced_statesrebuilder
   reduced_binder:

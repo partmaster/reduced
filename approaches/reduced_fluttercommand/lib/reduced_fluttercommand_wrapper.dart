@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_command/flutter_command.dart';
 import 'package:reduced/reduced_typedefs.dart';
-import 'package:reduced/stateful_inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 
 import 'reduced_fluttercommand.dart';
 

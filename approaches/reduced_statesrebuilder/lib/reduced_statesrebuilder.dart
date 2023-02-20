@@ -5,7 +5,7 @@ library reduced_statesrebuilder;
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 
 @immutable
 class Store<S> {

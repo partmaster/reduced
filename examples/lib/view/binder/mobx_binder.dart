@@ -1,7 +1,7 @@
 // mobx_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced/inherited_value_widget.dart';
+import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced_mobx/reduced_mobx.dart';
 import 'package:reduced_mobx/reduced_mobx_wrapper.dart';
 

@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   reduced:
     path: ../../
+  inherited_widgets:
+    path: ../../inherited_widgets
   states_rebuilder: ^6.2.0
 
 dev_dependencies:
