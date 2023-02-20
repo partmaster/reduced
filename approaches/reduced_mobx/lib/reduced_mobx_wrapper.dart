@@ -7,12 +7,21 @@ import 'package:reduced/reduced_typedefs.dart';
 
 import 'reduced_mobx.dart';
 
-
-Widget wrapWithProvider({
-  required ReducibleStore store,
+Widget wrapWithProvider<S, P1, P2>({
+  required S initialState,
+  required ReducibleConverter<S, P1> converter1,
+  required ReducibleConverter<S, P2> converter2,
   required Widget child,
 }) =>
-    InheritedValueWidget(value: store, child: child);
+    StatefulInheritedValueWidget(
+      builder: (initialState) => ReducibleStore(
+        initialState,
+        converter1,
+        converter2,
+      ),
+      initializer: initialState,
+      child: child,
+    );
 
 extension WrapWithConsumer on ReducibleStore {
   Widget wrapWithConsumer<P>({

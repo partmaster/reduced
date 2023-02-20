@@ -1,4 +1,4 @@
-# Die Abstraktion 'Reducible' </br> für das State Management in Flutter
+# 'reduced' - eine Abstraktion </br> für das State Management in Flutter
 
 ## Autor
 
@@ -6,9 +6,9 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 ## Abstract
 
-Hier wird die Abstraktion 'Reducible' vorgestellt, die UI und Logik einer Flutter-App 
+Hier wird die Abstraktion 'reduced' vorgestellt, die UI und Logik einer Flutter-App 
 vom verwendeten State Management Framework entkoppelt. State Management Frameworks dienen der Trennung von UI und Logik. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Dem soll die Abstraktion entgegenwirken.
-'Reducible' basiert auf der Kombination der Entwurfsmuster "State Reducer" und "Humble Objekt" und verwendet die Bausteine AppState, Reducer und Reducible sowie Binder, Builder und Props, die im Folgenden erklärt werden.
+'reduced' basiert auf der Kombination der Entwurfsmuster "State Reducer" und "Humble Objekt" und verwendet die Bausteine AppState, Reducer und Reducible sowie Binder, Builder und Props, die im Folgenden erklärt werden.
 Die entstehende Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten State Management Frameworks, wie Riverpod [^4] oder Bloc [^5]. 
 </br> 
 Wer beim Einsatz von State Management Frameworks flexibel bleiben will oder wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will, oder wer sich einfach nur einen Überblick über verfügbare State Management Frameworks verschaffen will, für den könnte der Artikel interessant sein. 
@@ -116,12 +116,34 @@ Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgend
 
 Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-Framework umsetzten lassen. 
 
-Die Umsetzung der dritten Anforderung, sich über Änderungen am App-Zustand benachrichtigen lassen zu können, ist stark vom eingesetzten App-Zustands-Verwaltungs-Framework abhängig (insbesondere die selektive Benachrichtigung) und wird später für ausgewählte Lösungen (StatefulWidget/InheritedWidget, Riverpod, Bloc) diskutiert. 
+
+Die dritte Anforderung, sich selektiv über Änderungen am App-Zustand benachrichtigen lassen zu können, wird mit zwei Funktion ```wrapWithConsumer``` und ```wrapWithProvider``` umgesetzt.
+
+Da die Möglichkeiten für solche Benachrichtigungen sehr vom eingesetzten App-Zustands-Verwaltungs-System abhängen, gibt es keine einheitliche Signatur dieser Funktionen für alle App-Zustands-Verwaltungs-Systeme. Aber das Grundprinzip ist immer gleich und soll hier an einer Beispiel-Signatur erklärt werden. 
+
+Der Funktion ```wrapWithConsumer``` wird ein ```converter``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird und ein ```builder```, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
+
+```dart
+Widget wrapWithConsumer<P>({
+  required ReducibleConverter<S, P> converter,
+  required PropsWidgetBuilder<P> builder,
+});
+```
+
+Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (im Widget-Baum von der Wurzel in richtung Blätter) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben
+und im Parameter ```child``` der Rest des Widget-Baums. 
+
+```dart
+Widget wrapWithProvider<S>({
+  required S initialState,
+  required Widget child,
+});
+```
 
 ![reducer_action](images/reducer_action.png)
 
 Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
-Der Rest der App-Logik liegt in Konvertierungsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die verschiedenen Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
+Der Rest der App-Logik liegt in Konvertierungsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
 
 ## Builder, Binder und Props
 

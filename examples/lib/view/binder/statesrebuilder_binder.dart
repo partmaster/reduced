@@ -13,14 +13,12 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store =
-      Store(const MyAppState(title: 'states_rebuilder'));
-
   @override
-  Widget build(context) => wrapWithProvider(store: store, child: child);
+  Widget build(context) => wrapWithProvider(
+        initialState: const MyAppState(title: 'states_rebuilder'),
+        child: child,
+      );
 }
-
-
 
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});

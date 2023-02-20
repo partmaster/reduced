@@ -8,11 +8,12 @@ import 'package:inherited_widgets/inherited_widgets.dart';
 import 'reduced_statesrebuilder.dart';
 
 Widget wrapWithProvider<S>({
-  required Store<S> store,
+  required S initialState,
   required Widget child,
 }) =>
-    InheritedValueWidget(
-      value: store,
+    StatefulInheritedValueWidget(
+      builder: (initializer) => Store(initialState),
+      initializer: initialState,
       child: child,
     );
 

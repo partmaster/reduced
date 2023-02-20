@@ -1,7 +1,6 @@
 // mobx_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced_mobx/reduced_mobx.dart';
 import 'package:reduced_mobx/reduced_mobx_wrapper.dart';
 
@@ -15,24 +14,20 @@ class MyAppStateBinder extends StatelessWidget {
 
   final Widget child;
 
-  static final store = ReducibleStore(
-    const MyAppState(title: 'mobx'),
-    MyHomePagePropsConverter.convert,
-    MyCounterWidgetPropsConverter.convert,
-  );
-
   @override
-  Widget build(context) => wrapWithProvider(store: store, child: child);
+  Widget build(context) => wrapWithProvider(
+        initialState: const MyAppState(title: 'mobx'),
+        converter1: MyHomePagePropsConverter.convert,
+        converter2: MyCounterWidgetPropsConverter.convert,
+        child: child,
+      );
 }
 
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => InheritedValueWidget.of<
-              ReducibleStore<MyAppState, MyHomePageProps,
-                  MyCounterWidgetProps>>(context)
-          .wrapWithConsumer<MyHomePageProps>(
+  Widget build(context) => context.store().wrapWithConsumer<MyHomePageProps>(
         props: (store) => store.p1,
         builder: MyHomePageBuilder.new,
       );
@@ -42,11 +37,9 @@ class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => InheritedValueWidget.of<
-              ReducibleStore<MyAppState, MyHomePageProps,
-                  MyCounterWidgetProps>>(context)
-          .wrapWithConsumer<MyCounterWidgetProps>(
-        props: (store) => store.p2,
-        builder: MyCounterWidgetBuilder.new,
-      );
+  Widget build(context) =>
+      context.store().wrapWithConsumer<MyCounterWidgetProps>(
+            props: (store) => store.p2,
+            builder: MyCounterWidgetBuilder.new,
+          );
 }
