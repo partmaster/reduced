@@ -7,7 +7,7 @@ import 'package:reduced/reduced_typedefs.dart';
 
 import 'reduced_binder.dart';
 
-Widget wrapWithProvider({Key? key, required Widget child}) =>
+Widget wrapWithProvider({required Widget child}) =>
     BinderScope(child: child);
 
 extension WrapWithConsumer<S> on ReducibleLogic<S> {
