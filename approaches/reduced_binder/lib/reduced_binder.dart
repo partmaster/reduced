@@ -1,6 +1,6 @@
 // reduced_binder.dart
 
-// library reduced_binder;
+library reduced_binder;
 
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';

@@ -130,7 +130,7 @@ Widget wrapWithConsumer<P>({
 });
 ```
 
-Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (im Widget-Baum von der Wurzel in richtung Blätter) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben
+Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben
 und im Parameter ```child``` der Rest des Widget-Baums. 
 
 ```dart
@@ -142,7 +142,150 @@ Widget wrapWithProvider<S>({
 
 ![reducer_action](images/reducer_action.png)
 
-Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible sollte es möglich sein, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
+### Implementierung am Beispiel Bloc
+
+Im folgenden wird beispielhaft anhand des App-Zustands-Verwaltungs-Frameworks Bloc gezeigt, wie eine Reducible-Instanz und die Funktionen wrapWithProvider und wrapWithConsumer für konkrete App-Zustands-Verwaltungs-Frameworks implementiert werden können.
+
+#### Bloc Reducible Implementierung
+
+```dart
+class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
+  ReducibleBloc(super.initialState) {
+    on<Reducer<S>>((event, emit) => emit(event(state)));
+  }
+
+  S getState() => state;
+
+  late final reducible = Reducible(getState, add, this);
+}
+```
+
+#### Bloc Reducible BuildContext Extension
+
+```dart
+extension ExtensionBlocOnBuildContext on BuildContext {
+  ReducibleBloc<S> bloc<S>() => BlocProvider.of<ReducibleBloc<S>>(this);
+}
+```
+
+#### Bloc wrapWithProvider Implementation
+
+```dart
+Widget wrapWithProvider<S>({
+  required S initialState,
+  required Widget child,
+}) =>
+    BlocProvider(
+      create: (_) => ReducibleBloc(initialState),
+      child: child,
+    );
+```
+
+#### Bloc wrapWithConsumer Implementation
+
+```dart
+extension WrapWithConsumer<S> on ReducibleBloc<S> {
+  Widget wrapWithConsumer<P>({
+    required ReducibleConverter<S, P> converter,
+    required PropsWidgetBuilder<P> builder,
+  }) =>
+      BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => converter(reducible),
+        builder: (context, props) => builder(props: props),
+      );
+}
+```
+
+### Implementierungen für weitere Frameworks
+
+Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation [^6] gelisteten Frameworks (bis auf Fish-Redux, für das keine Null-safety Version zur Verfügung steht) implementiert.
+
+#### Binder
+
+[reduced_binder.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_binder/lib/reduced_binder.dart) 
+</br>
+[reduced_binder_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_binder/lib/reduced_binder_wrapper.dart)
+
+#### Bloc
+
+[reduced_bloc.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_bloc/lib/reduced_bloc.dart) 
+</br>
+[reduced_bloc_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_bloc/lib/reduced_bloc_wrapper.dart)
+
+#### FlutterCommand
+
+[reduced_fluttercommand.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_fluttercommand/lib/reduced_fluttercommand.dart) 
+</br>
+[reduced_fluttercommand_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_fluttercommand/lib/reduced_fluttercommand_wrapper.dart)
+
+#### FlutterTriple
+
+[reduced_fluttertriple.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_fluttertriple/lib/reduced_fluttertriple.dart) 
+</br>
+[reduced_fluttertriple_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_fluttertriple/lib/reduced_fluttertriple_wrapper.dart)
+
+#### GetIt
+
+[reduced_getit.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_getit/lib/reduced_getit.dart) 
+</br>
+[reduced_getit_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_getit/lib/reduced_getit_wrapper.dart)
+
+#### GetX
+
+[reduced_getx.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_getx/lib/reduced_getx.dart) 
+</br>
+[reduced_getx_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_getx/lib/reduced_getx_wrapper.dart)
+
+#### MobX
+
+[reduced_mobx.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_mobx/lib/reduced_mobx.dart) 
+</br>
+[reduced_mobx_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_mobx/lib/reduced_mobx_wrapper.dart)
+
+#### Provider
+
+[reduced_provider.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_provider/lib/reduced_provider.dart) 
+</br>
+[reduced_provider_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_provider/lib/reduced_provider_wrapper.dart)
+
+#### Redux
+
+[reduced_redux.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_redux/lib/reduced_redux.dart) 
+</br>
+[reduced_redux_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_redux/lib/reduced_redux_wrapper.dart)
+
+#### Riverpod
+
+[reduced_riverpod.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_riverpod/lib/reduced_riverpod.dart) 
+</br>
+[reduced_riverpod_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_riverpod/lib/reduced_riverpod_wrapper.dart)
+
+#### setState
+
+[reduced_setstate.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_setstate/lib/reduced_setstate.dart) 
+</br>
+[reduced_setstate_wrapper.dart]()
+
+#### Solidart
+
+[reduced_solidart.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_solidart/lib/reduced_solidart.dart) 
+</br>
+[reduced_solidart_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_solidart/lib/reduced_solidart_wrapper.dart)
+
+#### StatesRebuilder
+
+[reduced_statesrebuilder.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_statesrebuilder/lib/reduced_statesrebuilder.dart) 
+</br>
+[reduced_statesrebuilder_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_statesrebuilder/lib/reduced_statesrebuilder_wrapper.dart)
+
+### Fazit 
+
+Anhand der Implementierungen wurde gezeigt, dass die gewählte Abstraktion für die verschiedensten Frameworks anwendbar ist. 
+</br>
+Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible ist es möglich, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. 
+</br>
+Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
+</br>
 Der Rest der App-Logik liegt in Konvertierungsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
 
 ## Builder, Binder und Props
