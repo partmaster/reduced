@@ -1,10 +1,10 @@
 // props.dart
 
-import 'package:reduced/reduced.dart';
+import 'package:reduced/reduced_callback_typedefs.dart';
 
 class MyHomePageProps {
   final String title;
-  final Callable onIncrementPressed;
+  final VoidCallable onIncrementPressed;
 
   const MyHomePageProps({
     required this.title,

@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
-import 'package:reduced/reduced.dart';
+import 'package:reduced/reduced_callback_typedefs.dart';
 
 import '../data/props.dart';
 
@@ -13,7 +13,7 @@ class MyMockProps {
 
   MyMockProps({
     required String title,
-    required Callable<void> onIncrementPressed,
+    required VoidCallable onIncrementPressed,
     required String counterText,
   })  : myHomePageProps = MyHomePageProps(
           title: title,
@@ -28,7 +28,7 @@ extension ExtensionMockOnBuildContext on BuildContext {
   MyMockProps get mock => InheritedValueWidget.of<MyMockProps>(this);
 }
 
-class MockCallable extends Callable {
+class MockCallable extends VoidCallable {
   int count = 0;
   
   @override

@@ -20,7 +20,7 @@ end note
 
 class MyHomePageProps
 MyHomePageProps : String title
-MyHomePageProps : Callable<void> onIncrementPressed
+MyHomePageProps : VoidCallable onIncrementPressed
 MyHomePageProps : String counterText
 MyHomePageProps : MyHomePageProps.reducible(Reducible<MyAppState>)
 
