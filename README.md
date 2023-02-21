@@ -44,9 +44,52 @@ und andererseits Aufgaben die sich auf den App-Zustand beziehen:
 
 Die UI-Aufgaben sind eng an eine Umgebung gebunden, in der User Interfaces ablaufen können, wohingegen die Logik in den App-Zustands-Aufgaben nicht unbedingt an eine UI-Ablaufumgebung gebunden ist.
 
+## Builder, Binder und Props
+
+Das erste Ziel der hier vorgestellen Abstraktion ist, den Flutter-Code so zu strukturieren, dass im Code für die Widget-Bäume die UI-Aufgaben streng von den App-Zustands-Aufgaben separiert werden und die Abhängigkeit des UI-Codes vom App-Zustands-Verwaltungs-Framework minimiert wird.
+Um das zu erreichen, wird das Humble Object Pattern von Micheal Feathers [^13] angewandt.
+Die Zusammenfassung des Humble Object Pattern lautet: 
+
+> Wenn Code nicht gut testbar ist, weil er zu eng mit seiner Umgebung verbunden ist, extrahiere die Logik in eine separate, leicht zu testende Komponente, die von ihrer Umgebung entkoppelt ist.
+
+#### Ausgangslage des Humble Object Pattern
+
+![humble1](images/humble1.png)
+</br>
+*Bildquelle: manning.com*
+
+#### Lage nach Anwendung des Humble Object Pattern
+
+![humble2](images/humble2.png)
+</br>
+*Bildquelle: manning.com*
+
+Auf eine Flutter-Widget-Klasse bezogen, habe ich das Pattern folgendermaßen angewendet: 
+
+1. Wenn die Widget-Klasse sowohl UI-Aufgaben als auch 
+App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klasse, eine Binder-Klasse, eine Props-Klasse und eine Konverterfunktion zur Erzeugung von Props-Instanzen geteilt.
+
+2. Die Builder-Klasse ist ein StatelessWidget. Sie bekommt von der Binder-Klasse im Konstruktor die Props-Instanz mit vorkonfektionierten Properties und Callbacks und erzeugt in der build-Methode einen Widget-Baum aus Layout-, Renderer und Gestenerkennungs-Widgets.
+
+3. Die Binder-Klasse lauscht bei der App-Zustands-Verwaltung selektiv auf Änderungen 'ihrer' Props und liefert in der build-Methode ein Widget der Builder-Klasse zurück. 
+
+4. Für die vorkonfektionierten Properties und Callbacks der Builder-Klasse wird eine Props-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern.
+
+5. Für die Props-Klasse wird eine Konverter-Funktion definiert, die aus dem aktuellen App-Zustand die Werte für die Properties und aus den den Reducer-Implementierungen die Werte für die Callbacks erzeugt.
+
+![humble_widget](images/humble_widget.png)
+
+Zusammengefasst: 
+Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
+Das Lauschen der Binder-Klasse auf selektive Änderungen und die Konverterfunktion für die Erzeugung der Props-Instanzen repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
+
+## Erstes Zwischenfazit
+
+Aus der Umsetzung des Humble Object Pattern bleibt ein Problem: Als Trigger für den Rebuild von Widgets sollen Änderungen ihrer Props nach Wertsemantik dienen. Als Werte für die Callback-Properties von Widgets werden meist anonyme Funktionen aus Funktionsausdrücken verwendet. Anonyme Funktionen haben keine Wertsemantik. Ein Weg, um für Props Wertsemantik zu erreichen, ist, dass sie für Callbacks keine anonymen Funktionen verwenden, sondern Funktionsobjekte mit entsprechend überladenen ```hashCode``` und ```operator==``` Methoden. Wie wir zu solchen Funktionsobjekten mit Wertsemantik kommen, wird im nächsten Abschnitt 'AppState, Reducer und Reducible' gezeigt.
+
 ## AppState, Reducer und Reducible
 
-Das erste Ziel der Abstraktion ist, den Code so zu strukturieren, dass die App-Logik vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter allgemein separiert wird.
+Das zweite Ziel der Abstraktion ist, den Code so zu strukturieren, dass die App-Logik vom eingesetzten Zustands-Verwaltungs-Framework und von Flutter allgemein separiert wird.
 Um das zu erreichen, wird das State Reducer Pattern angewandt. 
 </br>
 Einfach ausgedrückt beinhaltet dieses Pattern die Forderung, dass jede Änderung am App-Zustand als atomare Operation mit dem aktuellen App-Zustand als Parameter und einem neuen App-Zustand als Resultat ausgeführt wird. Aktionen, die potenziell länger laufen (Datenbank-Anfragen, Netzwerk-Aufrufe, ..), müssen wegen dieser Forderung meist mit mehreren atomaren App-Zustands-Änderungen umgesetzt werden, z.B. eine am Beginn der Aktion und eine am Ende. Entscheidend ist, dass die App-Zustands-Änderung am Ende der Aktion nicht das App-Zustands-Resultat vom Anfang der Aktion als Parameter (wieder-)verwendet, sondern den dann aktuellen App-Zustand des App-Zustands-Verwaltungs-Frameworks. Das Pattern unterstützt diese Absicht, indem es dafür sorgt, dass man bei einer Änderung den aktuellen App-Zustand nicht selbst holen muss, sondern unaufgefordert geliefert bekommt.
@@ -121,7 +164,9 @@ Die dritte Anforderung, sich selektiv über Änderungen am App-Zustand benachric
 
 Da die Möglichkeiten für solche Benachrichtigungen sehr vom eingesetzten App-Zustands-Verwaltungs-System abhängen, gibt es keine einheitliche Signatur dieser Funktionen für alle App-Zustands-Verwaltungs-Systeme. Aber das Grundprinzip ist immer gleich und soll hier an einer Beispiel-Signatur erklärt werden. 
 
-Der Funktion ```wrapWithConsumer``` wird ein ```converter``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird und ein ```builder```, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
+Der Funktion ```wrapWithConsumer``` wird ein ```converter``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird. 
+
+ Der Funktion ```wrapWithConsumer``` wird außerdem ein ```builder```, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
 
 ```dart
 Widget wrapWithConsumer<P>({
@@ -130,8 +175,9 @@ Widget wrapWithConsumer<P>({
 });
 ```
 
-Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben
-und im Parameter ```child``` der Rest des Widget-Baums. 
+Bei jeder App-Zustands-Änderung wird mit dem ```converter``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```converter```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Voraussetzung ist, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
+
+Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben und im Parameter ```child``` der Rest des Widget-Baums. 
 
 ```dart
 Widget wrapWithProvider<S>({
@@ -139,6 +185,8 @@ Widget wrapWithProvider<S>({
   required Widget child,
 });
 ```
+
+Es folgt ein Übersichtsdiagramm für die Umsetzung des State Reducer Pattern mit Hilfe der Klasse ```Reducible```. 
 
 ![reducer_action](images/reducer_action.png)
 
@@ -199,6 +247,7 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 ### Implementierungen für weitere Frameworks
 
 Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation [^6] gelisteten Frameworks (bis auf Fish-Redux, für das keine Null-safety Version zur Verfügung steht) implementiert.
+Im Folgenden werden die Links zu allen Implemenntierngsdateien aufgeführt. Die erste Datei enthält jeweils die Implementierung der Klasse ```Reducible``` für das Framework und die zweite Datei die Implementierung der Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.
 
 #### Binder
 
@@ -278,56 +327,17 @@ Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation
 </br>
 [reduced_statesrebuilder_wrapper.dart](https://github.com/partmaster/reduced/blob/7a1ab0b372dae4a805dda16ce23d72005c152f3e/approaches/reduced_statesrebuilder/lib/reduced_statesrebuilder_wrapper.dart)
 
-### Fazit 
+### Zweites Zwischenfazit 
 
-Anhand der Implementierungen wurde gezeigt, dass die gewählte Abstraktion für die verschiedensten Frameworks anwendbar ist. 
+Anhand der Implementierungen wurde gezeigt, dass die gewählte Abstraktion für die verschiedensten Frameworks umsetzbar ist. 
 </br>
-Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible ist es möglich, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. 
+Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reducible ist es möglich, die App-Logik komplett vom ausgewählten Zustands-Verwaltungs-Framework zu entkoppeln. Wie das konkret aussehen kann, wird im Abschnitt **Example** an einem Beispiel gezeigt.
 </br>
 Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
 </br>
 Der Rest der App-Logik liegt in Konvertierungsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
 
-## Builder, Binder und Props
-
-Das zweite Ziel der hier vorgestellen Abstraktion ist, den Flutter-Code so zu strukturieren, dass im Code für die Widget-Bäume die UI-Aufgaben streng von den App-Zustands-Aufgaben separiert werden und die Abhängigkeit des UI-Codes vom App-Zustands-Verwaltungs-Framework minimiert wird.
-Um das zu erreichen, wird das Humble Object Pattern von Micheal Feathers [^13] angewandt.
-Die Zusammenfassung des Humble Object Pattern lautet: 
-
-> Wenn Code nicht gut testbar ist, weil er zu eng mit seiner Umgebung verbunden ist, extrahiere die Logik in eine separate, leicht zu testende Komponente, die von ihrer Umgebung entkoppelt ist.
-
-#### Ausgangslage des Humble Object Pattern
-
-![humble1](images/humble1.png)
-</br>
-*Bildquelle: manning.com*
-
-#### Lage nach Anwendung des Humble Object Pattern
-
-![humble2](images/humble2.png)
-</br>
-*Bildquelle: manning.com*
-
-Auf eine Flutter-Widget-Klasse bezogen, habe ich das Pattern folgendermaßen angewendet: 
-
-1. Wenn die Widget-Klasse sowohl UI-Aufgaben als auch 
-App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klasse, eine Binder-Klasse, eine Props-Klasse und eine Konverterfunktion zur Erzeugung von Props-Instanzen geteilt.
-
-2. Die Builder-Klasse ist ein StatelessWidget. Sie bekommt von der Binder-Klasse im Konstruktor die Props-Instanz mit vorkonfektionierten Properties und Callbacks und erzeugt in der build-Methode einen Widget-Baum aus Layout-, Renderer und Gestenerkennungs-Widgets.
-
-3. Die Binder-Klasse lauscht bei der App-Zustands-Verwaltung selektiv auf Änderungen 'ihrer' Props und liefert in der build-Methode ein Widget der Builder-Klasse zurück. 
-
-4. Für die vorkonfektionierten Properties und Callbacks der Builder-Klasse wird eine Props-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern.
-
-5. Für die Props-Klasse wird eine Konverter-Funktion definiert, die aus dem aktuellen App-Zustand die Werte für die Properties und aus den den Reducer-Implementierungen die Werte für die Callbacks erzeugt.
-
-![humble_widget](images/humble_widget.png)
-
-Zusammengefasst: 
-Wegen ihrer inhärenten Abhängigkeit von der UI-Umgebung repräsentiert die Builder-Klasse das Humble-Object.
-Das Lauschen der Binder-Klasse auf selektive Änderungen und die Konverterfunktion für die Erzeugung der Props-Instanzen repräsentieren die extrahierte Logik aus dem Humble-Object-Pattern.
-
-## Examples
+## Example
 
 Nun soll die vorgestellte Abstraktion und die resultierende Code-Struktur an einem kleinen Beispiel illustriert werden. 
 
@@ -473,7 +483,7 @@ class MyHomePagePropsConverter {
 }
 ```
 
-Damit die Props als Wert für selektive Benachrichtigungen über App-Zustands-Änderungen eingesetzt werden können, müssen die [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden der Props-Klasse nach Wertsemantik [^12] funktionieren. Das setzt voraus, dass diese Methoden bei allen Properties ebenfalls nach Wertsemantik funktionieren. Da mir nicht ganz klar ist, wie dies bei Funktionsobjekten gewährleistet werden kann, habe ich für das Callback-Property nicht den Standard-Flutter-Typ [VoidCallback](https://api.flutter.dev/flutter/dart-ui/VoidCallback.html) verwendet, sondern eine eigene Klasse `Callable<void>` mit überschriebenen [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden.  
+Damit die Props als Wert für selektive Benachrichtigungen über App-Zustands-Änderungen eingesetzt werden können, müssen die [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden der Props-Klasse nach Wertsemantik [^12] funktionieren. Das setzt voraus, dass diese Methoden bei allen in den Props verwendeten Properties ebenfalls nach Wertsemantik funktionieren. Da anonyme Funktionen in Dart keine Wertsemantik haben, verwende ich für Callback-Properties keine Funktionen, wie z.B. [VoidCallback](https://api.flutter.dev/flutter/dart-ui/VoidCallback.html), sondern eine eigene Klasse `Callable<void>` mit überschriebenen [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden.  
 
 ```dart
 abstract class Callable<T> {

@@ -2,5 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('adds one to input values', () {
+    final a = ((){}); 
+    final b = ((){});
+    expect(a, equals(b));
   });
 }
