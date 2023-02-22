@@ -8,7 +8,7 @@ import 'package:reduced/reduced.dart';
 class ReducibleStateNotifier<S> extends StateNotifier<S> {
   ReducibleStateNotifier(super.state);
 
-  late final reducible = Reducible(getState, reduce, this);
+  late final reducible = ReducibleProxy(getState, reduce, this);
 
   S getState() => super.state;
 

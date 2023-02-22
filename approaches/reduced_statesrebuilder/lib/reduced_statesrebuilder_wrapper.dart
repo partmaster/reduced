@@ -50,7 +50,7 @@ P _stateToProps<S, P>(
   Reduce<S> reduce,
   ReducibleConverter<S, P> converter,
 ) =>
-    converter(Reducible(() => state, reduce, reduce));
+    converter(ReducibleProxy(() => state, reduce, reduce));
 
 bool _shouldRebuild<S, P>(
   S p0,

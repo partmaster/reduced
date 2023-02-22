@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:reduced/reduced.dart';
 import 'package:reduced_provider/reduced_provider_wrapper.dart';
 import 'package:shopper_app/models/cart.dart';

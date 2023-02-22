@@ -13,5 +13,5 @@ extension ReducibleValueNotifier<S> on ValueNotifier<S> {
   }
 
   Reducible<S> get reducible =>
-      Reducible(getState, reduce, this);
+      ReducibleProxy(getState, reduce, this);
 }

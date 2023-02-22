@@ -32,7 +32,7 @@ void main() {
     expect(state.counter, equals(1));
   });
   test('testMyCounterWidgetProps', () {
-    Reducible<MyAppState> reducible = Reducible(
+    Reducible<MyAppState> reducible = ReducibleProxy(
       () => const MyAppState(title: 'mock', counter: 0),
       (_) {},
       false,
@@ -45,7 +45,7 @@ void main() {
     const title = 'mock';
     final incrementReducer = IncrementCounterReducer();
     final decrementReducer = DecrementCounterReducer();
-    final reducible = Reducible(
+    final reducible = ReducibleProxy(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
       false,

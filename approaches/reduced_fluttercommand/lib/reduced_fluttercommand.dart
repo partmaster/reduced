@@ -19,7 +19,7 @@ class ReducibleCommandStore<S> {
 
   late final command = Command.createSync(_reduce, _state);
 
-  late final Reducible<S> reducible = Reducible(() => _state, command, this);
+  late final Reducible<S> reducible = ReducibleProxy(() => _state, command, this);
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

@@ -16,7 +16,7 @@ class ReducibleStreamStore<S extends Object>
   void reduce(Reducer<S> reducer) => update(reducer(state));
 
   late final Reducible<S> reducible =
-      Reducible(getState, reduce, this);
+      ReducibleProxy(getState, reduce, this);
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

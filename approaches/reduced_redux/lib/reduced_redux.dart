@@ -7,5 +7,5 @@ import 'package:redux/redux.dart' hide Reducer;
 
 extension ReducibleStore on Store {
   Reducible<S> reducible<S>() =>
-      Reducible(() => state, (reducer) => dispatch(reducer), this);
+      ReducibleProxy(() => state, (reducer) => dispatch(reducer), this);
 }

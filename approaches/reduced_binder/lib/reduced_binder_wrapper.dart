@@ -19,7 +19,7 @@ extension WrapWithConsumer<S> on ReducibleLogic<S> {
       Consumer<P>(
         watchable: stateRef.select(
           (state) => converter(
-            Reducible(() => state, reducible.reduce, this),
+            ReducibleProxy(() => state, reducible.reduce, this),
           ),
         ),
         builder: (_, __, ___) => builder(

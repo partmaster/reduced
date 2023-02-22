@@ -36,7 +36,7 @@ class _ReducibleStatefulWidgetState<S>
 
   S getState() => _state;
 
-  late final reducible = Reducible(getState, reduce, this);
+  late final reducible = ReducibleProxy(getState, reduce, this);
 
   void reduce(Reducer<S> reducer) => setState(() => _state = reducer(_state));
 

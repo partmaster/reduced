@@ -29,7 +29,7 @@ abstract class ReducibleStoreBase<S, P1, P2> with Store {
     value = reducer(value);
   }
 
-  late final Reducible<S> reducible = Reducible(getState, reduce, this);
+  late final Reducible<S> reducible = ReducibleProxy(getState, reduce, this);
 
   @computed
   P1 get p1 => converter1(reducible);

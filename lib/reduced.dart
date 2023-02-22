@@ -4,6 +4,8 @@
 /// Enables decoupling of UI and logic from the state management framework used.
 library reduced;
 
+import 'package:flutter/foundation.dart' show ValueGetter;
+
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
 ///
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
@@ -161,16 +163,16 @@ abstract class Reducer3<S, V1, V2, V3> {
 /// The type parameter `S` is the type of the state of the state management instance.
 typedef Reduce<S> = void Function(Reducer<S>);
 
-/// A Reducible is an abstraction for a state management instance.
+/// An Reducible is an abstraction for a state management instance.
 ///
 /// The type parameter `S` is the type of the state of the state management instance.
-class Reducible<S> {
-  const Reducible(this.getState, this.reduce, this.identity);
+abstract class Reducible<S> {
+  const Reducible();
 
   /// Reads the current state of the state management instance.
   ///
   /// The state is read again from the state management instance with each call.
-  final S Function() getState;
+  ValueGetter<S> get getState;
 
   /// Updates the state of the state management instance.
   ///
@@ -178,6 +180,28 @@ class Reducible<S> {
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The reducer must be executed synchronously.
+  Reduce<S> get reduce;
+}
+
+/// A ReducibleProxy is an implementation of Reducible as a proxy.
+///
+/// The type parameter `S` is the type of the state of the Reducible.
+class ReducibleProxy<S> extends Reducible<S>{
+  const ReducibleProxy(this.getState, this.reduce, this.identity);
+
+  /// Reads the current state of the state management instance.
+  ///
+  /// The state is read again from the state management instance with each call.
+  @override
+  final ValueGetter<S> getState;
+
+  /// Updates the state of the state management instance.
+  ///
+  /// When the method is executed, the passed `reducer` is called
+  /// with the current state of the state management instance
+  /// and the return value is taken as the new state of the state management instance.
+  /// The reducer must be executed synchronously.
+  @override
   final Reduce<S> reduce;
 
   /// Controls the value semantics of this class.
@@ -192,7 +216,7 @@ class Reducible<S> {
   /// This class delegates the [operator==] method to the [identity] object.
   @override
   bool operator ==(Object other) =>
-      other is Reducible<S> && identity == other.identity;
+      other is ReducibleProxy<S> && identity == other.identity;
 }
 
 /// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer].

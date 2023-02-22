@@ -24,7 +24,7 @@ class ReducibleLogic<S> with Logic {
       );
 
   late final Reducible<S> reducible =
-      Reducible(getState, reduce, this);
+      ReducibleProxy(getState, reduce, this);
 }
 
 extension ExtensionLogicOnBuildContext on BuildContext {

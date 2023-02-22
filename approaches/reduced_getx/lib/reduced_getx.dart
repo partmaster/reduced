@@ -18,5 +18,5 @@ class ReducibleGetx<S> extends GetxController {
   }
 
   late final Reducible<S> reducible =
-      Reducible(getState, reduce, this);
+      ReducibleProxy(getState, reduce, this);
 }

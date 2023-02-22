@@ -19,7 +19,7 @@ class Store<S> {
       value.state = reducer(value.state);
 
   late final Reducible<S> reducible =
-      Reducible(getState, reduce, this);
+      ReducibleProxy(getState, reduce, this);
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

@@ -13,7 +13,7 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
 
   S getState() => state;
 
-  late final reducible = Reducible(getState, add, this);
+  late final reducible = ReducibleProxy(getState, add, this);
 }
 
 extension ExtensionBlocOnBuildContext on BuildContext {
