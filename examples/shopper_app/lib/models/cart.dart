@@ -35,12 +35,17 @@ class RemoveItemReducer extends Reducer1<CartModel, int> {
     print('RemoveItemReducer.call($value)');
     final result = CartModel();
     result.catalog = state.catalog;
-    for(final item in state.items) {
+    for (final item in state.items) {
       result.add(item);
     }
     result.remove(state.catalog.getByPosition(value, null, null));
     return result;
   }
+}
+
+extension RemoveItemReducerOnReducible on Reducible<CartModel> {
+  ReducerOnReducible<CartModel> removeItemReducer(int value) =>
+      ReducerOnReducible(this, Reducer1Adapter(RemoveItemReducer(), value));
 }
 
 class AddItemReducer extends Reducer1<CartModel, int> {
@@ -52,12 +57,17 @@ class AddItemReducer extends Reducer1<CartModel, int> {
     print('AddItemReducer.call($value)');
     final result = CartModel();
     result.catalog = state.catalog;
-    for(final item in state.items) {
+    for (final item in state.items) {
       result.add(item);
     }
     result.add(state.catalog.getByPosition(value, null, null));
     return result;
   }
+}
+
+extension AddItemReducerOnReducible on Reducible<CartModel> {
+  ReducerOnReducible<CartModel> addItemReducer(int value) =>
+      ReducerOnReducible(this, Reducer1Adapter(AddItemReducer(), value));
 }
 
 class CartModel extends ChangeNotifier {
@@ -82,15 +92,13 @@ class CartModel extends ChangeNotifier {
 
   /// List of items in the cart.
   List<Item> get items => _itemIds
-      .map((id) => _catalog.getById(
+      .map(
+        (id) => _catalog.getById(
           id,
           null,
-          reducible != null && _itemIds.contains(id)
-              ? BondedReducer(
-                  reducible!,
-                  Reducer1Adapter(RemoveItemReducer(), id),
-                )
-              : null))
+          _itemIds.contains(id) ? reducible?.removeItemReducer(id) : null,
+        ),
+      )
       .toList();
 
   /// The current total price of all items.

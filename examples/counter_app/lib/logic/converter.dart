@@ -10,10 +10,7 @@ class MyHomePagePropsConverter {
   static MyHomePageProps convert(Reducible<MyAppState> reducible) =>
       MyHomePageProps(
         title: reducible.getState().title,
-        onIncrementPressed: BondedReducer(
-          reducible,
-          IncrementCounterReducer(),
-        ),
+        onIncrementPressed: reducible.incrementCounterReducer,
       );
 }
 

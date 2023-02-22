@@ -87,18 +87,8 @@ class _MyListItem extends StatelessWidget {
     final inCart = cart.items.map((e) => e.id).contains(index);
     return catalog.getByPosition(
       index,
-      inCart
-          ? null
-          : BondedReducer(
-              reducible,
-              Reducer1Adapter(AddItemReducer(), index),
-            ),
-      inCart
-          ? BondedReducer(
-              reducible,
-              Reducer1Adapter(RemoveItemReducer(), index),
-            )
-          : null,
+      inCart ? null : reducible.addItemReducer(index),
+      inCart ? reducible.removeItemReducer(index) : null,
     );
   }
 

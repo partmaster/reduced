@@ -224,8 +224,8 @@ class ReducibleProxy<S> extends Reducible<S>{
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Reducible].
-class BondedReducer<S> extends Callable<void> {
-  const BondedReducer(this.reducible, this.reducer);
+class ReducerOnReducible<S> extends Callable<void> {
+  const ReducerOnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
   /// the [reducer] is passed when the method [call] is called.
@@ -249,7 +249,7 @@ class BondedReducer<S> extends Callable<void> {
   /// [reducible] and [reducer] should have value semantics.
   @override
   bool operator ==(Object other) =>
-      other is BondedReducer &&
+      other is ReducerOnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
 }
@@ -259,8 +259,8 @@ class BondedReducer<S> extends Callable<void> {
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Reducible].
-class BondedReducer1<S, P> extends Callable1<void, P> {
-  const BondedReducer1(this.reducible, this.reducer);
+class Reducer1OnReducible<S, P> extends Callable1<void, P> {
+  const Reducer1OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
   /// the [reducer] is passed when the method [call] is called.
@@ -284,7 +284,7 @@ class BondedReducer1<S, P> extends Callable1<void, P> {
   /// [reducible] and [reducer] should have value semantics.
   @override
   bool operator ==(Object other) =>
-      other is BondedReducer1 &&
+      other is Reducer1OnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
 }
@@ -294,8 +294,8 @@ class BondedReducer1<S, P> extends Callable1<void, P> {
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Reducible].
-class BondedReducer2<S, V1, V2> extends Callable2<void, V1, V2> {
-  const BondedReducer2(this.reducible, this.reducer);
+class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> {
+  const Reducer2OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
   /// the [reducer] is passed when the method [call] is called.
@@ -320,7 +320,7 @@ class BondedReducer2<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [reducible] and [reducer] should have value semantics.
   @override
   bool operator ==(Object other) =>
-      other is BondedReducer2 &&
+      other is Reducer2OnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
 }
@@ -330,8 +330,8 @@ class BondedReducer2<S, V1, V2> extends Callable2<void, V1, V2> {
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Reducible].
-class BondedReducer3<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
-  const BondedReducer3(this.reducible, this.reducer);
+class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
+  const Reducer3OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
   /// the [reducer] is passed when the method [call] is called.
@@ -356,7 +356,7 @@ class BondedReducer3<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// [reducible] and [reducer] should have value semantics.
   @override
   bool operator ==(Object other) =>
-      other is BondedReducer3 &&
+      other is Reducer3OnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
 }

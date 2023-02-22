@@ -19,8 +19,12 @@ class DecrementCounterReducer extends Reducer<MyAppState> {
   static final instance = DecrementCounterReducer._();
 
   @override
-  MyAppState call(state) =>
-      state.copyWith(counter: state.counter - 1);
+  MyAppState call(state) => state.copyWith(counter: state.counter - 1);
+}
+
+extension DecrementCounterReducerOnReducible on Reducible<MyAppState> {
+  ReducerOnReducible get decrementCounterReducer =>
+      ReducerOnReducible(this, DecrementCounterReducer());
 }
 
 void main() {
@@ -37,23 +41,18 @@ void main() {
       (_) {},
       false,
     );
-    final objectUnderTest =
-        MyCounterWidgetPropsConverter.convert(reducible);
+    final objectUnderTest = MyCounterWidgetPropsConverter.convert(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
     const title = 'mock';
-    final incrementReducer = IncrementCounterReducer();
-    final decrementReducer = DecrementCounterReducer();
     final reducible = ReducibleProxy(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
       false,
     );
-    final onIncrementPressed =
-        BondedReducer(reducible, incrementReducer);
-    final onDecrementPressed =
-        BondedReducer(reducible, decrementReducer);
+    final onIncrementPressed = reducible.incrementCounterReducer;
+    final onDecrementPressed = reducible.decrementCounterReducer;
     final objectUnderTest = MyHomePagePropsConverter.convert(reducible);
     final expected = MyHomePageProps(
       title: title,
