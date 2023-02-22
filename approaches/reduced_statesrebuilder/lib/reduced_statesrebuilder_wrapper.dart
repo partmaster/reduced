@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
 import 'reduced_statesrebuilder.dart';
 

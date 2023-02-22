@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 // ignore: implementation_imports
 import 'package:solidart/src/core/signal_selector.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 
 import 'reduced_solidart.dart';
 

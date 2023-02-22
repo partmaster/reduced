@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
-import 'package:reduced/reduced_callback_typedefs.dart';
+import 'package:reduced/reduced_callbacks.dart';
 
 import '../data/props.dart';
 

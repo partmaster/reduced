@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 
 import 'reduced_getx.dart';
 

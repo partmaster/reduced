@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 
 import 'reduced_mobx.dart';
 

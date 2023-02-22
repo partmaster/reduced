@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 
 
 Widget wrapWithProvider({required Widget child}) =>

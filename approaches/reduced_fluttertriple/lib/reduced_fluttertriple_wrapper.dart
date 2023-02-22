@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:reduced/reduced_function_typedefs.dart';
+import 'package:reduced/reduced_functions.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
 
 import 'reduced_fluttertriple.dart';

@@ -1,6 +1,6 @@
 // props.dart
 
-import 'package:reduced/reduced_callback_typedefs.dart';
+import 'package:reduced/reduced_callbacks.dart';
 
 class MyHomePageProps {
   final String title;

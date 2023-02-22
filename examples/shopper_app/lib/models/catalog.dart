@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:reduced/reduced_callback_typedefs.dart';
+import 'package:reduced/reduced_callbacks.dart';
 
 /// A proxy of the catalog of items the user can buy.
 ///
