@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/reduced_typedefs.dart';
+import 'package:reduced/reduced_function_typedefs.dart';
 
 part 'reduced_mobx.g.dart';
 

@@ -3,7 +3,7 @@
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/reduced_typedefs.dart';
+import 'package:reduced/reduced_function_typedefs.dart';
 
 import 'reduced_binder.dart';
 

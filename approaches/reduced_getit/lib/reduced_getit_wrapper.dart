@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:reduced/reduced_typedefs.dart';
+import 'package:reduced/reduced_function_typedefs.dart';
 
 import 'reduced_getit.dart';
 
