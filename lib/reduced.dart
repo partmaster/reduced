@@ -254,12 +254,13 @@ class ReducerOnReducible<S> extends Callable<void> {
       reducible == other.reducible;
 }
 
-/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer].
+/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer1].
 ///
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
-/// Can be assigned to Widget properties of type [VoidCallback].
+/// Can be assigned to Widget properties of type [VoidCallback]. // FIXME
 /// The type parameter `S` is the type of the state of the [Reducible].
-class Reducer1OnReducible<S, P> extends Callable1<void, P> {
+/// The type parameter `V` is the type of the value of the [Reducer1].
+class Reducer1OnReducible<S, V> extends Callable1<void, V> {
   const Reducer1OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
@@ -268,12 +269,12 @@ class Reducer1OnReducible<S, P> extends Callable1<void, P> {
 
   /// The reducer that is passed as a parameter to the [reduce](Reducible.reduce) method
   /// of the [reducible] when the [call] method is called.
-  final Reducer1<S, P> reducer;
+  final Reducer1<S, V> reducer;
 
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  void call(P p) => reducible.reduce(Reducer1Adapter(reducer, p));
+  void call(V value) => reducible.reduce(Reducer1Adapter(reducer, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.
