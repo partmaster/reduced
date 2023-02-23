@@ -6,10 +6,11 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 ## Abstract
 
-Hier wird die Abstraktion 'reduced' vorgestellt, die UI und Logik einer Flutter-App 
-vom verwendeten State Management Framework entkoppelt. State Management Frameworks dienen der Trennung von UI und Logik. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Dem soll die Abstraktion entgegenwirken.
-'reduced' basiert auf der Kombination der Entwurfsmuster "State Reducer" und "Humble Objekt" und verwendet die Bausteine AppState, Reducer und Reducible sowie Binder, Builder und Props, die im Folgenden erklärt werden.
-Die entstehende Code-Struktur ist gut testbar, skalierbar und kompatibel zu verbreiteten State Management Frameworks, wie Riverpod [^4] oder Bloc [^5]. 
+Hier wird die Abstraktion 'reduced' vorgestellt, die UI und Logik einer Flutter-App vom verwendeten State Management Framework entkoppelt. State Management Frameworks dienen der Trennung von UI und Logik. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Dem soll die Abstraktion entgegenwirken.
+'reduced' basiert auf dem Konzept der Funktionalen Programmierung mit unveränderlichen Zustandsobjekten sowie der Kombination der Entwurfsmuster "State Reducer" und "Humble Objekt" und verwendet die Bausteine AppState, Reducer und Reducible sowie Binder, Builder, Props und Transformer, die im Folgenden erklärt werden.
+Die entstehende Code-Struktur ist besser lesbar, testbar, skalierbar und kompatibel zu verbreiteten State Management Frameworks, wie Riverpod [^4] oder Bloc [^5]. 
+</br> 
+Diese Vorteile haben ihren Preis: Gegenüber der direkten Verwendung eines State Management Frameworks bzw. der Verwendung von veränderlichen Zustandsobjekten ensteht etwas mehr Boilerplate Code.
 </br> 
 Wer beim Einsatz von State Management Frameworks flexibel bleiben will oder wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will, oder wer sich einfach nur einen Überblick über verfügbare State Management Frameworks verschaffen will, für den könnte der Artikel interessant sein. 
 
@@ -115,26 +116,59 @@ Auf App-Code bezogen heißt das:
 
 Für die ersten beiden Anforderungen lässt sich leicht eine Abstraktion definieren:
 
-1. eine get-Methode für den App-Zustand
+1. eine getState-Methode für den App-Zustand
 
 2. eine reduce-Methode zum Ändern des App-Zustands 
+
+
+```dart
+abstract class Reducible<S> {
+  const Reducible();
+  S get state;
+  void reduce(Reducer<S> reducer);
+}
+```
 
 Um die Abstraktion leicht auf vorhandene App-Zustands-Verwaltungs-Lösungen aufsetzen zu können, wurde sie nicht als abstrakte Basisklasse sondern als Proxy nach dem gleichnamigen Entwursmuster [^22] modelliert. Die Identität der realen App-Zustands-Verwaltungs-Instanz wird im Proxy durch das Property `identity` repräsentiert  
 
 ```dart
-class Reducible<S> {
-  const Reducible(this.getState, this.reduce, this.identity);
+class ReducibleProxy<S> extends Reducible<S> {
+  const ReducibleProxy(ValueGetter<S> state, Reduce<S> reduce, this.identity)
+      : _state = state,
+        _reduce = reduce;
 
-  final S Function() getState;
-  final Reduce<S> reduce;
+  /// Reads the current state of the state management instance.
+  ///
+  /// The state is read again from the state management instance with each call.
+  final ValueGetter<S> _state;
+
+  /// Updates the state of the state management instance.
+  ///
+  /// When the method is executed, the passed `reducer` is called
+  /// with the current state of the state management instance
+  /// and the return value is taken as the new state of the state management instance.
+  /// The reducer must be executed synchronously.
+  final Reduce<S> _reduce;
+
+  /// Controls the value semantics of this class.
+  ///
+  /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
   final Object identity;
 
   @override
-  int get hashCode => identity.hashCode;
+  get state => _state();
 
   @override
+  reduce(reducer) => _reduce(reducer);
+
+  /// This class delegates the [hashCode] method to the [identity] object.
+  @override
+  int get hashCode => identity.hashCode;
+
+  /// This class delegates the [operator==] method to the [identity] object.
+  @override
   bool operator ==(Object other) =>
-      other is Reducible<S> && identity == other.identity;
+      other is ReducibleProxy<S> && identity == other.identity;
 }
 ```
 
@@ -166,7 +200,7 @@ Da die Möglichkeiten für solche Benachrichtigungen sehr vom eingesetzten App-Z
 
 Der Funktion ```wrapWithConsumer``` wird ein ```transformer``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird. 
 
- Der Funktion ```wrapWithConsumer``` wird außerdem ein ```builder```, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
+ Der Funktion ```wrapWithConsumer``` wird außerdem ein ```builder``` übergeben, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
 
 ```dart
 Widget wrapWithConsumer<P>({
@@ -175,7 +209,7 @@ Widget wrapWithConsumer<P>({
 });
 ```
 
-Bei jeder App-Zustands-Änderung wird mit dem ```transformer``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```transformer```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Voraussetzung ist, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
+Bei jeder App-Zustands-Änderung wird mit dem ```transformer``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```transformer```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Es wird vorausgesetzt, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
 
 Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben und im Parameter ```child``` der Rest des Widget-Baums. 
 
@@ -204,7 +238,7 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
 
   S getState() => state;
 
-  late final reducible = Reducible(getState, add, this);
+  late final reducible = ReducibleProxy(getState, add, this);
 }
 ```
 
@@ -247,7 +281,23 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 ### Implementierungen für weitere Frameworks
 
 Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation [^6] gelisteten Frameworks (bis auf Fish-Redux, für das keine Null-safety Version zur Verfügung steht) implementiert.
-Im Folgenden werden die Links zu allen Implemenntierngsdateien aufgeführt. Die erste Datei enthält jeweils die Implementierung der Klasse ```Reducible``` für das Framework und die zweite Datei die Implementierung der Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.
+Das sind die Frameworks
+
+1. [Binder]()
+2. [Bloc]()
+3. [Flutter Command]()
+4. [Flutter Triple]()
+5. [GetIt]()
+6. [GetX]()
+7. [MobX]()
+8. [Provider]()
+9. [Redux]()
+10. [Riverpod]()
+11. [setState]()
+12. [Solidart]()
+13. [States Rebuilder]()
+
+Im Folgenden werden die Links zu allen Implementierungsdateien aufgeführt. Die erste Datei enthält jeweils die Implementierung der Klasse ```Reducible``` für das Framework und die zweite Datei die Implementierung der Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.
 
 #### Binder
 
@@ -335,7 +385,7 @@ Mit Hilfe des vorgestellten Konzepts mit den Klassen AppState, Reducer und Reduc
 </br>
 Die App-Logik wird hauptsächlich in Form von verschiedenen Reducer-Implementierungen bereitgestellt.
 </br>
-Der Rest der App-Logik liegt in Konvertierungsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
+Der Rest der App-Logik liegt in Transformationsfunktionen, die aus einem Reducible und den Reducer-Implementierungen die Props-Klassen erzeugen, die im folgenden Kapitel vorgestellt werden. 
 
 ## Example
 
@@ -465,13 +515,13 @@ class MyHomePageProps {
 }
 ``` 
 
-### Konverter 
+### Transformer 
 
-Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Konvertierung. Diese Konvertierung ist der static Methode `MyHomePagePropsTransformer.convert` implementiert. In dieser Methode wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
+Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Transformation. Diese Transformation ist der static Methode `MyHomePagePropsTransformer.transform` implementiert. In dieser Methode wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
 
 ```dart
 class MyHomePagePropsTransformer {
-  static MyHomePageProps convert(Reducible<MyAppState> reducible) =>
+  static MyHomePageProps transform(Reducible<MyAppState> reducible) =>
       MyHomePageProps(
         title: reducible.getState().title,
         counterText: '${reducible.getState().counter}',
@@ -483,15 +533,17 @@ class MyHomePagePropsTransformer {
 }
 ```
 
-Damit die Props als Wert für selektive Benachrichtigungen über App-Zustands-Änderungen eingesetzt werden können, müssen die [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden der Props-Klasse nach Wertsemantik [^12] funktionieren. Das setzt voraus, dass diese Methoden bei allen in den Props verwendeten Properties ebenfalls nach Wertsemantik funktionieren. Da anonyme Funktionen in Dart keine Wertsemantik haben, verwende ich für Callback-Properties keine Funktionen, wie z.B. [VoidCallback](https://api.flutter.dev/flutter/dart-ui/VoidCallback.html), sondern eine eigene Klasse `Callable<void>` mit überschriebenen [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden.  
+Damit die Props als Wert für selektive Benachrichtigungen über App-Zustands-Änderungen eingesetzt werden können, müssen die [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) Methoden der Props-Klasse nach Wertsemantik [^12] funktionieren. Das setzt voraus, dass diese Methoden bei allen in den Props verwendeten Properties ebenfalls nach Wertsemantik funktionieren. Da anonyme Funktionen in Dart keine Wertsemantik haben, verwende ich für Callback-Properties keine Funktionen, wie z.B. [VoidCallback](https://api.flutter.dev/flutter/dart-ui/VoidCallback.html), sondern eine eigene Klasse `Callable<T>` deren Methoden [hashCode](https://api.dart.dev/stable/2.13.4/dart-core/Object/hashCode.html) und [operator==](https://api.dart.dev/stable/2.13.4/dart-core/Object/operator_equals.html) mit Wertsemantik überschrieben werden.  
 
 ```dart
 abstract class Callable<T> {
   T call();
 }
+```
 
-class BondedReducer<S> extends Callable<void> {
-  BondedReducer(this.reducible, this.reducer);
+```dart
+class ReducerOnReducible<S> extends Callable<void> {
+  const ReducerOnReducible(this.reducible, this.reducer);
 
   final Reducible<S> reducible;
   final Reducer<S> reducer;
@@ -500,11 +552,11 @@ class BondedReducer<S> extends Callable<void> {
   void call() => reducible.reduce(reducer);
 
   @override
-  int get hashCode => hash2(reducible, reducer);
+  int get hashCode => Object.hash(reducible, reducer);
 
   @override
   bool operator ==(Object other) =>
-      other is VoidCallable<S> &&
+      other is ReducerOnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
 }
@@ -714,9 +766,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: const MyAppState(title: 'setState'),
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePagePropsTransformer.convert(value),
+          value: MyHomePagePropsTransformer.transform(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetPropsTransformer.convert(value),
+            value: MyCounterWidgetPropsTransformer.transform(value),
             child: child,
           ),
         ),
@@ -765,7 +817,7 @@ Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText`
 ```dart
 class MyHomePageProps {
   final String title;
-  final Callable onIncrementPressed;
+  final VoidCallable onIncrementPressed;
 
   const MyHomePageProps({
     required this.title,
@@ -908,7 +960,7 @@ Die App ist sauber nach UI-Code und App-Logik-Code getrennt. Diese Trennung woll
 
 #### App-Logik-Tests
 
-In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den `convert`-Funktionen zur Erzeugunf der  Props-Instanzen. In unserem Beispiel-Projekt ist das die Klasse `IncrementCounterReducer` und die Funkrionen `MyHomePagePropsTransformer.convert` und `MyCounterWidgetPropsTransformer.convert`. Da diese Klassen und Funktionen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
+In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den `transform`-Funktionen zur Erzeugunf der  Props-Instanzen. In unserem Beispiel-Projekt ist das die Klasse `IncrementCounterReducer` und die Funkrionen `MyHomePagePropsTransformer.transform` und `MyCounterWidgetPropsTransformer.transform`. Da diese Klassen und Funktionen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
 
 Hier ein Beispiel-Test für die call-Methode der Klasse `IncrementCounterReducer`:
 
@@ -922,7 +974,7 @@ Hier ein Beispiel-Test für die call-Methode der Klasse `IncrementCounterReducer
   });
 ```
 
-Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyCounterWidgetPropsTransformer`:
+Hier ein Beispiel-Test für die Methode `transform` der Klasse `MyCounterWidgetPropsTransformer`:
 
 ```dart
   test('testMyCounterWidgetProps', () {
@@ -932,12 +984,12 @@ Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyCounterWidgetPro
       false,
     );
     final objectUnderTest =
-        MyCounterWidgetPropsTransformer.convert(reducible);
+        MyCounterWidgetPropsTransformer.transform(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
 ```
 
-Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyHomePagePropsTransformer`:
+Hier ein Beispiel-Test für die Methode `transform` der Klasse `MyHomePagePropsTransformer`:
 
 ```dart
   test('testMyHomePageProps', () {
@@ -953,7 +1005,7 @@ Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyHomePagePropsTra
         BondedReducer(reducible, incrementReducer);
     final onDecrementPressed =
         BondedReducer(reducible, decrementReducer);
-    final objectUnderTest = MyHomePagePropsTransformer.convert(reducible);
+    final objectUnderTest = MyHomePagePropsTransformer.transform(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

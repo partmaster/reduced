@@ -9,18 +9,18 @@ import 'reducer.dart';
 
 class CatalogItemPropsTransformer {
   static CatalogItemProps transform(Reducible<AppState> reducible, int id) {
-    final item = reducible.getState().getById(id);
+    final item = reducible.state.getById(id);
     return CatalogItemProps(
         name: item.name,
         color: item.color,
         onPressed:
-            reducible.getState().itemIds.contains(id) ? null : reducible.addItemReducer(id));
+            reducible.state.itemIds.contains(id) ? null : reducible.addItemReducer(id));
   }
 }
 
 class CartPropsTransformer {
   static CartProps transform(Reducible<AppState> reducible) {
-    final state = reducible.getState();
+    final state = reducible.state;
     return CartProps(
       totalPrice: '${state.totalPrice}',
       items: state.itemIds

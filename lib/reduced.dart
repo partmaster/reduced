@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart' show ValueGetter;
 
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
 ///
+/// Can be assigned to Widget callback properties without parameters, e.g. [VoidCallbck].
+///
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
 /// If the properties in the state of a stateful widget change,
 /// the build method of the state must be re-executed.
@@ -28,6 +30,8 @@ abstract class Callable<R> {
 
 /// An abstraction for callbacks with one parameter in the form of a class to easily implement value semantics.
 ///
+/// Can be assigned to Widget callback properties with one parameter, e.g. [ValueChanged].
+/// 
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
 /// If the properties in the state of a stateful widget change,
 /// the build method of the state must be re-executed.
@@ -49,6 +53,8 @@ abstract class Callable1<R, V> {
 
 /// An abstraction for callbacks with two parameters in the form of a class to easily implement value semantics.
 ///
+/// Can be assigned to Widget callback properties with two parameters, e.g. [LocaleResolutionCallback].
+/// 
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
 /// If the properties in the state of a stateful widget change,
 /// the build method of the state must be re-executed.
@@ -71,6 +77,8 @@ abstract class Callable2<R, V1, V2> {
 
 /// An abstraction for callbacks with three parameters in the form of a class to easily implement value semantics.
 ///
+/// Can be assigned to Widget callback properties with three parameters, e.g. [TweenVisitor].
+/// 
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
 /// If the properties in the state of a stateful widget change,
 /// the build method of the state must be re-executed.
@@ -172,7 +180,7 @@ abstract class Reducible<S> {
   /// Reads the current state of the state management instance.
   ///
   /// The state is read again from the state management instance with each call.
-  ValueGetter<S> get getState;
+  S get state;
 
   /// Updates the state of the state management instance.
   ///
@@ -180,20 +188,22 @@ abstract class Reducible<S> {
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The reducer must be executed synchronously.
-  Reduce<S> get reduce;
+  void reduce(Reducer<S> reducer);
 }
 
 /// A ReducibleProxy is an implementation of Reducible as a proxy.
 ///
 /// The type parameter `S` is the type of the state of the Reducible.
-class ReducibleProxy<S> extends Reducible<S>{
-  const ReducibleProxy(this.getState, this.reduce, this.identity);
+class ReducibleProxy<S> extends Reducible<S> {
+  const ReducibleProxy(
+      ValueGetter<S> state, Reduce<S> reduce, this.identity)
+      : _state = state,
+        _reduce = reduce;
 
   /// Reads the current state of the state management instance.
   ///
   /// The state is read again from the state management instance with each call.
-  @override
-  final ValueGetter<S> getState;
+  final ValueGetter<S> _state;
 
   /// Updates the state of the state management instance.
   ///
@@ -201,19 +211,24 @@ class ReducibleProxy<S> extends Reducible<S>{
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The reducer must be executed synchronously.
-  @override
-  final Reduce<S> reduce;
+  final Reduce<S> _reduce;
 
   /// Controls the value semantics of this class.
   ///
   /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
   final Object identity;
 
-  /// This class delegates the [hashCode] method to the [identity] object.
+  @override
+  get state => _state();
+
+  @override
+  reduce(reducer) => _reduce(reducer);
+
+  /// This class delegates [hashCode] to the [identity] object.
   @override
   int get hashCode => identity.hashCode;
 
-  /// This class delegates the [operator==] method to the [identity] object.
+  /// This class delegates [operator==] to the [identity] object.
   @override
   bool operator ==(Object other) =>
       other is ReducibleProxy<S> && identity == other.identity;
@@ -257,7 +272,7 @@ class ReducerOnReducible<S> extends Callable<void> {
 /// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer1].
 ///
 /// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
-/// Can be assigned to Widget properties of type [VoidCallback]. // FIXME
+/// 
 /// The type parameter `S` is the type of the state of the [Reducible].
 /// The type parameter `V` is the type of the value of the [Reducer1].
 class Reducer1OnReducible<S, V> extends Callable1<void, V> {
@@ -274,7 +289,8 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  void call(V value) => reducible.reduce(Reducer1Adapter(reducer, value));
+  void call(V value) =>
+      reducible.reduce(Reducer1Adapter(reducer, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.
@@ -290,11 +306,13 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
       reducible == other.reducible;
 }
 
-/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer].
+/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer2].
 ///
-/// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
-/// Can be assigned to Widget properties of type [VoidCallback].
+/// Or in other words, a [Reducer2] bonded to a [Reducible] useable as callback.
+/// 
 /// The type parameter `S` is the type of the state of the [Reducible].
+/// The type parameter `V1` is the type of the 1st value of the [Reducer2].
+/// The type parameter `V2` is the type of the 2nd value of the [Reducer2].
 class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> {
   const Reducer2OnReducible(this.reducible, this.reducer);
 
@@ -326,12 +344,16 @@ class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> {
       reducible == other.reducible;
 }
 
-/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer].
+/// An implementation of a callback as a [Reducible.reduce](Reducible.reduce) call with a [Reducer3].
 ///
-/// Or in other words, a [Reducer] bonded to a [Reducible] useable as callback.
-/// Can be assigned to Widget properties of type [VoidCallback].
+/// Or in other words, a [Reducer3] bonded to a [Reducible] useable as callback.
+/// 
 /// The type parameter `S` is the type of the state of the [Reducible].
-class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
+/// The type parameter `V1` is the type of the 1st value of the [Reducer3].
+/// The type parameter `V2` is the type of the 2nd value of the [Reducer3].
+/// The type parameter `V3` is the type of the 3rd value of the [Reducer3].
+class Reducer3OnReducible<S, V1, V2, V3>
+    extends Callable3<void, V1, V2, V3> {
   const Reducer3OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
@@ -345,8 +367,8 @@ class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  void call(V1 value1, V2 value2, V3 value3) =>
-      reducible.reduce(Reducer3Adapter(reducer, value1, value2, value3));
+  void call(V1 value1, V2 value2, V3 value3) => reducible
+      .reduce(Reducer3Adapter(reducer, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.
@@ -404,7 +426,8 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
   final V2 value2;
   final V3 value3;
 
-  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
+  Reducer3Adapter(
+      this.adaptee, this.value1, this.value2, this.value3);
 
   @override
   call(state) => adaptee.call(state, value1, value2, value3);

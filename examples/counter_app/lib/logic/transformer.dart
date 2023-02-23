@@ -9,7 +9,7 @@ import 'reducer.dart';
 class MyHomePagePropsTransformer {
   static MyHomePageProps transform(Reducible<MyAppState> reducible) =>
       MyHomePageProps(
-        title: reducible.getState().title,
+        title: reducible.state.title,
         onIncrementPressed: reducible.incrementCounterReducer,
       );
 }
@@ -17,6 +17,6 @@ class MyHomePagePropsTransformer {
 class MyCounterWidgetPropsTransformer {
   static MyCounterWidgetProps transform(Reducible<MyAppState> reducible) =>
       MyCounterWidgetProps(
-        counterText: '${reducible.getState().counter}',
+        counterText: '${reducible.state.counter}',
       );
 }
