@@ -7,34 +7,15 @@ import 'props.dart';
 import 'state.dart';
 import 'reducer.dart';
 
-class ItemById extends IndexedValueGetterCallable<CatalogItemProps> {
-  ItemById(this.reducible);
-
-  final Reducible<AppState> reducible;
-
-  @override
-  CatalogItemProps call(int id) {
-    var state = reducible.getState();
-    final item = state.getById(id);
+class CatalogItemPropsTransformer {
+  static CatalogItemProps transform(Reducible<AppState> reducible, int id) {
+    final item = reducible.getState().getById(id);
     return CatalogItemProps(
         name: item.name,
         color: item.color,
         onPressed:
-            state.itemIds.contains(id) ? null : reducible.addItemReducer(id));
+            reducible.getState().itemIds.contains(id) ? null : reducible.addItemReducer(id));
   }
-
-  @override
-  int get hashCode => reducible.hashCode;
-
-  @override
-  bool operator ==(other) => other is ItemById && reducible == other.reducible;
-}
-
-class CatalogPropsTransformer {
-  static CatalogProps transform(Reducible<AppState> reducible) => CatalogProps(
-        itemById: ItemById(reducible),
-        itemIds: reducible.getState().itemIds,
-      );
 }
 
 class CartPropsTransformer {

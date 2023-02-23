@@ -5,7 +5,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:reduced/reduced.dart';
 import 'package:reduced/reduced_callbacks.dart';
 import 'package:collection/collection.dart';
 
@@ -48,22 +47,6 @@ class CartItemProps {
       other is CartItemProps &&
       name == other.name &&
       onPressed == other.onPressed;
-}
-
-typedef IndexedValueGetterCallable<T> = Callable1<T, int>;
-
-class CatalogProps {
-  CatalogProps({required this.itemById, required this.itemIds});
-
-  final IndexedValueGetterCallable<CatalogItemProps> itemById;
-  final List<int> itemIds;
-
-  @override
-  int get hashCode => Object.hash(itemById, Object.hashAll(itemIds));
-
-  @override
-  bool operator ==(other) =>
-      other is CatalogProps && itemById == other.itemById && ListEquality().equals(itemIds, other.itemIds);
 }
 
 class CartProps {

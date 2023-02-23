@@ -6,41 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
 class AppState {
-  AppState({
-    required this.itemIds,
-  });
+  AppState({required this.itemIds});
 
   final List<int> itemIds;
 
   AppState copyWith({
     List<int>? itemIds,
   }) =>
-      AppState(
-        itemIds: itemIds ?? this.itemIds,
-      );
+      AppState(itemIds: itemIds ?? this.itemIds);
 
-  static List<String> itemNames = [
-    'Code Smell',
-    'Control Flow',
-    'Interpreter',
-    'Recursion',
-    'Sprint',
-    'Heisenbug',
-    'Spaghetti',
-    'Hydra Code',
-    'Off-By-One',
-    'Scope',
-    'Callback',
-    'Closure',
-    'Automata',
-    'Bit Shift',
-    'Currying',
-  ];
-
-  Item getById(int id) => Item(
-        id,
-        itemNames[id % itemNames.length],
-      );
+  Item getById(int id) => Item(id);
 
   late final int totalPrice = itemIds.fold(
     0,
@@ -61,10 +36,29 @@ class Item {
   final Color color;
   final int price = 42;
 
-  Item(this.id, this.name)
+  static List<String> itemNames = [
+    'Code Smell',
+    'Control Flow',
+    'Interpreter',
+    'Recursion',
+    'Sprint',
+    'Heisenbug',
+    'Spaghetti',
+    'Hydra Code',
+    'Off-By-One',
+    'Scope',
+    'Callback',
+    'Closure',
+    'Automata',
+    'Bit Shift',
+    'Currying',
+  ];
+
+  Item(this.id)
       // To make the sample app look nicer, each item is given one of the
       // Material Design primary colors.
-      : color = Colors.primaries[id % Colors.primaries.length];
+      : color = Colors.primaries[id % Colors.primaries.length],
+        name = itemNames[id % itemNames.length];
 
   @override
   int get hashCode => id;

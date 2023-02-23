@@ -37,27 +37,28 @@ class MyCart extends StatelessWidget {
 }
 
 class _CartList extends StatelessWidget {
-  Widget builder({Key? key, required CartProps props}) {
-    return Builder(
-      builder: (context) {
-        final itemNameStyle = Theme.of(context).textTheme.titleLarge;
-        return ListView.builder(
-          itemCount: props.items.length,
-          itemBuilder: (context, index) => ListTile(
-            leading: const Icon(Icons.done),
-            trailing: IconButton(
-              icon: const Icon(Icons.remove_circle_outline),
-              onPressed: props.items[index].onPressed,
-            ),
-            title: Text(
-              props.items[index].name,
-              style: itemNameStyle,
-            ),
-          ),
-        );
-      },
-    );
-  }
+  Widget builder({Key? key, required CartProps props}) => Builder(
+        builder: (context) {
+          final itemNameStyle = Theme.of(context).textTheme.titleLarge;
+          return ListView.builder(
+            itemCount: props.items.length,
+            itemBuilder: (context, index) {
+              final item = props.items[index];
+              return ListTile(
+                leading: const Icon(Icons.done),
+                trailing: IconButton(
+                  icon: const Icon(Icons.remove_circle_outline),
+                  onPressed: item.onPressed,
+                ),
+                title: Text(
+                  item.name,
+                  style: itemNameStyle,
+                ),
+              );
+            },
+          );
+        },
+      );
 
   @override
   Widget build(BuildContext context) => wrapWithConsumer(
@@ -69,30 +70,29 @@ class _CartTotal extends StatelessWidget {
   Widget build(BuildContext context) => wrapWithConsumer(
       converter: CartPropsTransformer.transform, builder: builder);
 
-  Widget builder({Key? key, required CartProps props}) {
-    return Builder(builder: (context) {
-      final hugeStyle =
-          Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 48);
-      return SizedBox(
-        height: 200,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('\$${props.totalPrice}', style: hugeStyle),
-              const SizedBox(width: 24),
-              FilledButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Buying not supported yet.')));
-                },
-                style: TextButton.styleFrom(foregroundColor: Colors.white),
-                child: const Text('BUY'),
-              ),
-            ],
+  Widget builder({Key? key, required CartProps props}) =>
+      Builder(builder: (context) {
+        final hugeStyle =
+            Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 48);
+        return SizedBox(
+          height: 200,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('\$${props.totalPrice}', style: hugeStyle),
+                const SizedBox(width: 24),
+                FilledButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Buying not supported yet.')));
+                  },
+                  style: TextButton.styleFrom(foregroundColor: Colors.white),
+                  child: const Text('BUY'),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
-  }
+        );
+      });
 }
