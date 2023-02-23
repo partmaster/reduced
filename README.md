@@ -123,36 +123,21 @@ Für die ersten beiden Anforderungen lässt sich leicht eine Abstraktion definie
 
 ```dart
 abstract class Reducible<S> {
-  const Reducible();
   S get state;
   void reduce(Reducer<S> reducer);
 }
 ```
 
-Um die Abstraktion leicht auf vorhandene App-Zustands-Verwaltungs-Lösungen aufsetzen zu können, wurde sie nicht als abstrakte Basisklasse sondern als Proxy nach dem gleichnamigen Entwursmuster [^22] modelliert. Die Identität der realen App-Zustands-Verwaltungs-Instanz wird im Proxy durch das Property `identity` repräsentiert  
+Um die Abstraktion leicht auf vorhandene App-Zustands-Verwaltungs-Lösungen aufsetzen zu können, wurde sie alternativ zur abstrakte Basisklasse als Proxy nach dem gleichnamigen Entwurfsmuster [^22] modelliert. Die Identität der realen App-Zustands-Verwaltungs-Instanz wird im Proxy durch das Property `identity` repräsentiert:
 
 ```dart
 class ReducibleProxy<S> extends Reducible<S> {
-  const ReducibleProxy(ValueGetter<S> state, Reduce<S> reduce, this.identity)
+  ReducibleProxy(ValueGetter<S> state, Reduce<S> reduce, this.identity)
       : _state = state,
         _reduce = reduce;
 
-  /// Reads the current state of the state management instance.
-  ///
-  /// The state is read again from the state management instance with each call.
   final ValueGetter<S> _state;
-
-  /// Updates the state of the state management instance.
-  ///
-  /// When the method is executed, the passed `reducer` is called
-  /// with the current state of the state management instance
-  /// and the return value is taken as the new state of the state management instance.
-  /// The reducer must be executed synchronously.
   final Reduce<S> _reduce;
-
-  /// Controls the value semantics of this class.
-  ///
-  /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
   final Object identity;
 
   @override
@@ -161,38 +146,35 @@ class ReducibleProxy<S> extends Reducible<S> {
   @override
   reduce(reducer) => _reduce(reducer);
 
-  /// This class delegates the [hashCode] method to the [identity] object.
   @override
-  int get hashCode => identity.hashCode;
+  get hashCode => identity.hashCode;
 
-  /// This class delegates the [operator==] method to the [identity] object.
   @override
-  bool operator ==(Object other) =>
+  operator ==(Object other) =>
       other is ReducibleProxy<S> && identity == other.identity;
 }
 ```
 
-Hier noch die Definition der in `Reducible`verwendeten Typen `Reducer` und `Reduce`:
+Hier noch die Definitionen der in `Reducible` verwendeten Typen `Reducer` und `Reduce`:
 
 ```dart
 abstract class Reducer<S> {
-  const Reducer();
-
   S call(S state);
 }
+```
 
+```dart
 typedef Reduce<S> = void Function(Reducer<S>);
 ```
 
-Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- und eine Set-Methode für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reducible` einfach implementieren:
+Wenn wir davon ausgehen, dass jedes App-Zustands-Verwaltungs-Framework in irgendeiner Form eine Get- (z.B. ```S getState()```) und eine Set-Methode (z.B. ```setState(S)```) für den App-Zustand anbietet, dann lässt sich die reduce-Methode `void reduce(Reducer)` aus dem Interface `Reducible` einfach implementieren:
 
 ```dart
-  void reduce(Reducer<MyAppState> reducer) => 
-    setState(reducer(getState()));
+  @override
+  reduce(reducer) => setState(reducer(getState()));
 ```
 
 Das Reducer-Pattern sollte sich also einfach mit jedem App-Zustands-Verwaltungs-Framework umsetzten lassen. 
-
 
 Die dritte Anforderung, sich selektiv über Änderungen am App-Zustand benachrichtigen lassen zu können, wird mit zwei Funktion ```wrapWithConsumer``` und ```wrapWithProvider``` umgesetzt.
 
