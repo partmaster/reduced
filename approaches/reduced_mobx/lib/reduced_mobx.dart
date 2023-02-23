@@ -14,10 +14,10 @@ class ReducibleStore<S, P1, P2> = ReducibleStoreBase<S, P1, P2>
     with _$ReducibleStore;
 
 abstract class ReducibleStoreBase<S, P1, P2> with Store {
-  ReducibleStoreBase(this.value, this.converter1, this.converter2);
+  ReducibleStoreBase(this.value, this.transformer1, this.transformer2);
 
-  final ReducibleConverter<S, P1> converter1;
-  final ReducibleConverter<S, P2> converter2;
+  final ReducibleTransformer<S, P1> transformer1;
+  final ReducibleTransformer<S, P2> transformer2;
 
   @observable
   S value;
@@ -32,10 +32,10 @@ abstract class ReducibleStoreBase<S, P1, P2> with Store {
   late final Reducible<S> reducible = ReducibleProxy(getState, reduce, this);
 
   @computed
-  P1 get p1 => converter1(reducible);
+  P1 get p1 => transformer1(reducible);
 
   @computed
-  P2 get p2 => converter2(reducible);
+  P2 get p2 => transformer2(reducible);
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

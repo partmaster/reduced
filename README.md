@@ -164,18 +164,18 @@ Die dritte Anforderung, sich selektiv über Änderungen am App-Zustand benachric
 
 Da die Möglichkeiten für solche Benachrichtigungen sehr vom eingesetzten App-Zustands-Verwaltungs-System abhängen, gibt es keine einheitliche Signatur dieser Funktionen für alle App-Zustands-Verwaltungs-Systeme. Aber das Grundprinzip ist immer gleich und soll hier an einer Beispiel-Signatur erklärt werden. 
 
-Der Funktion ```wrapWithConsumer``` wird ein ```converter``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird. 
+Der Funktion ```wrapWithConsumer``` wird ein ```transformer``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird. 
 
  Der Funktion ```wrapWithConsumer``` wird außerdem ein ```builder```, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
 
 ```dart
 Widget wrapWithConsumer<P>({
-  required ReducibleConverter<S, P> converter,
+  required ReducibleTransformer<S, P> transformer,
   required PropsWidgetBuilder<P> builder,
 });
 ```
 
-Bei jeder App-Zustands-Änderung wird mit dem ```converter``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```converter```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Voraussetzung ist, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
+Bei jeder App-Zustands-Änderung wird mit dem ```transformer``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```transformer```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Voraussetzung ist, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
 
 Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben und im Parameter ```child``` der Rest des Widget-Baums. 
 
@@ -234,11 +234,11 @@ Widget wrapWithProvider<S>({
 ```dart
 extension WrapWithConsumer<S> on ReducibleBloc<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => converter(reducible),
+        selector: (state) => transformer(reducible),
         builder: (context, props) => builder(props: props),
       );
 }
@@ -467,10 +467,10 @@ class MyHomePageProps {
 
 ### Konverter 
 
-Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Konvertierung. Diese Konvertierung ist der static Methode `MyHomePagePropsConverter.convert` implementiert. In dieser Methode wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
+Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Konvertierung. Diese Konvertierung ist der static Methode `MyHomePagePropsTransformer.convert` implementiert. In dieser Methode wird festgelegt, wie App-Zustands-Werte für die Anzeige kombiniert bzw. formatiert werden und auf welche App-Zustands-Operationen die erkannten Nutzergesten in den Nutzergesten-Callbacks abgebildet werden. 
 
 ```dart
-class MyHomePagePropsConverter {
+class MyHomePagePropsTransformer {
   static MyHomePageProps convert(Reducible<MyAppState> reducible) =>
       MyHomePageProps(
         title: reducible.getState().title,
@@ -714,9 +714,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: const MyAppState(title: 'setState'),
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePagePropsConverter.convert(value),
+          value: MyHomePagePropsTransformer.convert(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetPropsConverter.convert(value),
+            value: MyCounterWidgetPropsTransformer.convert(value),
             child: child,
           ),
         ),
@@ -908,7 +908,7 @@ Die App ist sauber nach UI-Code und App-Logik-Code getrennt. Diese Trennung woll
 
 #### App-Logik-Tests
 
-In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den `convert`-Funktionen zur Erzeugunf der  Props-Instanzen. In unserem Beispiel-Projekt ist das die Klasse `IncrementCounterReducer` und die Funkrionen `MyHomePagePropsConverter.convert` und `MyCounterWidgetPropsConverter.convert`. Da diese Klassen und Funktionen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
+In der hier vorgestellten Code-Struktur befindet sich die App-Logik in den call-Methoden der Reducer-Klassen und in den `convert`-Funktionen zur Erzeugunf der  Props-Instanzen. In unserem Beispiel-Projekt ist das die Klasse `IncrementCounterReducer` und die Funkrionen `MyHomePagePropsTransformer.convert` und `MyCounterWidgetPropsTransformer.convert`. Da diese Klassen und Funktionen keine UI-Ablaufumgebung benötigen, können sie mit einfachen Unit-Tests getestet werden.
 
 Hier ein Beispiel-Test für die call-Methode der Klasse `IncrementCounterReducer`:
 
@@ -922,7 +922,7 @@ Hier ein Beispiel-Test für die call-Methode der Klasse `IncrementCounterReducer
   });
 ```
 
-Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyCounterWidgetPropsConverter`:
+Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyCounterWidgetPropsTransformer`:
 
 ```dart
   test('testMyCounterWidgetProps', () {
@@ -932,12 +932,12 @@ Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyCounterWidgetPro
       false,
     );
     final objectUnderTest =
-        MyCounterWidgetPropsConverter.convert(reducible);
+        MyCounterWidgetPropsTransformer.convert(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
 ```
 
-Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyHomePagePropsConverter`:
+Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyHomePagePropsTransformer`:
 
 ```dart
   test('testMyHomePageProps', () {
@@ -953,7 +953,7 @@ Hier ein Beispiel-Test für die Methode `convert` der Klasse `MyHomePagePropsCon
         BondedReducer(reducible, incrementReducer);
     final onDecrementPressed =
         BondedReducer(reducible, decrementReducer);
-    final objectUnderTest = MyHomePagePropsConverter.convert(reducible);
+    final objectUnderTest = MyHomePagePropsTransformer.convert(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

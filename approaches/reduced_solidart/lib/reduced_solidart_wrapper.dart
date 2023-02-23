@@ -19,13 +19,13 @@ Widget wrapWithProvider<S>({
 
 extension WrapWithConsumer<S> on Signal<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       SignalBuilder(
         signal: SignalSelector<S, P>(
           signal: this,
-          selector: (_) => converter(reducible),
+          selector: (_) => transformer(reducible),
           options: SignalOptions(comparator: (a, b) => a == b),
         ),
         builder: (_, value, ___) => builder(props: value),

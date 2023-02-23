@@ -21,11 +21,11 @@ Widget wrapWithProvider<S>({
         child: child);
 
 Widget wrapWithConsumer<S, P>({
-  required ReducibleConverter<S, P> converter,
+  required ReducibleTransformer<S, P> transformer,
   required PropsWidgetBuilder<P> builder,
 }) =>
     StoreConnector<S, P>(
       distinct: true,
-      converter: (store) => converter(store.reducible<S>()),
+      converter: (store) => transformer(store.reducible<S>()),
       builder: (context, props) => builder(props: props),
     );

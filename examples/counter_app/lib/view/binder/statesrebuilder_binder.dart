@@ -5,7 +5,7 @@ import 'package:reduced_statesrebuilder/reduced_statesrebuilder.dart';
 import 'package:reduced_statesrebuilder/reduced_statesrebuilder_wrapper.dart';
 
 import '../../data/state.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -26,7 +26,7 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) => context.store<MyAppState>().wrapWithConsumer(
         builder: MyHomePageBuilder.new,
-        converter: MyHomePagePropsConverter.convert,
+        transformer: MyHomePagePropsTransformer.transform,
       );
 }
 
@@ -36,6 +36,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) => context.store<MyAppState>().wrapWithConsumer(
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetPropsConverter.convert,
+        transformer: MyCounterWidgetPropsTransformer.transform,
       );
 }

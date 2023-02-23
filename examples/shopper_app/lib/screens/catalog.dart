@@ -39,7 +39,7 @@ class _AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => wrapWithConsumer(
-        converter: (Reducible<AppState> reducible) =>
+        transformer: (Reducible<AppState> reducible) =>
             CatalogItemPropsTransformer.transform(reducible, id),
         builder: builder,
       );
@@ -82,7 +82,7 @@ class _MyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => wrapWithConsumer(
-        converter: (Reducible<AppState> reducible) =>
+        transformer: (Reducible<AppState> reducible) =>
             CatalogItemPropsTransformer.transform(reducible, id),
         builder: builder,
       );

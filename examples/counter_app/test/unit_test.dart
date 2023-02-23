@@ -7,7 +7,7 @@
 
 import 'package:counter_app/data/props.dart';
 import 'package:counter_app/data/state.dart';
-import 'package:counter_app/logic/converter.dart';
+import 'package:counter_app/logic/transformer.dart';
 import 'package:counter_app/logic/reducer.dart';
 import 'package:reduced/reduced.dart';
 import 'package:test/test.dart';
@@ -41,7 +41,7 @@ void main() {
       (_) {},
       false,
     );
-    final objectUnderTest = MyCounterWidgetPropsConverter.convert(reducible);
+    final objectUnderTest = MyCounterWidgetPropsTransformer.transform(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
@@ -53,7 +53,7 @@ void main() {
     );
     final onIncrementPressed = reducible.incrementCounterReducer;
     final onDecrementPressed = reducible.decrementCounterReducer;
-    final objectUnderTest = MyHomePagePropsConverter.convert(reducible);
+    final objectUnderTest = MyHomePagePropsTransformer.transform(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

@@ -6,7 +6,7 @@ import 'package:reduced_riverpod/reduced_riverpod.dart';
 import 'package:reduced_riverpod/reduced_riverpod_wrapper.dart';
 
 import '../../data/state.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 typedef MyAppStateNotifier = ReducibleStateNotifier<MyAppState>;
@@ -23,7 +23,7 @@ final counterWidgetPropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyCounterWidgetPropsConverter.convert(
+        (state) => MyCounterWidgetPropsTransformer.transform(
           appStateNotifier.reducible,
         ),
       ),
@@ -36,7 +36,7 @@ final homePagePropsProvider = StateProvider(
     final appStateNotifier = ref.watch(appStateProvider.notifier);
     return ref.watch(
       appStateProvider.select(
-        (state) => MyHomePagePropsConverter.convert(
+        (state) => MyHomePagePropsTransformer.transform(
           appStateNotifier.reducible,
         ),
       ),

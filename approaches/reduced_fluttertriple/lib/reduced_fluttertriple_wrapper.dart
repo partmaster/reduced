@@ -19,12 +19,12 @@ Widget wrapWithProvider<S extends Object>({
 
 extension WrapWithConsumer<S extends Object> on ReducibleStreamStore<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       ScopedBuilder<ReducibleStreamStore<S>, Object, S>(
         store: this,
-        distinct: (_) => converter(reducible),
-        onState: (_, __) => builder(props: converter(reducible)),
+        distinct: (_) => transformer(reducible),
+        onState: (_, __) => builder(props: transformer(reducible)),
       );
 }

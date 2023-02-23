@@ -6,7 +6,7 @@ import 'package:reduced_setstate/reduced_setstate.dart';
 
 import '../../data/props.dart';
 import '../../data/state.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -19,9 +19,9 @@ class MyAppStateBinder extends StatelessWidget {
         initialState: const MyAppState(title: 'setState'),
         child: child,
         builder: (value, child) => InheritedValueWidget(
-          value: MyHomePagePropsConverter.convert(value),
+          value: MyHomePagePropsTransformer.transform(value),
           child: InheritedValueWidget(
-            value: MyCounterWidgetPropsConverter.convert(value),
+            value: MyCounterWidgetPropsTransformer.transform(value),
             child: child,
           ),
         ),

@@ -19,11 +19,11 @@ Widget wrapWithProvider<S>({
 
 extension WrapWithConsumer<S> on ReducibleCommandStore<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       ValueListenableBuilder<P>(
-        valueListenable: command.map((state) => converter(reducible)),
+        valueListenable: command.map((state) => transformer(reducible)),
         builder: (_, props, ___) => builder(props: props),
       );
 }

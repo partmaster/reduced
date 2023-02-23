@@ -9,15 +9,15 @@ import 'reduced_mobx.dart';
 
 Widget wrapWithProvider<S, P1, P2>({
   required S initialState,
-  required ReducibleConverter<S, P1> converter1,
-  required ReducibleConverter<S, P2> converter2,
+  required ReducibleTransformer<S, P1> transformer1,
+  required ReducibleTransformer<S, P2> transformer2,
   required Widget child,
 }) =>
     StatefulInheritedValueWidget(
       builder: (initialState) => ReducibleStore(
         initialState,
-        converter1,
-        converter2,
+        transformer1,
+        transformer2,
       ),
       initializer: initialState,
       child: child,

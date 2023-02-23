@@ -18,28 +18,28 @@ Widget wrapWithProvider<S>({
 }
 
 Widget wrapWithConsumer<S, P>({
-  required ReducibleConverter<S, P> converter,
+  required ReducibleTransformer<S, P> transformer,
   required PropsWidgetBuilder<P> builder,
 }) =>
     _WrapWithConsumer(
       builder: builder,
-      converter: converter,
+      transformer: transformer,
     );
 
 class _WrapWithConsumer<S, P> extends StatelessWidget with GetItMixin {
-  final ReducibleConverter<S, P> converter;
+  final ReducibleTransformer<S, P> transformer;
   final PropsWidgetBuilder<P> builder;
 
   _WrapWithConsumer({
     super.key,
-    required this.converter,
+    required this.transformer,
     required this.builder,
   });
 
   @override
   Widget build(context) => builder(
         props: watchOnly(
-          (ValueNotifier<S> notifier) => converter(notifier.reducible),
+          (ValueNotifier<S> notifier) => transformer(notifier.reducible),
         ),
       );
 }

@@ -13,17 +13,17 @@ Widget wrapWithProvider({required Widget child}) =>
 extension WrapWithConsumer<S> on ReducibleLogic<S> {
   Widget wrapWithConsumer<P>({
     required StateRef<S> stateRef,
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       Consumer<P>(
         watchable: stateRef.select(
-          (state) => converter(
+          (state) => transformer(
             ReducibleProxy(() => state, reducible.reduce, this),
           ),
         ),
         builder: (_, __, ___) => builder(
-          props: converter(reducible),
+          props: transformer(reducible),
         ),
       );
 }

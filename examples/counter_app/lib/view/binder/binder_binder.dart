@@ -6,7 +6,7 @@ import 'package:reduced_binder/reduced_binder.dart';
 import 'package:reduced_binder/reduced_binder_wrapper.dart';
 
 import '../../data/state.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 final stateRef = StateRef(
@@ -33,7 +33,7 @@ class MyHomePageBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).wrapWithConsumer(
         stateRef: stateRef,
         builder: MyHomePageBuilder.new,
-        converter: MyHomePagePropsConverter.convert,
+        transformer: MyHomePagePropsTransformer.transform,
       );
 }
 
@@ -44,6 +44,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   Widget build(context) => context.logic(logicRef).wrapWithConsumer(
         stateRef: stateRef,
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetPropsConverter.convert,
+        transformer: MyCounterWidgetPropsTransformer.transform,
       );
 }

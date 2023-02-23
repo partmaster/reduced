@@ -6,7 +6,7 @@ import 'package:reduced_mobx/reduced_mobx_wrapper.dart';
 
 import '../../data/state.dart';
 import '../../data/props.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -17,8 +17,8 @@ class MyAppStateBinder extends StatelessWidget {
   @override
   Widget build(context) => wrapWithProvider(
         initialState: const MyAppState(title: 'mobx'),
-        converter1: MyHomePagePropsConverter.convert,
-        converter2: MyCounterWidgetPropsConverter.convert,
+        transformer1: MyHomePagePropsTransformer.transform,
+        transformer2: MyCounterWidgetPropsTransformer.transform,
         child: child,
       );
 }

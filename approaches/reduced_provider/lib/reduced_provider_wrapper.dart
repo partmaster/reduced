@@ -16,10 +16,10 @@ Widget wrapWithProvider<S>({
     );
 
 Widget wrapWithConsumer<S, P>({
-  required ReducibleConverter<S, P> converter,
+  required ReducibleTransformer<S, P> transformer,
   required PropsWidgetBuilder<P> builder,
 }) =>
     Selector<ValueNotifier<S>, P>(
       builder: (context, props, _) => builder(props: props),
-      selector: (context, notifier) => converter(notifier.reducible),
+      selector: (context, notifier) => transformer(notifier.reducible),
     );

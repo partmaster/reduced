@@ -19,7 +19,7 @@ Widget wrapWithProvider<S>({
 
 extension WrapWithConsumer<S> on Store<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       _ReactiveStatelessBuilder(
@@ -29,9 +29,9 @@ extension WrapWithConsumer<S> on Store<S> {
             p0.data as S,
             p1.data as S,
             reducible.reduce,
-            converter,
+            transformer,
           ),
-          builder: () => builder(props: converter(reducible)),
+          builder: () => builder(props: transformer(reducible)),
         ),
       );
 }
@@ -48,15 +48,15 @@ class _ReactiveStatelessBuilder extends ReactiveStatelessWidget {
 P _stateToProps<S, P>(
   S state,
   Reduce<S> reduce,
-  ReducibleConverter<S, P> converter,
+  ReducibleTransformer<S, P> transformer,
 ) =>
-    converter(ReducibleProxy(() => state, reduce, reduce));
+    transformer(ReducibleProxy(() => state, reduce, reduce));
 
 bool _shouldRebuild<S, P>(
   S p0,
   S p1,
   Reduce<S> reduce,
-  ReducibleConverter<S, P> converter,
+  ReducibleTransformer<S, P> transformer,
 ) =>
-    _stateToProps(p0, reduce, converter) !=
-    _stateToProps(p1, reduce, converter);
+    _stateToProps(p0, reduce, transformer) !=
+    _stateToProps(p1, reduce, transformer);

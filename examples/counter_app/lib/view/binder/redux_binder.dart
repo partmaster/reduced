@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:reduced_redux/reduced_redux_wrapper.dart';
 
 import '../../data/state.dart';
-import '../../logic/converter.dart';
+import '../../logic/transformer.dart';
 import '../builder.dart';
 
 class MyAppStateBinder extends StatelessWidget {
@@ -25,7 +25,7 @@ class MyHomePageBinder extends StatelessWidget {
   @override
   Widget build(context) => wrapWithConsumer(
         builder: MyHomePageBuilder.new,
-        converter: MyHomePagePropsConverter.convert,
+        transformer: MyHomePagePropsTransformer.transform,
       );
 }
 
@@ -35,6 +35,6 @@ class MyCounterWidgetBinder extends StatelessWidget {
   @override
   Widget build(context) => wrapWithConsumer(
         builder: MyCounterWidgetBuilder.new,
-        converter: MyCounterWidgetPropsConverter.convert,
+        transformer: MyCounterWidgetPropsTransformer.transform,
       );
 }

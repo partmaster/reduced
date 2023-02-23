@@ -15,10 +15,10 @@ Widget wrapWithProvider<S>({
 }
 
 Widget wrapWithConsumer<S, P extends Object>({
-  required ReducibleConverter<S, P> converter,
+  required ReducibleTransformer<S, P> transformer,
   required PropsWidgetBuilder<P> builder,
 }) =>
     GetBuilder<ReducibleGetx<S>>(
-      filter: (controller) => converter(controller.reducible),
-      builder: (controller) => builder(props: converter(controller.reducible)),
+      filter: (controller) => transformer(controller.reducible),
+      builder: (controller) => builder(props: transformer(controller.reducible)),
     );

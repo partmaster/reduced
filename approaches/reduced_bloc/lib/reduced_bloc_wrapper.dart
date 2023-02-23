@@ -17,11 +17,11 @@ Widget wrapWithProvider<S>({
 
 extension WrapWithConsumer<S> on ReducibleBloc<S> {
   Widget wrapWithConsumer<P>({
-    required ReducibleConverter<S, P> converter,
+    required ReducibleTransformer<S, P> transformer,
     required PropsWidgetBuilder<P> builder,
   }) =>
       BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => converter(reducible),
+        selector: (state) => transformer(reducible),
         builder: (context, props) => builder(props: props),
       );
 }
