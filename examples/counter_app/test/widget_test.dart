@@ -9,9 +9,7 @@ extension SingleWidgetByType on CommonFinders {
 }
 
 void main() {
-  testWidgets('selective rebuild test',
-      (WidgetTester tester) async {
-
+  testWidgets('selective rebuild test', (tester) async {
     const app = MyAppBuilder();
     const binder = MyAppStateBinder(child: app);
     await tester.pumpWidget(binder);
