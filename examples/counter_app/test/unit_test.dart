@@ -13,23 +13,23 @@ import 'package:reduced/reduced.dart';
 import 'package:test/test.dart';
 
 class DecrementCounterReducer extends Reducer<MyAppState> {
-  DecrementCounterReducer._();
-  factory DecrementCounterReducer() => instance;
+  const DecrementCounterReducer._();
 
-  static final instance = DecrementCounterReducer._();
+  static const instance = DecrementCounterReducer._();
 
   @override
-  MyAppState call(state) => state.copyWith(counter: state.counter - 1);
+  call(state) => state.copyWith(counter: state.counter - 1);
 }
 
-extension DecrementCounterReducerOnReducible on Reducible<MyAppState> {
+extension DecrementCounterReducerOnReducible
+    on Reducible<MyAppState> {
   ReducerOnReducible get decrementCounterReducer =>
-      ReducerOnReducible(this, DecrementCounterReducer());
+      ReducerOnReducible(this, DecrementCounterReducer.instance);
 }
 
 void main() {
   test('testIncrementCounterReducer', () {
-    final objectUnderTest = IncrementCounterReducer();
+    final objectUnderTest = IncrementCounterReducer.instance;
     final state = objectUnderTest.call(
       const MyAppState(title: 'mock', counter: 0),
     );
@@ -41,7 +41,8 @@ void main() {
       (_) {},
       false,
     );
-    final objectUnderTest = MyCounterWidgetPropsTransformer.transform(reducible);
+    final objectUnderTest =
+        MyCounterWidgetPropsTransformer.transform(reducible);
     expect(objectUnderTest.counterText, equals('0'));
   });
   test('testMyHomePageProps', () {
@@ -53,7 +54,8 @@ void main() {
     );
     final onIncrementPressed = reducible.incrementCounterReducer;
     final onDecrementPressed = reducible.decrementCounterReducer;
-    final objectUnderTest = MyHomePagePropsTransformer.transform(reducible);
+    final objectUnderTest =
+        MyHomePagePropsTransformer.transform(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

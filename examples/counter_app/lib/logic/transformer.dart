@@ -15,7 +15,8 @@ class MyHomePagePropsTransformer {
 }
 
 class MyCounterWidgetPropsTransformer {
-  static MyCounterWidgetProps transform(Reducible<MyAppState> reducible) =>
+  static MyCounterWidgetProps transform(
+          Reducible<MyAppState> reducible,) =>
       MyCounterWidgetProps(
         counterText: '${reducible.state.counter}',
       );

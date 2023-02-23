@@ -114,7 +114,7 @@ Auf App-Code bezogen heißt das:
 
 3. Die App-Zustands-Verwaltung stellt der UI eine Möglichkeit zur Verfügung, sich über Zustandsänderungen benachrichtigen zu lassen. Als Minimalanforderung reicht es aus, wenn als Benachrichtigung in einem Widget ein [setState](https://api.flutter.dev/flutter/widgets/State/setState.html) oder [markNeedsBuild](https://api.flutter.dev/flutter/widgets/Element/markNeedsBuild.html) ausgelöst wird. Diese Benachrichtigung sollte auch selektiv nur für ausgesuchte Änderungen am App-Zustand möglich sein.  
 
-Für die ersten beiden Anforderungen lässt sich leicht eine Abstraktion definieren:
+Für die ersten beiden Anforderungen lässt sich leicht eine Abstraktion in Form einer abstrakten Klasse ```Reducible``` definieren:
 
 1. eine getState-Methode für den App-Zustand
 
@@ -128,11 +128,12 @@ abstract class Reducible<S> {
 }
 ```
 
-Um die Abstraktion leicht auf vorhandene App-Zustands-Verwaltungs-Lösungen aufsetzen zu können, wurde sie alternativ zur abstrakte Basisklasse als Proxy nach dem gleichnamigen Entwurfsmuster [^22] modelliert. Die Identität der realen App-Zustands-Verwaltungs-Instanz wird im Proxy durch das Property `identity` repräsentiert:
+Um die Abstraktion leicht auf vorhandene App-Zustands-Verwaltungs-Lösungen aufsetzen zu können, wurde sie alternativ zur abstrakte Basisklasse als Proxy-Klasse ```ReducibleProxy``` entsprechend dem gleichnamigen Entwurfsmuster [^22] modelliert. Die Identität der realen App-Zustands-Verwaltungs-Instanz wird in ```ReducibleProxy``` durch das Property `identity` repräsentiert:
 
 ```dart
 class ReducibleProxy<S> extends Reducible<S> {
-  ReducibleProxy(ValueGetter<S> state, Reduce<S> reduce, this.identity)
+  ReducibleProxy(
+      ValueGetter<S> state, Reduce<S> reduce, this.identity)
       : _state = state,
         _reduce = reduce;
 
@@ -150,7 +151,7 @@ class ReducibleProxy<S> extends Reducible<S> {
   get hashCode => identity.hashCode;
 
   @override
-  operator ==(Object other) =>
+  operator ==(other) =>
       other is ReducibleProxy<S> && identity == other.identity;
 }
 ```
@@ -180,7 +181,7 @@ Die dritte Anforderung, sich selektiv über Änderungen am App-Zustand benachric
 
 Da die Möglichkeiten für solche Benachrichtigungen sehr vom eingesetzten App-Zustands-Verwaltungs-System abhängen, gibt es keine einheitliche Signatur dieser Funktionen für alle App-Zustands-Verwaltungs-Systeme. Aber das Grundprinzip ist immer gleich und soll hier an einer Beispiel-Signatur erklärt werden. 
 
-Der Funktion ```wrapWithConsumer``` wird ein ```transformer``` übergeben, der festlegt, auf welche selektiven Änderungen am App-Zustand gelauscht wird. 
+Der Funktion ```wrapWithConsumer``` wird ein ```transformer``` übergeben, der den App-Zustand in den Parameter-Typ für den ```builder``` transformiert. Der ```transformer``` legt fest, auf welche selektiven Änderungen am App-Zustand gelauscht wird.  
 
  Der Funktion ```wrapWithConsumer``` wird außerdem ein ```builder``` übergeben, der festlegt, wie aus dem geänderten selektiven App-Zustand das neue Widget gebaut wird.
 
@@ -193,7 +194,7 @@ Widget wrapWithConsumer<P>({
 
 Bei jeder App-Zustands-Änderung wird mit dem ```transformer``` eine Props-Instanz erzeugt. Wenn gegenüber dem vorherigen ```transformer```-Aufruf eine ungleiche Props-Instanz erzeugt wurde, dann wird mit dem ```builder``` und der neuen Props-Instanz als Parameter ein neues Widget gebaut. Es wird vorausgesetzt, dass der Vergleich zwischen zwei Props-Instanzen (die Methoden ```hashCode``` und ```operator==```) mit Wertsemantik implementiert ist. 
 
-Damit das Konsumieren von App-Zustands-Änderungen mit die Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (wenn man im Widget-Baum die Richtung von der Wurzel zu den Blättern betrachtet) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben und im Parameter ```child``` der Rest des Widget-Baums. 
+Damit das Konsumieren von App-Zustands-Änderungen mit der Funktion ```wrapWithConsumer``` funktioniert, muss zuvor (also in einem Anchestor-Widget) eine App-Zustands-Verwaltungs-Instanz mit dem Widget-Baum verbunden werden. Dafür wird eine Funktion ```wrapWithProvider``` bereitgestellt. Diese bekommt im Parameter ```initialState``` den intitialen Wert für den App-Zustand übergeben und im Parameter ```child``` den Rest des Widget-Baums. 
 
 ```dart
 Widget wrapWithProvider<S>({
@@ -265,20 +266,20 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation [^6] gelisteten Frameworks (bis auf Fish-Redux, für das keine Null-safety Version zur Verfügung steht) implementiert.
 Dabei handelt es sich um Frameworks:
 
-|Name|Publisher|Popularity|Published|
-|---|---|---|---|
-|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 2021|
-|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 2023|
-|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 2021|
-|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 2022|
-|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 2021|
-|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 2022|
-|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|99%|Nov 2022|
-|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|100%|Dec 2022|
-|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|98%|May 2022|
-|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|99%|Feb 2023|
-|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|58%|Jan 2023|
-|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|93%|Dec 2022| 
+|Name|Publisher|Published|
+|---|---|---|
+|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|Mar 2021|
+|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|Feb 2023|
+|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|May 2021|
+|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|Jul 2022|
+|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|Jul 2021|
+|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|May 2022|
+|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|Nov 2022|
+|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|Dec 2022|
+|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|May 2022|
+|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|Feb 2023|
+|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|Jan 2023|
+|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|Dec 2022| 
 
 Im Folgenden werden die Links zu allen Implementierungsdateien aufgeführt. Die erste Datei enthält jeweils die Implementierung der Klasse ```Reducible``` für das Framework und die zweite Datei die Implementierung der Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.
 
@@ -506,12 +507,9 @@ Um aus dem App-Zustand einen Props-Wert zu erzeugen, bedarf es einer Transformat
 class MyHomePagePropsTransformer {
   static MyHomePageProps transform(Reducible<MyAppState> reducible) =>
       MyHomePageProps(
-        title: reducible.getState().title,
-        counterText: '${reducible.getState().counter}',
-        onIncrementPressed: BondedReducer(
-          reducible,
-          IncrementCounterReducer(),
-        ),
+        title: reducible.state.title,
+        counterText: '${reducible.state.counter}',
+        onIncrementPressed: reducible.incrementCounterReducer,
       );
 }
 ```
@@ -526,19 +524,19 @@ abstract class Callable<T> {
 
 ```dart
 class ReducerOnReducible<S> extends Callable<void> {
-  const ReducerOnReducible(this.reducible, this.reducer);
+  ReducerOnReducible(this.reducible, this.reducer);
 
   final Reducible<S> reducible;
   final Reducer<S> reducer;
 
   @override
-  void call() => reducible.reduce(reducer);
+  call() => reducible.reduce(reducer);
 
   @override
-  int get hashCode => Object.hash(reducible, reducer);
+  get hashCode => Object.hash(reducible, reducer);
 
   @override
-  bool operator ==(Object other) =>
+  operator ==(other) =>
       other is ReducerOnReducible &&
       reducer == other.reducer &&
       reducible == other.reducible;
@@ -634,13 +632,12 @@ Wegen der potenziellen Verwendung als Events müssen die Reducer-Instanzen Werts
 
 ```dart
 class IncrementCounterReducer extends Reducer<MyAppState> {
-  IncrementCounterReducer._();
-  factory IncrementCounterReducer() => instance;
+  const IncrementCounterReducer._();
 
-  static final instance = IncrementCounterReducer._();
+  static const instance = IncrementCounterReducer._();
 
   @override
-  MyAppState call(state) => state.copyWith(counter: state.counter + 1);
+  call(state) => state.copyWith(counter: state.counter + 1);
 }
 ```
 
@@ -799,46 +796,40 @@ Dazu extrahieren wir aus der Klasse `MyHomePageProps` das Property `counterText`
 
 ```dart
 class MyHomePageProps {
-  final String title;
-  final VoidCallable onIncrementPressed;
-
   const MyHomePageProps({
     required this.title,
     required this.onIncrementPressed,
   });
 
-  @override
-  int get hashCode => Object.hash(title, onIncrementPressed);
+  final String title;
+  final VoidCallable onIncrementPressed;
 
   @override
-  bool operator ==(Object other) =>
+  get hashCode => Object.hash(title, onIncrementPressed);
+
+  @override
+  operator ==(other) =>
       other is MyHomePageProps &&
       title == other.title &&
       onIncrementPressed == other.onIncrementPressed;
-
-  @override
-  String toString() => 'MyHomePageProps#$hashCode';
 }
 ```
 
 ```dart
 class MyCounterWidgetProps {
-  final String counterText;
-
   const MyCounterWidgetProps({
     required this.counterText,
   });
 
-  @override
-  int get hashCode => counterText.hashCode;
+  final String counterText;
 
   @override
-  bool operator ==(Object other) =>
-      other is MyCounterWidgetProps && counterText == other.counterText;
+  get hashCode => counterText.hashCode;
 
   @override
-  String toString() =>
-      'MyCounterWidgetProps#$hashCode(counterText=$counterText)';
+  operator ==(other) =>
+      other is MyCounterWidgetProps &&
+      counterText == other.counterText;
 }
 ```
 
@@ -977,18 +968,15 @@ Hier ein Beispiel-Test für die Methode `transform` der Klasse `MyHomePagePropsT
 ```dart
   test('testMyHomePageProps', () {
     const title = 'mock';
-    final incrementReducer = IncrementCounterReducer();
-    final decrementReducer = DecrementCounterReducer();
-    final reducible = Reducible(
+    final reducible = ReducibleProxy(
       () => const MyAppState(counter: 0, title: title),
       (_) {},
       false,
     );
-    final onIncrementPressed =
-        BondedReducer(reducible, incrementReducer);
-    final onDecrementPressed =
-        BondedReducer(reducible, decrementReducer);
-    final objectUnderTest = MyHomePagePropsTransformer.transform(reducible);
+    final onIncrementPressed = reducible.incrementCounterReducer;
+    final onDecrementPressed = reducible.decrementCounterReducer;
+    final objectUnderTest =
+        MyHomePagePropsTransformer.transform(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,
@@ -1011,14 +999,12 @@ Um die Methoden `operator==` der Props-Klassen genau testen zu können (notwendi
 
 ```dart
 class DecrementCounterReducer extends Reducer<MyAppState> {
-  DecrementCounterReducer._();
-  factory DecrementCounterReducer() => instance;
+  const DecrementCounterReducer._();
 
-  static final instance = DecrementCounterReducer._();
+  static const instance = DecrementCounterReducer._();
 
   @override
-  MyAppState call(state) =>
-      state.copyWith(counter: state.counter - 1);
+  call(state) => state.copyWith(counter: state.counter - 1);
 }
 ```
 
@@ -1370,11 +1356,11 @@ Nun können wir in der Klasse `examples/view/binder.dart`den Schalter umlegen un
 
 ### Portierung auf weitere App-Zustands-Verwaltungs-Frameworks
 
-Unter [examples/lib/approaches/](https://github.com/partmaster/reducible/tree/main/examples/lib/approaches) liegen neben den Portierungen auf Riverpod und Bloc  Portierungen auf weitere App-Zustands-Verwaltungs-Frameworks. Hier die komplette Liste der App-Zustands-Verwaltungs-Frameworks, auf die die Reducible Abstraktion portiert wurde:
+Unter [examples/counter_app/lib/view/binder](https://github.com/partmaster/reducible/tree/main/examples/counter_app/lib/view/binder) liegen neben den Portierungen auf Riverpod und Bloc Portierungen auf alle anderen der Flutter Dokumentation gelisteten App-Zustands-Verwaltungs-Frameworks (außer Fish-Redux). 
 
 ## Offene Enden
 
-### Grauzonen zwischen UI uns App-Logik
+### Grauzonen zwischen UI und App-Logik
 
 Zur Implementierung einiger UI-Aktionen benötigt man einen [BuildContext]. Ein prominentes Beispiel ist die Navigation zwischen App-Seiten mit [Navigator.of(BuildContext)]. Die Entscheidung, wann zu welcher App-Seite navigiert wird, ist App-Logik. Die App-Logik sollte möglichst ohne Abhängigkeiten von der UI-Ablaufumgebung bleiben, und ein [BuildContext] repräsentiert quasi diese Ablaufumgebung. 
 </br>

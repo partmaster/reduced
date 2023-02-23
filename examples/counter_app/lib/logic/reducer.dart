@@ -5,16 +5,16 @@ import 'package:reduced/reduced.dart';
 import '../data/state.dart';
 
 class IncrementCounterReducer extends Reducer<MyAppState> {
-  IncrementCounterReducer._();
-  factory IncrementCounterReducer() => instance;
+  const IncrementCounterReducer._();
 
-  static final instance = IncrementCounterReducer._();
+  static const instance = IncrementCounterReducer._();
 
   @override
-  MyAppState call(state) => state.copyWith(counter: state.counter + 1);
+  call(state) => state.copyWith(counter: state.counter + 1);
 }
 
-extension IncrementCounterReducerOnReducible on Reducible<MyAppState> {
+extension IncrementCounterReducerOnReducible
+    on Reducible<MyAppState> {
   ReducerOnReducible get incrementCounterReducer =>
-      ReducerOnReducible(this, IncrementCounterReducer());
+      ReducerOnReducible(this, IncrementCounterReducer.instance);
 }
