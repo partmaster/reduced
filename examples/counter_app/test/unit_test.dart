@@ -29,7 +29,7 @@ extension DecrementCounterReducerOnReducible
 
 void main() {
   test('testIncrementCounterReducer', () {
-    final objectUnderTest = IncrementCounterReducer.instance;
+    const objectUnderTest = IncrementCounterReducer.instance;
     final state = objectUnderTest.call(
       const MyAppState(title: 'mock', counter: 0),
     );

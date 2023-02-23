@@ -229,7 +229,8 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S> {
 
 ```dart
 extension ExtensionBlocOnBuildContext on BuildContext {
-  ReducibleBloc<S> bloc<S>() => BlocProvider.of<ReducibleBloc<S>>(this);
+  ReducibleBloc<S> bloc<S>() =>
+      BlocProvider.of<ReducibleBloc<S>>(this);
 }
 ```
 

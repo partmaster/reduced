@@ -1,10 +1,8 @@
 // setstate_binder.dart
 
 import 'package:flutter/widgets.dart';
-import 'package:inherited_widgets/inherited_widgets.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_setstate/reduced_setstate_wrapper.dart';
 
-import '../../data/props.dart';
 import '../../data/state.dart';
 import '../../logic/transformer.dart';
 import '../builder.dart';
@@ -15,16 +13,11 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => ReducibleStatefulWidget(
+  Widget build(context) => wrapWithProvider(
         initialState: const MyAppState(title: 'setState'),
         child: child,
-        builder: (value, child) => InheritedValueWidget(
-          value: MyHomePagePropsTransformer.transform(value),
-          child: InheritedValueWidget(
-            value: MyCounterWidgetPropsTransformer.transform(value),
-            child: child,
-          ),
-        ),
+        transformer1: MyHomePagePropsTransformer.transform,
+        transformer2: MyCounterWidgetPropsTransformer.transform,
       );
 }
 
@@ -32,16 +25,14 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) => MyHomePageBuilder(
-        props: InheritedValueWidget.of<MyHomePageProps>(context),
-      );
+  Widget build(context) =>
+      wrapWithConsumer(builder: MyHomePageBuilder.new);
 }
 
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context) => MyCounterWidgetBuilder(
-        props: InheritedValueWidget.of<MyCounterWidgetProps>(context),
-      );
+  Widget build(context) =>
+      wrapWithConsumer(builder: MyCounterWidgetBuilder.new);
 }
