@@ -281,21 +281,22 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 ### Implementierungen für weitere Frameworks
 
 Insgesamt wurde die 'reduced' Abstraktion für alle in der Flutter-Dokumentation [^6] gelisteten Frameworks (bis auf Fish-Redux, für das keine Null-safety Version zur Verfügung steht) implementiert.
-Das sind die Frameworks
+Dabei handelt es sich um Frameworks:
 
-1. [Binder]()
-2. [Bloc]()
-3. [Flutter Command]()
-4. [Flutter Triple]()
-5. [GetIt]()
-6. [GetX]()
-7. [MobX]()
-8. [Provider]()
-9. [Redux]()
-10. [Riverpod]()
-11. [setState]()
-12. [Solidart]()
-13. [States Rebuilder]()
+|Name|Publisher|Popularity|Published|
+|---|---|---|---|
+|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 2021|
+|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 2023|
+|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 2021|
+|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 2022|
+|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 2021|
+|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 2022|
+|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|99%|Nov 2022|
+|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|100%|Dec 2022|
+|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|98%|May 2022|
+|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|99%|Feb 2023|
+|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|58%|Jan 2023|
+|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|93%|Dec 2022| 
 
 Im Folgenden werden die Links zu allen Implementierungsdateien aufgeführt. Die erste Datei enthält jeweils die Implementierung der Klasse ```Reducible``` für das Framework und die zweite Datei die Implementierung der Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.
 
@@ -1205,36 +1206,60 @@ extension SingleWidgetByType on CommonFinders {
 
 ### Portierung auf Riverpod
 
-Zum Abschluss des Tutorials soll die App von der selbstgebauten App-Zustands-Verwaltung nacheinander auf die bekannten App-Zustands-Verwaltungs-Frameworks Riverpod und Bloc portiert werden. Wir beginnen mit der Portierung auf Riverpod.
+Zum Abschluss des Tutorials soll die Counter App von der selbstgebauten App-Zustands-Verwaltung nacheinander auf die bekannten App-Zustands-Verwaltungs-Frameworks Riverpod und Bloc portiert werden. Wir beginnen mit der Portierung auf Riverpod.
 
-Dazu legen wir im Ordner `examples/lib/approaches` einen Unterordner `riverpod` an und darin die Dateien `riverpod_reducible.dart`, `riverpod_wrapper.dart` und `riverpod_binder.dart`.
+Dazu legen wir im Ordner `examples/counter_app/lib/view/binder` eine Datei `riverpod_binder.dart` an.
 
-In der Datei `riverpod_reducible.dart` definieren wir die Klasse `MyAppStateNotifier` und die finale Variable `appStateProvider` für den App-Zustand.
-
-```dart
-class MyAppStateNotifier extends StateNotifier<MyAppState> {
-  MyAppStateNotifier()
-      : super(const MyAppState(
-          title: 'Flutter Demo Home Page',
-          counter: 0,
-        ));
-
-  late final reducible = Reducible(getState, reduce);
-
-  MyAppState getState() => super.state;
-
-  void reduce(Reducer<MyAppState> reducer) => state = reducer(state);
-}
-```
+Zuerst definieren wir die Klasse `MyAppStateBinder` und die finale Variable `appStateProvider` für den App-Zustand.
 
 ```dart
-final appStateProvider =
-    StateNotifierProvider<MyAppStateNotifier, MyAppState>(
-  (ref) => MyAppStateNotifier(),
+final appStateProvider = MyAppStateProvider(
+  (ref) =>
+      ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
 );
 ```
 
-In der Datei `riverpod_binder.dart` definieren wir die finalen Variablen `homePagePropsProvider` und `counterWidgetPropsProvider` zur Bereitstellung der Props.
+```dart
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(context) => wrapWithProvider(child: child);
+}
+```
+
+Dann definieren wir die Klasse `MyHomePageBinder` und die finale Variable `homePagePropsProvider`.
+
+```dart
+final homePagePropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyHomePagePropsTransformer.transform(
+          appStateNotifier.reducible,
+        ),
+      ),
+    );
+  },
+);
+```
+
+```dart
+class MyHomePageBinder extends StatelessWidget {
+  const MyHomePageBinder({super.key});
+
+  @override
+  Widget build(context) => wrapWithConsumer(
+        builder: MyHomePageBuilder.new,
+        provider: homePagePropsProvider,
+      );
+}
+```
+
+Abschließend definieren wir die Klasse `MyCounterWidgetBinder` und die finale Variable `counterWidgetPropsProvider`.
 
 ```dart
 final counterWidgetPropsProvider = StateProvider(
@@ -1252,56 +1277,25 @@ final counterWidgetPropsProvider = StateProvider(
 ```
 
 ```dart
-final homePagePropsProvider = StateProvider(
-  (ref) {
-    final appStateNotifier = ref.watch(appStateProvider.notifier);
-    return ref.watch(
-      appStateProvider.select(
-        (state) => MyHomePageProps.reducible(
-          appStateNotifier.reducible,
-        ),
-      ),
-    );
-  },
-);
-```
-
-In der Datei `riverpod_binder.dart` duplizieren wir alle Klassen aus `setstate_binder.dart` und stellen sie auf Riverpod um.
-
-```dart
-class MyAppStateBinder extends StatelessWidget {
-  const MyAppStateBinder({super.key, required this.child});
-
-  final MyAppBuilder child;
-
-  @override
-  Widget build(context) => ProviderScope(child: child);
-}
-```
-
-```dart
-class MyHomePageBinder extends ConsumerWidget {
-  const MyHomePageBinder({super.key});
-
-  @override
-  Widget build(context, ref) => MyHomePageBuilder(
-        props: ref.watch(homePagePropsProvider),
-      );
-}
-```
-
-```dart
-class MyCounterWidgetBinder extends ConsumerWidget {
+class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
 
   @override
-  Widget build(context, ref) => MyCounterWidgetBuilder(
-        props: ref.watch(counterWidgetPropsProvider),
+  Widget build(context) => wrapWithConsumer(
+        builder: MyCounterWidgetBuilder.new,
+        provider: counterWidgetPropsProvider,
       );
 }
 ```
 
-Nun können wir in der Datei `examples/lib/view/binder.dart` den Schalter umlegen und anstelle von `examples/lib/approaches/setstate/setstate_binder.dart` die Datei `examples/lib/approaches/riverpod/riverpod_binder.dart` exportieren. Damit ist die Portierung auf Riverpod abgeschlossen und die App kann verwendet werden.
+Nun können wir in der Datei `examples/counter_app/lib/view/binder.dart` den Schalter umlegen und anstelle von `'binder/setstate_binder.dart'` die Datei `binder/riverpod_binder.dart` exportieren. 
+
+```dart
+export 'binder/riverpod_binder.dart';
+// export 'binder/setstate_binder.dart';
+```
+
+Damit ist die Portierung auf Riverpod abgeschlossen und die App kann verwendet werden.
 
 ### Portierung auf Bloc
 
@@ -1395,23 +1389,6 @@ Nun können wir in der Klasse `examples/view/binder.dart`den Schalter umlegen un
 ### Portierung auf weitere App-Zustands-Verwaltungs-Frameworks
 
 Unter [examples/lib/approaches/](https://github.com/partmaster/reducible/tree/main/examples/lib/approaches) liegen neben den Portierungen auf Riverpod und Bloc  Portierungen auf weitere App-Zustands-Verwaltungs-Frameworks. Hier die komplette Liste der App-Zustands-Verwaltungs-Frameworks, auf die die Reducible Abstraktion portiert wurde:
-
-|Name|Publisher|Popularity|Published|
-|---|---|---|---|
-|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|75%|Mar 2021|
-|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|100%|Feb 2023|
-|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|/3%|May 2021|
-|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|93%|Jul 2022|
-|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|100%|Jul 2021|
-|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|100%|May 2022|
-|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|99%|Nov 2022|
-|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|100%|Dec 2022|
-|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|98%|May 2022|
-|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|99%|Feb 2023|
-|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|58%|Jan 2023|
-|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|93%|Dec 2022| 
-
-Dies sind bis auf Fish Redux [^23] alle in der offiziellen Flutter-Dokumentation gelisteten Frameworks [^6]. Eine Portierung auf Fish Redux habe ich abgewählt, weil die verfügbare Version nicht 'Null safety' [^24] ist.
 
 ## Offene Enden
 

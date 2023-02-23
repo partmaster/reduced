@@ -9,27 +9,19 @@ import '../../data/state.dart';
 import '../../logic/transformer.dart';
 import '../builder.dart';
 
-typedef MyAppStateNotifier = ReducibleStateNotifier<MyAppState>;
-typedef MyAppStateProvider
-    = StateNotifierProvider<MyAppStateNotifier, MyAppState>;
-
-final appStateProvider = MyAppStateProvider(
+final appStateProvider = StateNotifierProvider(
   (ref) =>
       ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
 );
 
-final counterWidgetPropsProvider = StateProvider(
-  (ref) {
-    final appStateNotifier = ref.watch(appStateProvider.notifier);
-    return ref.watch(
-      appStateProvider.select(
-        (state) => MyCounterWidgetPropsTransformer.transform(
-          appStateNotifier.reducible,
-        ),
-      ),
-    );
-  },
-);
+class MyAppStateBinder extends StatelessWidget {
+  const MyAppStateBinder({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(context) => wrapWithProvider(child: child);
+}
 
 final homePagePropsProvider = StateProvider(
   (ref) {
@@ -44,15 +36,6 @@ final homePagePropsProvider = StateProvider(
   },
 );
 
-class MyAppStateBinder extends StatelessWidget {
-  const MyAppStateBinder({super.key, required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(context) => wrapWithProvider(child: child);
-}
-
 class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
@@ -62,6 +45,19 @@ class MyHomePageBinder extends StatelessWidget {
         provider: homePagePropsProvider,
       );
 }
+
+final counterWidgetPropsProvider = StateProvider(
+  (ref) {
+    final appStateNotifier = ref.watch(appStateProvider.notifier);
+    return ref.watch(
+      appStateProvider.select(
+        (state) => MyCounterWidgetPropsTransformer.transform(
+          appStateNotifier.reducible,
+        ),
+      ),
+    );
+  },
+);
 
 class MyCounterWidgetBinder extends StatelessWidget {
   const MyCounterWidgetBinder({super.key});
