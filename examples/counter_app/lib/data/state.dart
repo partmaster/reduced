@@ -12,9 +12,11 @@ class MyAppState {
       );
 
   @override
-  int get hashCode => Object.hash(title, counter);
+  get hashCode => Object.hash(title, counter);
 
   @override
-  bool operator ==(Object other) =>
-      other is MyAppState && title == other.title && counter == other.counter;
+  operator ==(other) =>
+      other is MyAppState &&
+      title == other.title &&
+      counter == other.counter;
 }
