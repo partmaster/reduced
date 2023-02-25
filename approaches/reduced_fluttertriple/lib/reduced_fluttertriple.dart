@@ -8,15 +8,13 @@ import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced/reduced.dart';
 
 class ReducibleStreamStore<S extends Object>
-    extends StreamStore<Object, S> {
+    extends StreamStore<Object, S> implements Reducible<S> {
   ReducibleStreamStore(super.initialState);
 
-  S getState() => state;
-
+  @override
   void reduce(Reducer<S> reducer) => update(reducer(state));
 
-  late final Reducible<S> reducible =
-      ReducibleProxy(getState, reduce, this);
+  late final Reducible<S> reducible = this;
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

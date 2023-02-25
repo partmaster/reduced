@@ -13,8 +13,13 @@ part 'reduced_mobx.g.dart';
 class ReducibleStore<S, P1, P2> = ReducibleStoreBase<S, P1, P2>
     with _$ReducibleStore;
 
-abstract class ReducibleStoreBase<S, P1, P2> with Store {
-  ReducibleStoreBase(this.value, this.transformer1, this.transformer2);
+abstract class ReducibleStoreBase<S, P1, P2> extends Reducible<S>
+    with Store {
+  ReducibleStoreBase(
+    this.value,
+    this.transformer1,
+    this.transformer2,
+  );
 
   final ReducibleTransformer<S, P1> transformer1;
   final ReducibleTransformer<S, P2> transformer2;
@@ -22,14 +27,16 @@ abstract class ReducibleStoreBase<S, P1, P2> with Store {
   @observable
   S value;
 
-  S getState() => value;
+  @override
+  S get state => value;
 
+  @override
   @action
   void reduce(Reducer<S> reducer) {
     value = reducer(value);
   }
 
-  late final Reducible<S> reducible = ReducibleProxy(getState, reduce, this);
+  late final Reducible<S> reducible = this;
 
   @computed
   P1 get p1 => transformer1(reducible);

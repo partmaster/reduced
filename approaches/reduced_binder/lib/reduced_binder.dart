@@ -8,23 +8,24 @@ import 'package:flutter/widgets.dart';
 import 'package:binder/src/build_context_extensions.dart';
 import 'package:reduced/reduced.dart';
 
-class ReducibleLogic<S> with Logic {
-  ReducibleLogic(this.scope, this.state);
+class ReducibleLogic<S> extends Reducible<S> with Logic {
+  ReducibleLogic(this.scope, this.ref);
 
-  final StateRef<S> state;
+  final StateRef<S> ref;
 
   @override
   final Scope scope;
 
-  S getState() => read(state);
+  @override
+  S get state => read(ref);
 
+  @override
   void reduce(Reducer<S> reducer) => write(
-        state,
-        reducer(getState()),
+        ref,
+        reducer(state),
       );
 
-  late final Reducible<S> reducible =
-      ReducibleProxy(getState, reduce, this);
+  late final Reducible<S> reducible = this;
 }
 
 extension ExtensionLogicOnBuildContext on BuildContext {

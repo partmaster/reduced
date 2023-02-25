@@ -581,6 +581,67 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 }
 ```
 
+### Reducible-Implementierung für Bloc
+
+Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
+
+
+```dart
+class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
+    implements Reducible<S> {
+  ReducibleBloc(super.initialState) {
+    on<Reducer<S>>((event, emit) => emit(event(state)));
+  }
+
+  @override
+  void reduce(Reducer<S> reducer) => add(reducer);
+
+  late final reducible = this;
+}
+```
+
+### Extension für dem BuildContext
+
+```dart
+extension ExtensionBlocOnBuildContext on BuildContext {
+  ReducibleBloc<S> bloc<S>() =>
+      BlocProvider.of<ReducibleBloc<S>>(this);
+}
+```
+
+### wrapWithProvider-Implementierung für Bloc
+
+Die Funktion wrapWithProvider erzeugt das Widget ```BlocProvider```.
+
+```dart
+Widget wrapWithProvider<S>({
+  required S initialState,
+  required Widget child,
+}) =>
+    BlocProvider(
+      create: (_) => ReducibleBloc(initialState),
+      child: child,
+    );
+```
+
+### wrapWithConsumer-Implementierung für Bloc
+
+Die Funktion ```wrapWithConsumer``` erzeugt das Widget ```BlocSelector```.
+Die benötigte ```Reducible```-Instanz wird implizit übergeben, indem ```wrapWithConsumer``` als Extension der Klasse ```ReducibleBloc``` definiert wird.
+
+```dart
+extension WrapWithConsumer<S> on ReducibleBloc<S> {
+  Widget wrapWithConsumer<P>({
+    required ReducibleTransformer<S, P> transformer,
+    required PropsWidgetBuilder<P> builder,
+  }) =>
+      BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => transformer(reducible),
+        builder: (context, props) => builder(props: props),
+      );
+}
+```
+
 ### Tabelle der 'reduced'-API-Implementierungen
 
 In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks gelistet [^1]. Das Fish-Redux-Framework ist nicht Null-Safety und darum veraltet. Für die anderen 12 Frameworks wurde die 'reduced'-API exemplarisch implementiert. Die folgende Tabelle enthält Links zu diesen Frameworks und zu ihren 'reduced'-Implementierungen.
