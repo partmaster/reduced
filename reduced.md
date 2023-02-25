@@ -232,7 +232,7 @@ class MyHomePageBinder extends StatelessWidget {
 ```
 ### Konvertierung des App-Zustands in Anzeige-Properties
 
-Bei der Erzeugung des Widget-Baums sind einige Widget-Konstruktor-Properties vom aktuellen App-Zustand abhängig. Diese werden zu eigenen Property-Klassen zusammengefasst. Außerdem werden ```transform```-Funktionen definiert, die den eigentlichen App-Zustand in die jeweiligen Property-Klassen transformieren können.
+Bei der Erzeugung des Widget-Baums sind einige Widget-Konstruktor-Properties vom aktuellen App-Zustand abhängig. Diese werden zu eigenen Property-Klassen zusammengefasst. Außerdem wird für jede Property-Klasse eine ```transform```-Funktion definiert, die den App-Zustand in eine Instanz der Property-Klasse transformieren kann.
 
 #### MyHomePageStateProps 
 
@@ -269,7 +269,8 @@ class MyHomePagePropsTransformer {
 ```
 ### Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
-Flutter-Widgets stellen für die Gestenverarbeitung und ähnliche Zwecke Callback-Properties zur Verfügung. Wir behandeln Callback-Properties genauso wie die bereits besprochenen Anzeige-Properties und fügen sie zur gleichen Properties-Klasse ```MyHomePageProps``` hinzu. Die ```transform```-Funktion erzeugt aus der App-Zustands-Operation ```IncrementCounterReducer```  den Wert für das ```onIncrementPressed```-Callback-Property.
+Flutter-Widgets stellen für die Gestenverarbeitung und ähnliche Zwecke Callback-Properties zur Verfügung. 
+Wir behandeln Callback-Properties genauso wie die bereits besprochenen Anzeige-Properties und fügen sie zur gleichen Properties-Klasse ```MyHomePageProps``` hinzu. Die ```transform```-Funktion erzeugt aus der App-Zustands-Operation ```IncrementCounterReducer```  den Wert für das ```onIncrementPressed```-Callback-Property.
 
 Dazu wird eine Convenience-Methode ```get incrementCounterReducer``` definiert,
 die die App-Zustands-Operation mittels der Klasse ```ReducerOnReducible``` an die State-Management-Instanz bindet.
@@ -324,7 +325,7 @@ class MyHomePageBuilder extends StatelessWidget {
 }
 ```
 
-## Erstes Zwischenfazit
+## Fazit zur Anwendung des Humble-Object-Pattern
 
 Die Anwendung des Humble-Object-Pattern auf eine Flutter-Widget-Klasse, die einen Widget-Baum erzeugt und Abhängigkeiten vom App-Zustand hat, besteht aus folgenden fünf Schritten: 
 
@@ -353,7 +354,7 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 2. Bereitstellung von Operationen für App-Zustands-Änderungen
 3. Widget-Benachrichtigung nach App-Zustands-Änderungen
 4. Konvertierung des App-Zustands in Anzeige-Properties
-5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungens-Operationen
+5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
 In den extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management-Framework verwendet.
 
@@ -386,7 +387,7 @@ zur Verknüpfung einer App-Zustands-Operation mit der State-Management-Instanz, 
 zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt
 
 6. Funktion **wrapWithConsumer**<br/>
-zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingpackte Widget bei Änderungen am App-Zustand neu gebaut wird
+zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingepackte Widget bei Änderungen am App-Zustand neu gebaut wird
 
 ## Die Definition des State-Reducer-Pattern
 
@@ -502,32 +503,210 @@ zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widge
 ## Funktion wrapWithConsumer
 zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingpackte Widget bei Änderungen am App-Zustand neu gebaut wird
 
-## Zweites Zwischenfazit
+## Fazit zur Anwendung des State-Reducer-Pattern
 
 Da die 'reduced'-API für jedes konkrete State-Management-Framework nur einmal implementiert werden muss, verursacht sie keinen zusätzlichen Boilerplate-Code, sondern nur eine zusätzliche Abstraktionsschicht. 
 Aber auch jede Abstraktionsschicht verursacht Aufwände, die gegenüber dem Nutzen abgewogen werden sollten.
+<br/>
+Die 'reduced'-API deckt nur den 'Standard-Teil' der APIs der State-Management-Frameworks ab. Jedes Framework biete über die 'reduced'-API hinaus noch individuelle Features. Um auch solche Features nutzen zu können, kann man die 'reduced'-API erweitern oder an der 'reduced'-API vorbei direkt mit der Framework-API arbeiten.
+Falls in einem Projekt die Notwendigkeit für direkte Nutzung der State-Management-Framework-API kein Ausnahmefall bleibt, dann ist es wahrscheinlich, dass die Nutzung einer Abstraktionsschicht für das State-Management-Framework in so einem Projekt ungünstig ist. 
 
 # Teil 3<br/>Implementierung der 'reduced'-API
 
-In der Flutter-Dokumentation sind folgende State Management Frameworks gelistet [^1]:
+Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktionen ```wrapWithProvider```und ```wrapWithConsumer```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
 
-|Name|Publisher|Published|
+
+## 'reduced'-API-Implementierung am Beispiel Bloc
+
+Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand des Bloc-Frameworks gezeigt werden.
+
+### Reducible-Implementierung für Bloc
+
+Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
+
+
+```dart
+class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
+    implements Reducible<S> {
+  ReducibleBloc(super.initialState) {
+    on<Reducer<S>>((event, emit) => emit(event(state)));
+  }
+
+  @override
+  void reduce(Reducer<S> reducer) => add(reducer);
+
+  late final reducible = this;
+}
+```
+
+### Extension für dem BuildContext
+
+```dart
+extension ExtensionBlocOnBuildContext on BuildContext {
+  ReducibleBloc<S> bloc<S>() =>
+      BlocProvider.of<ReducibleBloc<S>>(this);
+}
+```
+
+### wrapWithProvider-Implementierung für Bloc
+
+Die Funktion wrapWithProvider erzeugt das Widget ```BlocProvider```.
+
+```dart
+Widget wrapWithProvider<S>({
+  required S initialState,
+  required Widget child,
+}) =>
+    BlocProvider(
+      create: (_) => ReducibleBloc(initialState),
+      child: child,
+    );
+```
+
+### wrapWithConsumer-Implementierung für Bloc
+
+Die Funktion ```wrapWithConsumer``` erzeugt das Widget ```BlocSelector```.
+Die benötigte ```Reducible```-Instanz wird implizit übergeben, indem ```wrapWithConsumer``` als Extension der Klasse ```ReducibleBloc``` definiert wird.
+
+```dart
+extension WrapWithConsumer<S> on ReducibleBloc<S> {
+  Widget wrapWithConsumer<P>({
+    required ReducibleTransformer<S, P> transformer,
+    required PropsWidgetBuilder<P> builder,
+  }) =>
+      BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => transformer(reducible),
+        builder: (context, props) => builder(props: props),
+      );
+}
+```
+
+### Tabelle der 'reduced'-API-Implementierungen
+
+In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks gelistet [^1]. Das Fish-Redux-Framework ist nicht Null-Safety und darum veraltet. Für die anderen 12 Frameworks wurde die 'reduced'-API exemplarisch implementiert. Die folgende Tabelle enthält Links zu diesen Frameworks und zu ihren 'reduced'-Implementierungen.
+
+
+|Name|Publisher|'reduced'-Implementierung|
 |---|---|---|
-|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|Mar 2021|
-|[Fish Redux](https://pub.dev/packages/fish_redux)|[Alibaba](https://github.com/alibaba)|Mar 2021|
-|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|Feb 2023|
-|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|May 2021|
-|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|Jul 2022|
-|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|Jul 2021|
-|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|May 2022|
-|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|Nov 2022|
-|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|Dec 2022|
-|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|May 2022|
-|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|Feb 2023|
-|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|Jan 2023|
-|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|Dec 2022| 
+|[Binder](https://pub.dev/packages/binder)|[romainrastel.com](https://pub.dev/publishers/romainrastel.com)|[reduced_binder](https://github.com/partmaster/reduced/tree/main/approaches/reduced_binder)|
+|[Fish Redux](https://pub.dev/packages/fish_redux)|[Alibaba](https://github.com/alibaba)|[]()|
+|[Flutter Bloc](https://pub.dev/packages/flutter_bloc)|[bloclibrary.dev](https://pub.dev/publishers/bloclibrary.dev)|[reduced_bloc](https://github.com/partmaster/reduced/tree/main/approaches/reduced_bloc)|
+|[Flutter Command](https://pub.dev/packages/flutter_command)|[escamoteur](https://github.com/escamoteur)|[reduced_fluttercommand](https://github.com/partmaster/reduced/tree/main/approaches/reduced_fluttercommand)|
+|[Flutter Triple](https://pub.dev/packages/flutter_triple)|[flutterando.com.br](https://pub.dev/publishers/flutterando.com.br/packages)|[reduced_fluttertriple](https://github.com/partmaster/reduced/tree/main/approaches/reduced_fluttertriple)|
+|[GetIt](https://pub.dev/packages/get_it)|[fluttercommunity.dev](https://pub.dev/publishers/fluttercommunity.dev)|[reduced_getit](https://github.com/partmaster/reduced/tree/main/approaches/reduced_getit)|
+|[GetX](https://pub.dev/packages/get)|[getx.site](https://pub.dev/publishers/getx.site)|[reduced_getx](https://github.com/partmaster/reduced/tree/main/approaches/reduced_getx)|
+|[MobX](https://pub.dev/packages/flutter_mobx)|[dart.pixelingene.com](https://pub.dev/publishers/dart.pixelingene.com)|[reduced_mobx](https://github.com/partmaster/reduced/tree/main/approaches/reduced_mobx)|
+|[Provider](https://pub.dev/packages/provider)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|[reduced_provider](https://github.com/partmaster/reduced/tree/main/approaches/reduced_provider)|
+|[Redux](https://pub.dev/packages/flutter_redux)|[brianegan.com](https://pub.dev/publishers/brianegan.com)|[reduced_redux](https://github.com/partmaster/reduced/tree/main/approaches/reduced_redux)|
+|[Riverpod](https://pub.dev/packages/flutter_riverpod)|[dash-overflow.net](https://pub.dev/publishers/dash-overflow.net)|[reduced_riverpod](https://github.com/partmaster/reduced/tree/main/approaches/reduced_riverpod)|
+|[Solidart](https://pub.dev/packages/flutter_solidart)|[bestofcode.dev](https://pub.dev/publishers/bestofcode.dev)|[reduced_solidart](https://github.com/partmaster/reduced/tree/main/approaches/reduced_solidart)|
+|[States Rebuilder](https://pub.dev/packages/states_rebuilder)|[Mellati Fatah](https://github.com/GIfatahTH)|[reduced_statesrebuilder](https://github.com/partmaster/reduced/tree/main/approaches/reduced_statesrebuilder)|
 
-Das Fish-Redux ist nicht Null-Safety und darum veraltet. Für die anderen 12 Frameworks wurde die 'reduced'-API exemplarisch implementiert. Wie so eine Implementierung aussieht, soll beispielhaft anhand des Bloc-Frameworks gezeigt werden.
+## Fazit zur Implementierung der 'reduced'-API
+
+Die Ziel der 'reduced'-API ist eine minimale Abstraktionsschicht für State-Management-Frameworks.   
+Der geringe Code-Umfang und die direkten Abbildungern in den Implementierungen der 'reduced'-API zeigen, dass dieses Ziel erreicht wurde.  
+
+Bei den State-Management-Frameworks sind mir folgende Besonderheiten aufgefallen:
+
+**MobX**
+- Verwendung eines Code-Generators
+- Transformation des App-Zustands in selektive Props-Klassen im Provider (statt im Consumer)
+
+**GetIt** und **GetX**
+- Service-Locator für die State-Management-Instanz (statt einer Provider-Widget-Klasse).
+
+**Riverpod** und **StatesRebuilder**
+- Verwendung globaler Referenzen für App-Zustand und selektive Props-Klassen (zur Vermeidung der Not-Found-Problematik)
+
+# Offene Enden
+
+## Grauzonen zwischen UI und App-Logik
+
+Zur Implementierung einiger UI-Aktionen benötigt man einen [BuildContext]. Ein prominentes Beispiel ist die Navigation zwischen App-Seiten mit [Navigator.of(BuildContext)]. Die Entscheidung, wann zu welcher App-Seite navigiert wird, ist App-Logik. Die App-Logik sollte möglichst ohne Abhängigkeiten von der UI-Ablaufumgebung bleiben, und ein [BuildContext] repräsentiert quasi diese Ablaufumgebung. 
+</br>
+Ein ähnliches Problem sind UI-Ressourcen wie Bilder, Icons, Farben und Fonts, die eine Abhängigkeit zur UI-Ablaufumgebung besitzen und deren Bereitstellung UI-App-Logik erfordern kann. 
+Zwischen UI-Code und App-Logik-Code gibt es also noch Grauzonen, die in klare Abgrenzungen umgewandelt werden sollten. (Im Fall des [Navigator]s gibt es mit dem Property [MaterialApp.navigatorKey] einen möglichen Workaround für die Navigation zwischen App-Seiten ohne [BuildContext].) 
+ 
+## Lokale bzw. geschachtelte App-Zustände
+
+Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^15].</br>
+
+In der Redux-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
+
+Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen. 
+Im State-Management-Framework Fish-Redux [^23] ist es z.B. grundsätzlich so, dass (neben einen globalen App-Zustand) für jede App-Seite eine lokale Seiten-State-Management-Instanz existiert.  
+
+## UI-Code-Strukturierung
+
+In diesem Artikel wurden Code-Struktur und Entwurfsmuster für eine Trennung der Verantwortlichkeiten von UI-Code und App-Logik-Code diskutiert. 
+</br>
+Eine separierte App-Logik kann man mit allen verfügbaren Architektur-Ansätzen und Entwurfmustern weiterstrukturiert werden.
+</br>
+Für den separierten Flutter-UI-Code werden allerdings für größere Projekte weitere  Strukturierungskonzepte benötigt:
+
+* Wie separiere ich das Theming, z.B. Light Mode und Dark Mode?
+
+* Wie separiere ich die Layout-Adaptionen für verschiedene Endgeräte-Gruppen, z.B. Smartphone, Tablet, Desktop, Drucker ? 
+
+* Wie separiere ich den Code für die Layout-Responsivness für Änderungen der App-Display-Größe zwischen den Adaptionsstufen ?
+
+* Wie separiere ich den Code für Animationen?
+
+## Groß-Projekt-Erprobung
+
+Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen und mittleren Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^19] und im Google- [^20] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf größere Projekte anwenden lassen, muss sich erst noch erweisen.
+
+
+# Referenzen
+
+[^1]: Entwurfmuster</br> [en.wikipedia.org/wiki/Software_design_pattern](https://en.wikipedia.org/wiki/Software_design_pattern)
+
+[^2]: Trennung der Verantwortlichkeiten</br> [en.wikipedia.org/wiki/Separation_of_concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
+
+[^3]: Flutter</br> [flutter.dev](https://flutter.dev/)
+
+[^4]: Riverpod</br> [riverpod.dev](https://riverpod.dev/)
+
+[^5]: Bloc</br> [bloclibrary.dev](https://bloclibrary.dev/)
+
+[^6]: Flutter State Management Approaches</br> [docs.flutter.dev/development/data-and-backend/state-mgmt/options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options)
+
+[^7]: Humble Object Pattern</br> [xunitpatterns.com/Humble Object.html](http://xunitpatterns.com/Humble%20Object.html)
+
+[^8]: Reducer Pattern</br> [redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
+
+[^9]: Alles ist ein Widget</br> [docs.flutter.dev/development/ui/layout](https://docs.flutter.dev/development/ui/layout)
+
+[^10]: Redux</br> [redux.js.org/](https://redux.js.org/)
+
+[^11]: Pure Funktion</br> [en.wikipedia.org/wiki/Pure_function](https://en.wikipedia.org/wiki/Pure_function)
+
+[^12]: Wertsemantik</br> [en.wikipedia.org/wiki/Value_semantics](https://en.wikipedia.org/wiki/Value_semantics)
+
+[^13]: Michael Feathers [michaelfeathers.silvrback.com/bio](https://michaelfeathers.silvrback.com/bio)
+
+[^14]: Faltungsfunktion</br> [www.cs.nott.ac.uk/~gmh/fold.pdf](http://www.cs.nott.ac.uk/~gmh/fold.pdf)
+
+[^15]: Reducer Pattern Nachteil</br> [twitter.com/acdlite/status/1025408731805184000](https://twitter.com/acdlite/status/1025408731805184000)
+
+[^16]: App-Zustands-Gliederung</br> [redux.js.org/usage/structuring-reducers/basic-reducer-structure](https://redux.js.org/usage/structuring-reducers/basic-reducer-structure)
+
+[^17]: App-Zustands-Normalisierung</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
+
+[^18]: React</br> [reactjs.org/](https://reactjs.org/)
+
+[^19]: Die App *Cantarei* im Apple-Appstore [apps.apple.com/us/app/cantarei/id1624281880](https://apps.apple.com/us/app/cantarei/id1624281880)
+
+[^20]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
+
+[^21]: Unnötige Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+
+[^22]: Proxy Pattern [en.wikipedia.org/wiki/Proxy_pattern](https://en.wikipedia.org/wiki/Proxy_pattern)
+
+[^23]: Fish Redux [pub.dev/packages/fish_redux](https://pub.dev/packages/fish_redux)
+
+[^24]: Null Safety [dart.dev/null-safety#enable-null-safety](https://dart.dev/null-safety#enable-null-safety)
 
 [^1] Ist alles ein Widget? [twitter.com/ulusoyapps/status/1484090230651162624/photo/1
 ](https://twitter.com/ulusoyapps/status/1484090230651162624/photo/1
