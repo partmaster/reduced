@@ -358,8 +358,9 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 
 In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
 
+Ich habe dieses Refactoring mit dem Humble-Object-Pattern neben der Counter-Demo-App auch noch für das Beispiel-Projekt aus der offiziellen Dokumentation-Dokumentation für das State-Management [^26]. Das Resultat kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
 
-Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System mit den bereits erwähnten Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible```, den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` sowie weiteren Artefakten vorstellen. 
+Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System vorstellen. 
 
 # Teil 2<br/>Anwendung des State-Reducer-Pattern
 
@@ -775,6 +776,8 @@ Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahru
 [^23]: Fish Redux [pub.dev/packages/fish_redux](https://pub.dev/packages/fish_redux)
 
 [^24]: Null Safety [dart.dev/null-safety#enable-null-safety](https://dart.dev/null-safety#enable-null-safety)
+
+[^25]: Shopper-Sample-App [docs.flutter.dev/development/data-and-backend/state-mgmt/simple](https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple)
 
 [^1] Ist alles ein Widget? [twitter.com/ulusoyapps/status/1484090230651162624/photo/1
 ](https://twitter.com/ulusoyapps/status/1484090230651162624/photo/1
