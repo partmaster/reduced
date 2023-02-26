@@ -358,23 +358,6 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 
 In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
 
-Neben der Trennung von Verantwortlichkeiten wurde auch eine Unabhängigkeit vom State-Management-Framework erreicht: die refaktorisierte Counter-Demo-App läuft mit allen 12 verfügbaren Frameworks, die in der offiziellen Flutter-Dokumentation aktuell gelistet sind [^6]. In der Datei [binder.dart](https://github.com/partmaster/reduced/blob/30dbd8c3060b5d46ddcd160c19d8c00badd06e2a/examples/counter_app/lib/view/binder.dart) kann das in der Counter-Demo-App verwendete State-Management-Framework umgeschaltet werden, indem die entsprechende ```export```-Anweisung ausgeführt (vom den Kommentar-Zeichen befreit) wird:
-
-```dart
-// export 'binder/binder_binder.dart';
-// export 'binder/bloc_binder.dart';
-// export 'binder/fluttercommand_binder.dart';
-// export 'binder/fluttertriple_binder.dart';
-// export 'binder/getit_binder.dart';
-// export 'binder/getx_binder.dart';
-// export 'binder/mobx_binder.dart';
-// export 'binder/provider_binder.dart';
-// export 'binder/redux_binder.dart';
-// export 'binder/riverpod_binder.dart';
-// export 'binder/setstate_binder.dart';
-// export 'binder/solidart_binder.dart';
-export 'binder/statesrebuilder_binder.dart';
-```
 
 Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System mit den bereits erwähnten Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible```, den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` sowie weiteren Artefakten vorstellen. 
 
@@ -682,19 +665,27 @@ In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks geliste
 ## Fazit zur Implementierung der 'reduced'-API
 
 Die Ziel der 'reduced'-API ist eine minimale Abstraktionsschicht für State-Management-Frameworks.   
-Der geringe Code-Umfang und die direkten Abbildungern in den Implementierungen der 'reduced'-API zeigen, dass dieses Ziel erreicht wurde.  
+Der geringe Code-Umfang und die direkten Abbildungern in den Implementierungen der 'reduced'-API zeigen, dass dieses Ziel erreicht wurde. Die 'reduced'-API passt sehr gut auf die meisten Frameworks. 
+<br/>
+Beim State-Management-Framework MobX musste allerdings, um die Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` bereitzustellen, gegen das Framework gearbeitet werden: Die 'reduced'-API-Funktionen sind so ausgelegt, dass sie die State-Management-Instanzen mit generischen Klassen zur Laufzeit erstellen und benutzen. Dagegen verwendet MobX spezifische State-Management-Klassen, die bereits beim Build mit einem Code-Generator generiert werden. 
+<br/>
+Durch die Verwendung der 'reduced'-API wird neben der Trennung von Verantwortlichkeiten auch eine Unabhängigkeit vom State-Management-Framework möglich: die refaktorisierte Counter-Demo-App läuft mit allen 12 gelisteten und verfügbaren Frameworks. In der Datei [binder.dart](https://github.com/partmaster/reduced/blob/30dbd8c3060b5d46ddcd160c19d8c00badd06e2a/examples/counter_app/lib/view/binder.dart) kann das in der Counter-Demo-App verwendete State-Management-Framework umgeschaltet werden, indem die entsprechende ```export```-Anweisung ausgeführt (vom den Kommentar-Zeichen befreit) wird:
 
-Bei den State-Management-Frameworks sind mir folgende Besonderheiten aufgefallen:
-
-**MobX**
-- Verwendung eines Code-Generators
-- Transformation des App-Zustands in selektive Props-Klassen im Provider (statt im Consumer)
-
-**GetIt** und **GetX**
-- Service-Locator für die State-Management-Instanz (statt einer Provider-Widget-Klasse).
-
-**Riverpod** und **StatesRebuilder**
-- Verwendung globaler Referenzen für App-Zustand und selektive Props-Klassen (zur Vermeidung der Not-Found-Problematik)
+```dart
+// export 'binder/binder_binder.dart';
+// export 'binder/bloc_binder.dart';
+// export 'binder/fluttercommand_binder.dart';
+// export 'binder/fluttertriple_binder.dart';
+// export 'binder/getit_binder.dart';
+// export 'binder/getx_binder.dart';
+// export 'binder/mobx_binder.dart';
+// export 'binder/provider_binder.dart';
+// export 'binder/redux_binder.dart';
+// export 'binder/riverpod_binder.dart';
+// export 'binder/setstate_binder.dart';
+// export 'binder/solidart_binder.dart';
+export 'binder/statesrebuilder_binder.dart';
+```
 
 # Offene Enden
 
