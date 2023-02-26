@@ -110,7 +110,7 @@ Die Klasse _MyHomePageState trägt die verschiedensten Verantwortungen:
         onPressed: _incrementCounter,
 ```
 
-Das Prinzip der Trennung von Verantwortlichkeiten ist lange bekannt. Trotzdem ist seine Durchsetzung, vor allem innerhalb von UI-Code, nach meiner Erfahrung immer eine Herausforderung. UI-Code hat die Besonderheit, dass er eng an seine Ablaufumgebung, das UI-Framework, gebunden ist und deswegen schon eine  Komplexität besitzt. Da diese Komplexität des UI-Codes inhärent und nicht vermeidbar ist, bleibt als Ziel nur, sie möglichst nicht noch zu erhöhen.   
+Das Prinzip der Trennung von Verantwortlichkeiten ist lange bekannt. Trotzdem ist seine Durchsetzung, vor allem innerhalb von UI-Code, nach meiner Erfahrung immer eine Herausforderung. UI-Code hat die Besonderheit, dass er eng an seine Ablaufumgebung, das UI-Framework, gebunden ist und deswegen schon eine Komplexität besitzt. Da diese Komplexität des UI-Codes inhärent und nicht vermeidbar ist, bleibt als Ziel nur, sie möglichst nicht noch zu erhöhen.   
 
 Ein Entwurfmuster, das genau auf diese Problemlage passt, ist das Humble-Object-Pattern [^1] von Micheal Feathers.
 
@@ -285,7 +285,7 @@ extension IncrementCounterReducerOnReducible
 
 ### Layout, Rendering und Gestenerkennung
 
-Die restlichen Verantwortlichkeiten Layout, Rendering und Gestenerkennung konnte ich nicht mehr herauslösen, weil sie sich kaum vom UI-Framework trennen lassen. Sie verbleiben im resultierenden Humble-Object.
+Die restlichen Verantwortlichkeiten Layout, Rendering und Gestenerkennung konnte ich nicht mehr herauslösen, weil sie sich kaum vom UI-Framework trennen lassen. Sie verbleiben im resultierenden Humble-Object in der Klasse ```MyHomePageStateBuilder```.
 
 #### MyHomePageStateBuilder
 
@@ -356,11 +356,27 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 4. Konvertierung des App-Zustands in Anzeige-Properties
 5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
-In den extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management-Framework verwendet.
+In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
 
-Für wen der Boilerplate-Code ein zu hoher Aufwand für das erreichte Ergebnis bedeutet, der kann jetzt aus dem Artikel aussteigen. 
+Neben der Trennung von Verantwortlichkeiten wurde auch eine Unabhängigkeit vom State-Management-Framework erreicht: die refaktorisierte Counter-Demo-App läuft mit allen 12 verfügbaren Frameworks, die in der offiziellen Flutter-Dokumentation aktuell gelistet sind [^6]. In der Datei [binder.dart](https://github.com/partmaster/reduced/blob/30dbd8c3060b5d46ddcd160c19d8c00badd06e2a/examples/counter_app/lib/view/binder.dart) kann das in der Counter-Demo-App verwendete State-Management-Framework umgeschaltet werden, indem die entsprechende ```export```-Anweisung ausgeführt (vom den Kommentar-Zeichen befreit) wird:
 
-Für die weiter Interessierten will ich nun die verwendete Abstraktion für das State-Management-System mit den bereits erwähnten Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible```, den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` sowie weiteren Artefakten vorstellen. 
+```dart
+// export 'binder/binder_binder.dart';
+// export 'binder/bloc_binder.dart';
+// export 'binder/fluttercommand_binder.dart';
+// export 'binder/fluttertriple_binder.dart';
+// export 'binder/getit_binder.dart';
+// export 'binder/getx_binder.dart';
+// export 'binder/mobx_binder.dart';
+// export 'binder/provider_binder.dart';
+// export 'binder/redux_binder.dart';
+// export 'binder/riverpod_binder.dart';
+// export 'binder/setstate_binder.dart';
+// export 'binder/solidart_binder.dart';
+export 'binder/statesrebuilder_binder.dart';
+```
+
+Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System mit den bereits erwähnten Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible```, den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` sowie weiteren Artefakten vorstellen. 
 
 # Teil 2<br/>Anwendung des State-Reducer-Pattern
 
@@ -693,7 +709,7 @@ Zwischen UI-Code und App-Logik-Code gibt es also noch Grauzonen, die in klare Ab
 
 Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^15].</br>
 
-In der Redux-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
+In der redux.js-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
 
 Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen. 
 Im State-Management-Framework Fish-Redux [^23] ist es z.B. grundsätzlich so, dass (neben einen globalen App-Zustand) für jede App-Seite eine lokale Seiten-State-Management-Instanz existiert.  
