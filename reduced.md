@@ -125,11 +125,11 @@ Die folgenden zwei Grafiken illustrieren die Lage vor und nach der Anwendung die
 
 ![humble1](images/humble1.png)
 <br/>
-*Lage vor Anwendung des Humble-Object-Pattern (Bildquelle: manning.com)*
+*Lage vor Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^24])*
 
 ![humble2](images/humble2.png)
 <br/>
-*Lage nach Anwendung des Humble-Object-Pattern (Bildquelle: manning.com)*
+*Lage nach Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^25])*
 
 ## Counter-Demo-App refactored
 
@@ -377,22 +377,22 @@ Nachdem fünf Verantwortlichkeiten mit Mühe (und Boilerplate-Code) aus der Abh�
 Ich nenne die Abstraktion in Anlehnung an das zugrunde liegende Pattern 'reduced'. Die wesentlichen Bestandteile der 'reduced'-Abstraktion wurden bereits aufgezählt:
 
 1. Interface **Reducer**<br/>
-zur Definition von Operationen zur Änderung des App-Zustandes
+Definition von Operationen zur Änderung des App-Zustandes.
 
 2. Interface **Reducible**<br/>
-zum Lesen und Aktualisieren des App-Zustands in einer State-Management-Instanz
+Lesen und Aktualisieren des App-Zustands in einer State-Management-Instanz.
 
 3. Interface **Callable**<br/>
-für die Defintion von Klassen mit Wertsemantik [^8], deren Instanzen an Callback-Properties von Flutter-Widgets zugewiesen werden können,<br/> zur Verwendung in den im Kapitel über die Anwendung des Humble-Object-Pattern erwähnten Props-Klassen, so dass diese Klassen ebenfalls mit Wertsemantik definiert werden können 
+Basis für die Defintion von Klassen mit Wertsemantik [^8], deren Instanzen an Callback-Properties von Flutter-Widgets zugewiesen werden können,<br/> zur Verwendung in den im Kapitel über die Anwendung des Humble-Object-Pattern erwähnten Props-Klassen, so dass diese Klassen ebenfalls mit Wertsemantik definiert werden können.
 
 4. Klasse **ReducerOnReducible**<br/>
-zur Verknüpfung einer App-Zustands-Operation mit der State-Management-Instanz, auf der sie ausgeführt werden soll
+Verknüpfung einer App-Zustands-Operation mit der State-Management-Instanz, auf der sie ausgeführt werden soll.
 
 5. Funktion **wrapWithProvider**<br/>
-zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
+Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
 
 6. Funktion **wrapWithConsumer**<br/>
-zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingepackte Widget bei Änderungen am App-Zustand neu gebaut wird. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
+Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingepackte Widget bei Änderungen am App-Zustand neu gebaut wird. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
 
 ## Die Definition des State-Reducer-Pattern
 
@@ -409,7 +409,7 @@ Mit anderen Worten: `(state, action) => newState`.
 
 ![reducer](images/reducer_killalldefectscom.png)
 <br/>
-*Bildquelle: killalldefects.com*
+*Prinzip des State-Reducer-Pattern (Bildquelle: killalldefects.com [^26])*
 
 Auf App-Code bezogen heißt das:
 
@@ -725,7 +725,7 @@ Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahru
 
 # Schlußwort
 
-In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. 
+In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. Ich hoffe, die 'reduced'-Abstraktion ist den Auwand wert.
 
 # Referenzen
 
@@ -774,3 +774,9 @@ In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum
 [^22]: Null Safety [dart.dev/null-safety#enable-null-safety](https://dart.dev/null-safety#enable-null-safety)
 
 [^23]: Unnötige Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+
+[^24]: Vor dem Humble-Object-Pattern [livebook.manning.com/book/unit-testing/chapter-7/49](https://livebook.manning.com/book/unit-testing/chapter-7/49)
+
+[^25]: Nach dem Humble-Object-Pattern [livebook.manning.com/book/unit-testing/chapter-7/51](https://livebook.manning.com/book/unit-testing/chapter-7/51)
+
+[^26]: Prinzip des State-Reducer-Pattern (killalldefects.com/2019/12/28/rise-of-the-reducer-pattern/)[https://killalldefects.com/2019/12/28/rise-of-the-reducer-pattern/]
