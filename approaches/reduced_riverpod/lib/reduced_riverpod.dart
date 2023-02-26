@@ -12,5 +12,5 @@ class ReducibleStateNotifier<S> extends StateNotifier<S>
   late final Reducible<S> reducible = this;
 
   @override
-  void reduce(Reducer<S> reducer) => state = reducer(state);
+  reduce(reducer) => state = reducer(state);
 }

@@ -6,8 +6,8 @@ Steffen Nowacki · PartMaster GmbH · [www.partmaster.de](https://www.partmaster
 
 ## Abstract
 
-Hier wird die Anwendung von zwei Entwurfsmustern vorgestellt, die UI und Logik einer Flutter-App vom verwendeten State-Management-Framework entkoppeln. State-Management-Frameworks dienen der Trennung von UI und Logik. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Mit einer Kombination der Entwurfsmuster "State Reducer" und "Humble Object" sowie dem Konzept der Funktionalen Programmierung mit unveränderlichen Zustandsobjekten kann dem entgegengewirkt werden. Die in der Umsetzung der Entwurfsmuster verwendeten Bausteine AppState, Reducer, Reducible und Callable sowie Binder, Builder, Props und Transformer werden im Folgenden erklärt.
-Die entstehende Code-Struktur ist einfacher lesbar, testbar, skalierbar und kompatibel zu verbreiteten State-Management-Frameworks, wie Riverpod [^4] oder Bloc [^5]. 
+In diesem Artikel wird die Anwendung von zwei Entwurfsmustern vorgestellt, die UI und Logik einer Flutter-App vom verwendeten State-Management-Framework entkoppeln. State-Management-Frameworks dienen der Trennung von UI und Logik. Sie haben oft die Nebenwirkung, UI und Logik zu infiltrieren und dadurch ungünstige Abhängigkeiten zu erzeugen. Mit einer Kombination der Entwurfsmuster "State Reducer" und "Humble Object" sowie dem Konzept der Funktionalen Programmierung mit unveränderlichen Zustandsobjekten kann dem entgegengewirkt werden. Die in der Umsetzung der Entwurfsmuster verwendeten Bausteine ```Reducer```, ```Reducible``` und ```Callable``` sowie ```Binder```, ```Builder```, ```Props``` und ```Transformer``` werden im Folgenden erklärt.
+Die entstehende Code-Struktur ist einfacher lesbar und testbar und kompatibel zu verbreiteten State-Management-Frameworks, wie Riverpod oder Bloc. 
 <br/> 
 Diese Vorteile haben ihren Preis: Gegenüber der direkten Verwendung eines State-Management-Frameworks bzw. der Verwendung von veränderlichen Zustandsobjekten ensteht eine zusätzliche Abstraktionsschicht und mehr Boilerplate-Code.
 <br/> 
@@ -15,7 +15,7 @@ Wer beim Einsatz von State-Management-Frameworks flexibel bleiben will oder wer 
 
 # Teil 1<br/>Anwendung des Humble-Object-Pattern
 
-Flutter [^3] beschreibt sich selbst mit dem Spruch "Fast alles ist ein Widget" [^9]. Damit ist gemeint, dass alle Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft. Es gibt aber auch eine kleine Kehrseite: Wenn man nicht aufpasst, vermischen sich in den resultierenden Widget-Bäumen leicht die Verantwortlichkeiten. 
+Flutter [^1] beschreibt sich selbst mit dem Spruch "Fast alles ist ein Widget" [^2]. Damit ist gemeint, dass die meisten Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft. Es gibt aber auch eine kleine Kehrseite: Wenn man nicht aufpasst, vermischen sich in den resultierenden Widget-Bäumen leicht die Verantwortlichkeiten. 
 
 ## Verantwortlichkeiten<br/>in der Counter-Demo-App
 
@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+
 Die Klasse _MyHomePageState trägt die verschiedensten Verantwortungen: 
 
 ### 1\. Layout
@@ -110,9 +111,9 @@ Die Klasse _MyHomePageState trägt die verschiedensten Verantwortungen:
         onPressed: _incrementCounter,
 ```
 
-Das Prinzip der Trennung von Verantwortlichkeiten ist lange bekannt. Trotzdem ist seine Durchsetzung, vor allem innerhalb von UI-Code, nach meiner Erfahrung immer eine Herausforderung. UI-Code hat die Besonderheit, dass er eng an seine Ablaufumgebung, das UI-Framework, gebunden ist und deswegen schon eine Komplexität besitzt. Da diese Komplexität des UI-Codes inhärent und nicht vermeidbar ist, bleibt als Ziel nur, sie möglichst nicht noch zu erhöhen.   
+Das Prinzip der Trennung von Verantwortlichkeiten [^3] ist lange bekannt. Trotzdem ist seine Durchsetzung, vor allem innerhalb von UI-Code, nach meiner Erfahrung immer eine Herausforderung. UI-Code hat die Besonderheit, dass er eng an seine Ablaufumgebung, das UI-Framework, gebunden ist und deswegen grundsätzlich schon eine Anfangskomplexität besitzt. Da diese Komplexität des UI-Codes inhärent und nicht vermeidbar ist, bleibt als Ziel nur, sie möglichst wenig zu erhöhen.   
 
-Ein Entwurfmuster, das genau auf diese Problemlage passt, ist das Humble-Object-Pattern [^1] von Micheal Feathers.
+Ein Entwurfmuster, das genau auf diese Problemlage passt, ist das Humble-Object-Pattern [^4] von Micheal Feathers.
 
 ## Die Definition des Humble-Object-Pattern
 
@@ -134,7 +135,7 @@ Die folgenden zwei Grafiken illustrieren die Lage vor und nach der Anwendung die
 
 Für eine kleine Demo App, wie die Counter-Demo-App, ist es angemessen, das so viele Verantwortlichkeiten in einer einzigen Klasse zusammengefasst sind. 
 <br/>
-Trotzdem habe ich diese App ausgewählt, um an ihr das Humble-Object-Pattern anzuwenden und anhand des Ergebnisses die Brauchbarkeit des Patterns für Flutter-Widget-Bäume zu initial zu bewerten. 
+Trotzdem habe ich diese App ausgewählt, um an ihr das Humble-Object-Pattern anzuwenden und anhand des Ergebnisses die Brauchbarkeit des Patterns für Flutter-Widget-Bäume zu bewerten. 
 <br/>
 Hier nun das Ergebnis der Anwendung des Pattern in Form der neuen Klassen, in die die verschiedenen Verantwortlichkeiten (oder Logik-Bestandteile) aus der ursprünglichen Klasse ```_MyHomePageState``` extrahiert wurden, sowie die verbleibende Humble-Object-Klasse ```MyHomePageBuilder```. 
 <br/>
@@ -170,7 +171,7 @@ class MyAppState {
 ```
 #### MyAppStateBinder
 
-Die Klasse ```MyAppStateBinder``` bindet die spezifische App-Zustands-Klasse ```MyAppState``` mit der Methode ```wrapWithProvider``` an eine App-Zustands-Verwaltiungs-Instanz.
+Die Klasse ```MyAppStateBinder``` bindet die spezifische App-Zustands-Klasse ```MyAppState``` mit der Methode ```wrapWithProvider``` an eine State-Management-Instanz.
 
 ```dart
 class MyAppStateBinder extends StatelessWidget {
@@ -230,6 +231,7 @@ class MyHomePageBinder extends StatelessWidget {
           );
 }
 ```
+
 ### Konvertierung des App-Zustands in Anzeige-Properties
 
 Bei der Erzeugung des Widget-Baums sind einige Widget-Konstruktor-Properties vom aktuellen App-Zustand abhängig. Diese werden zu eigenen Property-Klassen zusammengefasst. Außerdem wird für jede Property-Klasse eine ```transform```-Funktion definiert, die den App-Zustand in eine Instanz der Property-Klasse transformieren kann.
@@ -251,12 +253,12 @@ class MyHomePageProps {
   final Callable<void> onIncrementPressed;
 
   @override get hashCode => ...
-
   @override operator ==(other) => ...
 }
 ```
 
 #### MyHomePageStatePropsTransformer
+
 ```dart
 class MyHomePagePropsTransformer {
   static MyHomePageProps transform(Reducible<MyAppState> reducible) =>
@@ -267,6 +269,7 @@ class MyHomePagePropsTransformer {
       );
 }
 ```
+
 ### Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
 Flutter-Widgets stellen für die Gestenverarbeitung und ähnliche Zwecke Callback-Properties zur Verfügung. 
@@ -274,6 +277,8 @@ Wir behandeln Callback-Properties genauso wie die bereits besprochenen Anzeige-P
 
 Dazu wird eine Convenience-Methode ```get incrementCounterReducer``` definiert,
 die die App-Zustands-Operation mittels der Klasse ```ReducerOnReducible``` an die State-Management-Instanz bindet.
+
+#### get incrementCounterReducer
 
 ```dart
 extension IncrementCounterReducerOnReducible
@@ -356,18 +361,18 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 4. Konvertierung des App-Zustands in Anzeige-Properties
 5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
-In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
+In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code [^5] entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
 
-Ich habe dieses Refactoring mit dem Humble-Object-Pattern neben der Counter-Demo-App auch noch für das Beispiel-Projekt aus der offiziellen Dokumentation-Dokumentation für das State-Management [^26]. Das Resultat kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
+Ich habe dieses Refactoring mit dem Humble-Object-Pattern neben der Counter-Demo-App auch noch für das Beispiel-Projekt aus der offiziellen Dokumentation-Dokumentation für das State-Management [^6]. Das Resultat kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
 
 Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System vorstellen. 
 
 # Teil 2<br/>Anwendung des State-Reducer-Pattern
 
 Bei allen fünf mittels des Humble-Object-Pattern extrahierten Verantwortlichkeiten handelt es sich um State-Management-Verantwortlichkeiten.<br/> 
-In der Counter-Demo-App wird das State-Management mit einem StatefulWidget implementiert. Das StatefulWidget und das InheritedWidget sind die beiden von Flutter bereitgestellten Bausteine für das State-Management. Diese beiden Bausteine sind Low-Level-Bausteine. Nicht-triviale Apps benötigen meist eine höherwertige Lösung für das State-Management. In der Flutter-Community sind viele Frameworks enstanden, um diesen Bedarf zu decken. In der offiziellen Flutter-Dokumentation sind aktuell 13 solcher State-Management-Frameworks gelistet [^6].
+In der Counter-Demo-App wird das State-Management mit einem StatefulWidget implementiert. Das StatefulWidget und das InheritedWidget sind die beiden von Flutter bereitgestellten Bausteine für das State-Management. Diese beiden Bausteine sind Low-Level-Bausteine. Nicht-triviale Apps benötigen meist eine höherwertige Lösung für das State-Management. In der Flutter-Community sind viele Frameworks enstanden, um diesen Bedarf zu decken. In der offiziellen Flutter-Dokumentation sind aktuell 13 solcher State-Management-Frameworks gelistet [^7].
 <br/>
-Nachdem fünf  Verantwortlichkeiten mit Mühe (und Boilerplate-Code) aus der Abhängigkeit von der UI-Umgebung gelöst wurden, ist es nur konsequent, sie mittels einer geeigneten Abstraktion auch vor der Abhängigkeit von einem konkreten State-Management-Framework zu bewahren. 
+Nachdem fünf Verantwortlichkeiten mit Mühe (und Boilerplate-Code) aus der Abhängigkeit von der UI-Umgebung gelöst wurden, ist es nur konsequent, sie mittels einer geeigneten Abstraktion auch vor der Abhängigkeit von einem konkreten State-Management-Framework zu bewahren. 
 <br/>
 Ich nenne die Abstraktion in Anlehnung an das zugrunde liegende Pattern 'reduced'. Die wesentlichen Bestandteile der 'reduced'-Abstraktion wurden bereits aufgezählt:
 
@@ -378,16 +383,16 @@ zur Definition von Operationen zur Änderung des App-Zustandes
 zum Lesen und Aktualisieren des App-Zustands in einer State-Management-Instanz
 
 3. Interface **Callable**<br/>
-für die Defintion von Klassen mit Wertsemantik, deren Instanzen an Callback-Properties von Flutter-Widgets zugewiesen werden können,<br/> zur Verwendung in den im Kapitel über die Anwendung des Humble-Object-Pattern erwähnten Props-Klassen, so dass diese Klassen ebenfalls mit Wertsemantik definiert werden können 
+für die Defintion von Klassen mit Wertsemantik [^8], deren Instanzen an Callback-Properties von Flutter-Widgets zugewiesen werden können,<br/> zur Verwendung in den im Kapitel über die Anwendung des Humble-Object-Pattern erwähnten Props-Klassen, so dass diese Klassen ebenfalls mit Wertsemantik definiert werden können 
 
 4. Klasse **ReducerOnReducible**<br/>
 zur Verknüpfung einer App-Zustands-Operation mit der State-Management-Instanz, auf der sie ausgeführt werden soll
 
 5. Funktion **wrapWithProvider**<br/>
-zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt
+zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
 
 6. Funktion **wrapWithConsumer**<br/>
-zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingepackte Widget bei Änderungen am App-Zustand neu gebaut wird
+zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingepackte Widget bei Änderungen am App-Zustand neu gebaut wird. Die Signatur der Funktion ist abhängig vom State-Management-Framework.
 
 ## Die Definition des State-Reducer-Pattern
 
@@ -395,9 +400,9 @@ Nach der Übersicht folgt nun die detaillierte Beschreibung der Abstraktion 'red
 
 Einfach ausgedrückt beinhaltet das State-Reducer-Pattern die Forderung, dass jede Änderung am App-Zustand als atomare Operation mit dem aktuellen App-Zustand als Parameter und einem neuen App-Zustand als Resultat ausgeführt wird. Aktionen, die potenziell länger laufen (Datenbank-Anfragen, Netzwerk-Aufrufe, ..), müssen wegen dieser Forderung meist mit mehreren atomaren App-Zustands-Änderungen umgesetzt werden, z.B. eine am Beginn der Aktion und eine am Ende. Entscheidend ist, dass die App-Zustands-Änderung am Ende der Aktion nicht das App-Zustands-Resultat vom Anfang der Aktion als Parameter (wieder-)verwendet, sondern den dann aktuellen App-Zustand des State-Management-Frameworks. Das Pattern unterstützt diese Absicht, indem es dafür sorgt, dass man bei einer Änderung den aktuellen App-Zustand nicht selbst holen muss, sondern unaufgefordert geliefert bekommt.
 <br/>
-Oder etwas analytischer ausgedrückt: Das State-Reducer-Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^14] aus dem initialen App-Zustand und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. 
+Oder etwas analytischer ausgedrückt: Das State-Reducer-Pattern modelliert den App-Zustand als Ergebnis einer Faltungsfunktion [^9] aus dem initialen App-Zustand und der Folge der bisherigen App-Zustands-Änderungs-Aktionen. 
 <br>
-Dan Abramov und Andrew Clark haben dieses Konzept im Javascript-Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^8]:  
+Dan Abramov und Andrew Clark haben dieses Konzept im Javascript-Framework Redux [^10] verwendet und für den Kombinierungsoperator, der aus dem aktuellen App-Zustand und einer Aktion einen neuen App-Zustand berechnet, den Namen *Reducer* populär gemacht [^11]:  
 
 > Reducers sind Funktionen, die den aktuellen Zustand und eine Aktion als Argumente nehmen und ein neues Zustandsergebnis zurückgeben.<br/> 
 Mit anderen Worten: `(state, action) => newState`.
@@ -410,7 +415,7 @@ Auf App-Code bezogen heißt das:
 
 1. Für den App-Zustand wird eine AppState-Klasse definiert - eine reine Datenklasse mit ausschließlich finalen Feldern und einem const Konstruktor. Die State-Management-API stellt eine get-Methode für den aktuellen App-Zustand zur Verfügung.  
 
-2. Die State-Management-API stellt eine reduce-Methode zur Verfügung, die einen Reducer als Parameter akzeptiert. Ein Reducer ist eine reine [^11] synchrone Funktion, die eine Instanz der AppState-Klasse als Parameter bekommt und eine neue Instanz der AppState-Klasse als zurückgibt. Beim Aufruf führt die reduce-Methode den übergebenen Reducer mit dem aktuellen App-Zustand als Parameter aus und speichert den Rückgabewert des Reducer-Aufrufs als neuen App-Zustand ab. 
+2. Die State-Management-API stellt eine reduce-Methode zur Verfügung, die einen Reducer als Parameter akzeptiert. Ein Reducer ist eine pure [^12] synchrone Funktion, die eine Instanz der AppState-Klasse als Parameter bekommt und eine neue Instanz der AppState-Klasse als zurückgibt. Beim Aufruf führt die reduce-Methode den übergebenen Reducer mit dem aktuellen App-Zustand als Parameter aus und speichert den Rückgabewert des Reducer-Aufrufs als neuen App-Zustand ab. 
 
 Nach dieser Vorstellung des State-Reducer-Pattern folgen nun die Details zu den Bestandteilen der Abstraktion 'reduced' für State-Management-Frameworks.
 
@@ -498,9 +503,11 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
 ```
 
 ## Funktion wrapWithProvider
+
 zum Einpacken eines Widgets in ein sogenanntes Provider-Widget, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt
 
 ## Funktion wrapWithConsumer
+
 zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür sorgt, dass das eingpackte Widget bei Änderungen am App-Zustand neu gebaut wird
 
 ## Fazit zur Anwendung des State-Reducer-Pattern
@@ -508,17 +515,19 @@ zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür s
 Da die 'reduced'-API für jedes konkrete State-Management-Framework nur einmal implementiert werden muss, verursacht sie keinen zusätzlichen Boilerplate-Code, sondern nur eine zusätzliche Abstraktionsschicht. 
 Aber auch jede Abstraktionsschicht verursacht Aufwände, die gegenüber dem Nutzen abgewogen werden sollten.
 <br/>
-Die 'reduced'-API deckt nur den 'Standard-Teil' der APIs der State-Management-Frameworks ab. Jedes Framework biete über die 'reduced'-API hinaus noch individuelle Features. Um auch solche Features nutzen zu können, kann man die 'reduced'-API erweitern oder an der 'reduced'-API vorbei direkt mit der Framework-API arbeiten.
+Die 'reduced'-API deckt nur den 'Standard-Teil' der APIs der State-Management-Frameworks ab. Jedes Framework bietet über die 'reduced'-API hinaus noch individuelle Features. Um auch solche Features nutzen zu können, kann man die 'reduced'-API erweitern oder an der 'reduced'-API vorbei direkt mit der Framework-API arbeiten.
+<br/>
 Falls in einem Projekt die Notwendigkeit für direkte Nutzung der State-Management-Framework-API kein Ausnahmefall bleibt, dann ist es wahrscheinlich, dass die Nutzung einer Abstraktionsschicht für das State-Management-Framework in so einem Projekt ungünstig ist. 
 
 # Teil 3<br/>Implementierung der 'reduced'-API
 
 Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktionen ```wrapWithProvider```und ```wrapWithConsumer```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
 
+Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand der Frameworks 'Bloc' und 'Riverpod' gezeigt werden.
 
 ## 'reduced'-API-Implementierung am Beispiel Bloc
 
-Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand des Bloc-Frameworks gezeigt werden.
+Das State-Management-Framework 'Bloc' [^13] basiert auf dem Bloc-Pattern [^14] von Paolo Soares und Cong Hui.
 
 ### Reducible-Implementierung für Bloc
 
@@ -581,71 +590,59 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 }
 ```
 
-### Reducible-Implementierung für Bloc
+## 'reduced'-API-Implementierung am Beispiel Riverpod
+
+Das State-Management-Framework 'Riverpod' [^15] von Remi Rousselet.
+
+### Reducible-Implementierung für Riverpod
 
 Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
 
 
 ```dart
-class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
+class ReducibleStateNotifier<S> extends StateNotifier<S>
     implements Reducible<S> {
-  ReducibleBloc(super.initialState) {
-    on<Reducer<S>>((event, emit) => emit(event(state)));
-  }
+  ReducibleStateNotifier(super.state);
+
+  late final Reducible<S> reducible = this;
 
   @override
-  void reduce(Reducer<S> reducer) => add(reducer);
-
-  late final reducible = this;
+  reduce(reducer) => state = reducer(state);
 }
 ```
 
 ### Extension für dem BuildContext
 
+Riverpod benötigt keine Extension für den BuildContext.
+
+
+### wrapWithProvider-Implementierung für Riverpod
+
+Die Funktion wrapWithProvider erzeugt das Widget ```ProviderScope```.
+
 ```dart
-extension ExtensionBlocOnBuildContext on BuildContext {
-  ReducibleBloc<S> bloc<S>() =>
-      BlocProvider.of<ReducibleBloc<S>>(this);
-}
+Widget wrapWithProvider({required Widget child}) =>
+    ProviderScope(child: child);
 ```
 
-### wrapWithProvider-Implementierung für Bloc
+### wrapWithConsumer-Implementierung für Riverpod
 
-Die Funktion wrapWithProvider erzeugt das Widget ```BlocProvider```.
+Die Funktion ```wrapWithConsumer``` erzeugt das Widget ```Consumer```.
+Durch den Consumer bekommt man ein WidgetRef damit bekommt man bei jeder Änderund die aktuellen Props.
 
 ```dart
-Widget wrapWithProvider<S>({
-  required S initialState,
-  required Widget child,
+Widget wrapWithConsumer<S, P>({
+  required StateProvider<P> provider,
+  required PropsWidgetBuilder<P> builder,
 }) =>
-    BlocProvider(
-      create: (_) => ReducibleBloc(initialState),
-      child: child,
+    Consumer(
+      builder: (_, ref, __) => builder(props: ref.watch(provider)),
     );
-```
-
-### wrapWithConsumer-Implementierung für Bloc
-
-Die Funktion ```wrapWithConsumer``` erzeugt das Widget ```BlocSelector```.
-Die benötigte ```Reducible```-Instanz wird implizit übergeben, indem ```wrapWithConsumer``` als Extension der Klasse ```ReducibleBloc``` definiert wird.
-
-```dart
-extension WrapWithConsumer<S> on ReducibleBloc<S> {
-  Widget wrapWithConsumer<P>({
-    required ReducibleTransformer<S, P> transformer,
-    required PropsWidgetBuilder<P> builder,
-  }) =>
-      BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => transformer(reducible),
-        builder: (context, props) => builder(props: props),
-      );
-}
 ```
 
 ### Tabelle der 'reduced'-API-Implementierungen
 
-In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks gelistet [^1]. Das Fish-Redux-Framework ist nicht Null-Safety und darum veraltet. Für die anderen 12 Frameworks wurde die 'reduced'-API exemplarisch implementiert. Die folgende Tabelle enthält Links zu diesen Frameworks und zu ihren 'reduced'-Implementierungen.
-
+In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks gelistet. Das Fish-Redux-Framework ist nicht Null-Safety [^22] und darum veraltet. Für die anderen 12 Frameworks wurde die 'reduced'-API exemplarisch implementiert. Die folgende Tabelle enthält Links zu diesen Frameworks und zu ihren 'reduced'-Implementierungen.
 
 |Name|Publisher|'reduced'-Implementierung|
 |---|---|---|
@@ -699,12 +696,12 @@ Zwischen UI-Code und App-Logik-Code gibt es also noch Grauzonen, die in klare Ab
  
 ## Lokale bzw. geschachtelte App-Zustände
 
-Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^15].</br>
+Der Ansatz, den kompletten App-Zustand als unveränderliche Instanz einer einzigen Klasse zu modellieren, wird bei sehr komplexen Datenstrukturen, sehr großen Datenmengen oder sehr häufigen Änderungsaktionen an seine Grenzen kommen [^16].</br>
 
-In der redux.js-Dokumentation gibt es Hinweise [^16], [^17], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
+In der redux.js-Dokumentation gibt es Hinweise [^17], [^18], wie man diese Grenzen durch eine gute Strukturierung der App-Zustands-Klasse erweitern kann.</br>
 
-Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen Zustands-Verwaltungs-Lösungen umzusetzen. 
-Im State-Management-Framework Fish-Redux [^23] ist es z.B. grundsätzlich so, dass (neben einen globalen App-Zustand) für jede App-Seite eine lokale Seiten-State-Management-Instanz existiert.  
+Letztlich kann man versuchen, Performance-kritische Teile aus dem globalen App-Zustand zu extrahieren und mit lokalen State-Management-Lösungen umzusetzen. 
+Im State-Management-Framework Fish-Redux [^19] ist es z.B. grundsätzlich so, dass (neben einen globalen App-Zustand) für jede App-Seite eine lokale State-Management-Instanz existiert.  
 
 ## UI-Code-Strukturierung
 
@@ -724,61 +721,56 @@ Für den separierten Flutter-UI-Code werden allerdings für größere Projekte w
 
 ## Groß-Projekt-Erprobung
 
-Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen und mittleren Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^19] und im Google- [^20] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf größere Projekte anwenden lassen, muss sich erst noch erweisen.
+Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen  Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^20] und im Google- [^21] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf größere Projekte anwenden lassen, muss sich erst noch erweisen.
 
+# Schlußwort
+
+In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. 
 
 # Referenzen
 
-[^1]: Entwurfmuster</br> [en.wikipedia.org/wiki/Software_design_pattern](https://en.wikipedia.org/wiki/Software_design_pattern)
+[^1]: Flutter</br> [flutter.dev](https://flutter.dev/)
 
-[^2]: Trennung der Verantwortlichkeiten</br> [en.wikipedia.org/wiki/Separation_of_concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
+[^2]: Alles ist ein Widget</br> [docs.flutter.dev/development/ui/layout](https://docs.flutter.dev/development/ui/layout)
 
-[^3]: Flutter</br> [flutter.dev](https://flutter.dev/)
+[^3]: Trennung der Verantwortlichkeiten</br> [en.wikipedia.org/wiki/Separation_of_concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
 
-[^4]: Riverpod</br> [riverpod.dev](https://riverpod.dev/)
+[^4]: Humble Object Pattern</br> [xunitpatterns.com/Humble Object.html](http://xunitpatterns.com/Humble%20Object.html)
 
-[^5]: Bloc</br> [bloclibrary.dev](https://bloclibrary.dev/)
+[^5]: Boilerplate Code [de.wikipedia.org/wiki/Boilerplate-Code](https://de.wikipedia.org/wiki/Boilerplate-Code)
 
-[^6]: Flutter State Management Approaches</br> [docs.flutter.dev/development/data-and-backend/state-mgmt/options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options)
+[^6]: Shopper-Sample-App [docs.flutter.dev/development/data-and-backend/state-mgmt/simple](https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple)
 
-[^7]: Humble Object Pattern</br> [xunitpatterns.com/Humble Object.html](http://xunitpatterns.com/Humble%20Object.html)
+[^7]: Flutter State Management Approaches</br> [docs.flutter.dev/development/data-and-backend/state-mgmt/options](https://docs.flutter.dev/development/data-and-backend/state-mgmt/options)
 
-[^8]: Reducer Pattern</br> [redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
+[^8]: Wertsemantik</br> [en.wikipedia.org/wiki/Value_semantics](https://en.wikipedia.org/wiki/Value_semantics)
 
-[^9]: Alles ist ein Widget</br> [docs.flutter.dev/development/ui/layout](https://docs.flutter.dev/development/ui/layout)
+[^9]: Faltungsfunktion</br> [www.cs.nott.ac.uk/~gmh/fold.pdf](http://www.cs.nott.ac.uk/~gmh/fold.pdf)
 
 [^10]: Redux</br> [redux.js.org/](https://redux.js.org/)
 
-[^11]: Pure Funktion</br> [en.wikipedia.org/wiki/Pure_function](https://en.wikipedia.org/wiki/Pure_function)
+[^11]: Reducer Pattern</br> [redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers)
 
-[^12]: Wertsemantik</br> [en.wikipedia.org/wiki/Value_semantics](https://en.wikipedia.org/wiki/Value_semantics)
+[^12]: Pure Funktion</br> [en.wikipedia.org/wiki/Pure_function](https://en.wikipedia.org/wiki/Pure_function)
 
-[^13]: Michael Feathers [michaelfeathers.silvrback.com/bio](https://michaelfeathers.silvrback.com/bio)
+[^13]: Bloc</br> [bloclibrary.dev](https://bloclibrary.dev/)
 
-[^14]: Faltungsfunktion</br> [www.cs.nott.ac.uk/~gmh/fold.pdf](http://www.cs.nott.ac.uk/~gmh/fold.pdf)
+[^14]: Bloc Pattern<br/> [www.youtube.com/watch?v=PLHln7wHgPE&t=51s](https://www.youtube.com/watch?v=PLHln7wHgPE&t=51s)
 
-[^15]: Reducer Pattern Nachteil</br> [twitter.com/acdlite/status/1025408731805184000](https://twitter.com/acdlite/status/1025408731805184000)
+[^15]: Riverpod</br> [riverpod.dev](https://riverpod.dev/)
 
-[^16]: App-Zustands-Gliederung</br> [redux.js.org/usage/structuring-reducers/basic-reducer-structure](https://redux.js.org/usage/structuring-reducers/basic-reducer-structure)
+[^16]: Reducer Pattern Nachteil</br> [twitter.com/acdlite/status/1025408731805184000](https://twitter.com/acdlite/status/1025408731805184000)
 
-[^17]: App-Zustands-Normalisierung</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
+[^17]: App-Zustands-Gliederung</br> [redux.js.org/usage/structuring-reducers/basic-reducer-structure](https://redux.js.org/usage/structuring-reducers/basic-reducer-structure)
 
-[^18]: React</br> [reactjs.org/](https://reactjs.org/)
+[^18]: App-Zustands-Normalisierung</br> [redux.js.org/usage/structuring-reducers/normalizing-state-shape](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape)
 
-[^19]: Die App *Cantarei* im Apple-Appstore [apps.apple.com/us/app/cantarei/id1624281880](https://apps.apple.com/us/app/cantarei/id1624281880)
+[^19]: Fish Redux [pub.dev/packages/fish_redux](https://pub.dev/packages/fish_redux)
 
-[^20]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
+[^20]: Die App *Cantarei* im Apple-Appstore [apps.apple.com/us/app/cantarei/id1624281880](https://apps.apple.com/us/app/cantarei/id1624281880)
 
-[^21]: Unnötige Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+[^21]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
 
-[^22]: Proxy Pattern [en.wikipedia.org/wiki/Proxy_pattern](https://en.wikipedia.org/wiki/Proxy_pattern)
+[^22]: Null Safety [dart.dev/null-safety#enable-null-safety](https://dart.dev/null-safety#enable-null-safety)
 
-[^23]: Fish Redux [pub.dev/packages/fish_redux](https://pub.dev/packages/fish_redux)
-
-[^24]: Null Safety [dart.dev/null-safety#enable-null-safety](https://dart.dev/null-safety#enable-null-safety)
-
-[^25]: Shopper-Sample-App [docs.flutter.dev/development/data-and-backend/state-mgmt/simple](https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple)
-
-[^1] Ist alles ein Widget? [twitter.com/ulusoyapps/status/1484090230651162624/photo/1
-](https://twitter.com/ulusoyapps/status/1484090230651162624/photo/1
-)
+[^23]: Unnötige Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
