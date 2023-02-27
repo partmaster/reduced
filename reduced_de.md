@@ -535,14 +535,14 @@ Die Funktion ```wrapWithConsumer``` sorgt dafür, dass der Rebuild eines Widgets
 <br/><br/>
 Die Funktion hat immer einen Parameter ```builder``` vom Typ Function mit dem Returntyp Widget. Die komplette Signatur der Funktion ist abhängig vom State-Management-Framework. 
 <br/><br/>
-‚In der Implementierung wird der übergebenene ```builder``` oft in ein sogenanntes 'Consumer'-Widget eingepackt, dass den ```builder``` genau dann ausführt, wenn sich relevante Properties der State-Management-Instanz ändern.
-Die Funktion ```wrapWithConsumer``` ermöglichet es also, selektiv auf Zustandsänderungen zu lauschen.
+In der Implementierung wird der übergebenene ```builder``` oft in ein sogenanntes 'Consumer'-Widget eingepackt, dass den ```builder``` genau dann ausführt, wenn sich relevante Properties der State-Management-Instanz ändern.
+Die Funktion ```wrapWithConsumer``` ermöglicht es also, selektiv auf Zustandsänderungen zu lauschen.
 
 ## Fazit zur Anwendung des State-Reducer-Pattern
 
 Auf Basis des State-Reducer-Pattern wurde eine minimale API für State-Management-Frameworks definiert,
 die die grundlegenden State-Management-Anwendungsszenarien abdeckt.
-Durch die Reduktion auf das Notwendige lässt sich die API leicht für existierende State-Management-Frameworks implementieren, wie später noch gezeigt wird.
+Durch die Reduktion auf das Notwendige lässt sich die API leicht für existierende State-Management-Frameworks implementieren, wie gleich noch gezeigt wird.
 Der Source-Code für die API kann hier gefunden werden: [github.com/partmaster/reduced](https://github.com/partmaster/reduced)
 <br/><br/>
 Da die 'reduced'-API für jedes konkrete State-Management-Framework nur einmal implementiert werden muss, verursacht sie keinen zusätzlichen Boilerplate-Code, sondern nur eine zusätzliche Abstraktionsschicht. 
@@ -556,11 +556,11 @@ Falls in einem Projekt die Notwendigkeit für direkte Nutzung der State-Manageme
 # Teil 4<br/>Implementierung der 'reduced'-API
 
 Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktionen ```wrapWithProvider```und ```wrapWithConsumer```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
-
+<br/>
 Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand der Frameworks 'Bloc' [^16] und 'Riverpod' [^17] gezeigt werden.
 
 ![reducer_action](images/reducer_action.png)
-*Abb. 5: 'reduced'-API, API-Implementierungen und API-Verwendung*
+*Abb. 5: Beziehungen zwischen 'reduced'-API, API-Implementierungen und API-Verwendung*
 
 ## 'reduced'-API-Implementierung am Beispiel Bloc
 
@@ -584,7 +584,7 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
 }
 ```
 
-### Extension für dem BuildContext
+### Extension für den BuildContext
 
 ```dart
 extension ExtensionBlocOnBuildContext on BuildContext {
@@ -595,7 +595,7 @@ extension ExtensionBlocOnBuildContext on BuildContext {
 
 ### wrapWithProvider-Implementierung für Bloc
 
-Die Funktion wrapWithProvider erzeugt das Widget ```BlocProvider```.
+Die Funktion ```wrapWithProvider``` erzeugt das Widget ```ProviderScope```.
 
 ```dart
 Widget wrapWithProvider<S>({
@@ -697,7 +697,7 @@ In der Flutter-Dokumentation sind aktuell 13 State Management Frameworks geliste
 ## Fazit zur Implementierung der 'reduced'-API
 
 Die Ziel der 'reduced'-API ist eine minimale Abstraktionsschicht für State-Management-Frameworks.   
-Der geringe Code-Umfang und die direkten Abbildungern in den Implementierungen der 'reduced'-API zeigen, dass dieses Ziel erreicht wurde. Die 'reduced'-API passt sehr gut auf die meisten Frameworks. 
+Der geringe Code-Umfang und die direkten Abbildungen in den Implementierungen der 'reduced'-API zeigen, dass dieses Ziel erreicht wurde. Die 'reduced'-API passt sehr gut auf die meisten Frameworks. 
 <br/>
 Beim State-Management-Framework MobX [^21] musste allerdings, um die Funktionen ```wrapWithProvider``` und ```wrapWithConsumer``` bereitzustellen, gegen das Framework gearbeitet werden: Die 'reduced'-API-Funktionen sind so ausgelegt, dass sie die State-Management-Instanzen mit generischen Klassen zur Laufzeit erstellen und benutzen. Dagegen verwendet MobX spezifische State-Management-Klassen, die bereits beim Build mit einem Code-Generator generiert werden. 
 <br/><br/>
@@ -817,4 +817,4 @@ In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum
 
 [^26]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
 
-[^27]: Unnötige Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+[^27]: Unvorteilhafte Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
