@@ -123,15 +123,15 @@ Die Zusammenfassung des Humble-Object-Pattern lautet:
 
 > Wenn Code nicht gut testbar ist, weil er zu eng mit seiner Umgebung verbunden ist, extrahiere die Logik in eine separate, leicht zu testende Komponente, die von ihrer Umgebung entkoppelt ist.
 
-Die folgenden zwei Grafiken illustrieren die Lage vor und nach der Anwendung dieses Entwurfsmuster:  
+Die folgenden zwei Grafiken in Abb. 1 und 2 illustrieren die Lage vor und nach der Anwendung dieses Entwurfsmuster:  
 
 ![humble1](images/humble1.png)
 <br/>
-*Lage vor Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^24])*
+*Abb. 1: Lage vor Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^24])*
 
 ![humble2](images/humble2.png)
 <br/>
-*Lage nach Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^25])*
+*Abb. 2: Lage nach Anwendung des Humble-Object-Pattern (Bildquelle: manning.com [^25])*
 
 ## Counter-Demo-App refactored
 
@@ -347,7 +347,10 @@ App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klass
 
 5. Für die Props-Klasse wird eine Transform-Funktion definiert, die aus dem aktuellen App-Zustand die Werte für die Properties und aus den den Reducer-Implementierungen die Werte für die Callbacks erzeugt.
 
+Das Diagram in Abb. 3 zeigt das Zusammenspiel der Komponenten bei der Umsetzung des Humble-Object-Pattern mit Binder, Builder, Props und Transformer.
+
 ![humble_widget](images/humble_widget.png)
+*Abb. 3: Umsetzung des Humble-Object-Pattern mit Binder, Builder, Props und Transformer*
 
 Diese Schritte, angewandt auf die Counter-Demo-App, bringen folgendes Ergebnis:
 
@@ -414,7 +417,7 @@ Mit anderen Worten: `(state, action) => newState`.
 
 ![reducer](images/reducer_killalldefectscom.png)
 <br/>
-*Prinzip des State-Reducer-Pattern (Bildquelle: killalldefects.com [^26])*
+*Abb. 4: Prinzip des State-Reducer-Pattern (Bildquelle: killalldefects.com [^26])*
 
 Auf App-Code bezogen heißt das:
 
@@ -532,10 +535,11 @@ Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Frame
 Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand der Frameworks 'Bloc' und 'Riverpod' gezeigt werden.
 
 ![reducer_action](images/reducer_action.png)
+*Abb. 5: 'reduced'-API, API-Implementierungen und API-Verwendung*
 
 ## 'reduced'-API-Implementierung am Beispiel Bloc
 
-Das State-Management-Framework 'Bloc' [^13] basiert auf dem Bloc-Pattern [^14] von Paolo Soares und Cong Hui.
+Das State-Management-Framework 'Bloc' [^13] von Felix Angelov basiert auf dem Bloc-Pattern [^14] von Paolo Soares und Cong Hui.
 
 ### Reducible-Implementierung für Bloc
 
@@ -603,7 +607,7 @@ Das State-Management-Framework 'Riverpod' [^15] von Remi Rousselet.
 
 ### Reducible-Implementierung für Riverpod
 
-Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
+Das Framework Riverpod implementiert State-Management-Instanzen mit der Klasse ```StateNotifier<S>```, wobei ```S``` der Typ-Parameter für die Zustands-Klasse ist. Die Methode ```S get state``` bringt die Klasse ```StateNotifier``` bereits mit und die Methode ```Reducible.reduce``` kann einfach auf die Methode ```set state(S)``` abgebildet werden.  
 
 ```dart
 class ReducibleStateNotifier<S> extends StateNotifier<S>
