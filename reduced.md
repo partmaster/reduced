@@ -13,11 +13,10 @@ Diese Vorteile haben ihren Preis: Gegenüber der direkten Verwendung eines State
 <br/> 
 Wer beim Einsatz von State-Management-Frameworks flexibel bleiben will oder wer seine Widget-Baum-Code-Struktur übersichtlicher gestalten will, oder wer sich einfach nur einen Überblick über verfügbare State-Management-Frameworks verschaffen will, für den könnte der Artikel interessant sein. 
 
-# Teil 1<br/>Anwendung des Humble-Object-Pattern
+<div style="page-break-after: always;"></div>
+# Teil 1<br/>Verantwortlichkeiten<br/>in der Counter-Demo-App
 
 Flutter [^1] beschreibt sich selbst mit dem Spruch "Fast alles ist ein Widget" [^2]. Damit ist gemeint, dass die meisten Features in Form von Widget-Klassen implementiert sind, die sich wie Lego-Bausteine aufeinander stecken lassen. Das ist eine großartige Eigenschaft. Es gibt aber auch eine kleine Kehrseite: Wenn man nicht aufpasst, vermischen sich in den resultierenden Widget-Bäumen leicht die Verantwortlichkeiten. 
-
-## Verantwortlichkeiten<br/>in der Counter-Demo-App
 
 Nehmen wir als Beispiel die wohlbekannte Counter-Demo-App:
 
@@ -112,6 +111,9 @@ Die Klasse _MyHomePageState trägt die verschiedensten Verantwortungen:
 ```
 
 Das Prinzip der Trennung von Verantwortlichkeiten [^3] ist lange bekannt. Trotzdem ist seine Durchsetzung, vor allem innerhalb von UI-Code, nach meiner Erfahrung immer eine Herausforderung. UI-Code hat die Besonderheit, dass er eng an seine Ablaufumgebung, das UI-Framework, gebunden ist und deswegen grundsätzlich schon eine Anfangskomplexität besitzt. Da diese Komplexität des UI-Codes inhärent und nicht vermeidbar ist, bleibt als Ziel nur, sie möglichst wenig zu erhöhen.   
+
+<div style="page-break-after: always;"></div>
+# Teil 2<br/>Anwendung des Humble-Object-Pattern
 
 Ein Entwurfmuster, das genau auf diese Problemlage passt, ist das Humble-Object-Pattern [^4] von Micheal Feathers.
 
@@ -345,6 +347,8 @@ App-Zustands-Aufgaben löst, dann wird diese Widget-Klasse in eine Builder-Klass
 
 5. Für die Props-Klasse wird eine Transform-Funktion definiert, die aus dem aktuellen App-Zustand die Werte für die Properties und aus den den Reducer-Implementierungen die Werte für die Callbacks erzeugt.
 
+![humble_widget](images/humble_widget.png)
+
 Diese Schritte, angewandt auf die Counter-Demo-App, bringen folgendes Ergebnis:
 
 Drei Verantwortlichkeiten aus der Klasse _MyHomePageState verbleiben im Humble Object:
@@ -367,7 +371,8 @@ Ich habe dieses Refactoring mit dem Humble-Object-Pattern neben der Counter-Demo
 
 Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System vorstellen. 
 
-# Teil 2<br/>Anwendung des State-Reducer-Pattern
+<div style="page-break-after: always;"></div>
+# Teil 3<br/>Anwendung des State-Reducer-Pattern
 
 Bei allen fünf mittels des Humble-Object-Pattern extrahierten Verantwortlichkeiten handelt es sich um State-Management-Verantwortlichkeiten.<br/> 
 In der Counter-Demo-App wird das State-Management mit einem StatefulWidget implementiert. Das StatefulWidget und das InheritedWidget sind die beiden von Flutter bereitgestellten Bausteine für das State-Management. Diese beiden Bausteine sind Low-Level-Bausteine. Nicht-triviale Apps benötigen meist eine höherwertige Lösung für das State-Management. In der Flutter-Community sind viele Frameworks enstanden, um diesen Bedarf zu decken. In der offiziellen Flutter-Dokumentation sind aktuell 13 solcher State-Management-Frameworks gelistet [^7].
@@ -519,11 +524,14 @@ Die 'reduced'-API deckt nur den 'Standard-Teil' der APIs der State-Management-Fr
 <br/>
 Falls in einem Projekt die Notwendigkeit für direkte Nutzung der State-Management-Framework-API kein Ausnahmefall bleibt, dann ist es wahrscheinlich, dass die Nutzung einer Abstraktionsschicht für das State-Management-Framework in so einem Projekt ungünstig ist. 
 
-# Teil 3<br/>Implementierung der 'reduced'-API
+<div style="page-break-after: always;"></div>
+# Teil 4<br/>Implementierung der 'reduced'-API
 
 Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktionen ```wrapWithProvider```und ```wrapWithConsumer```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
 
 Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand der Frameworks 'Bloc' und 'Riverpod' gezeigt werden.
+
+![reducer_action](images/reducer_action.png)
 
 ## 'reduced'-API-Implementierung am Beispiel Bloc
 
@@ -532,7 +540,6 @@ Das State-Management-Framework 'Bloc' [^13] basiert auf dem Bloc-Pattern [^14] v
 ### Reducible-Implementierung für Bloc
 
 Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
-
 
 ```dart
 class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
@@ -598,7 +605,6 @@ Das State-Management-Framework 'Riverpod' [^15] von Remi Rousselet.
 
 Das Framework Bloc implementiert State-Management-Instanzen mit der Klasse ```Bloc<E, S>```, wobei ```E``` der Typ-Parameter für State-Management-Ereignisse und ```S``` der Typ-Parameter für die Zustands-Klasse ist. Wir verwenden als Ereignis-Typ das Interface ```Reducer``` aus der 'reduced'-API. Da die ```Reducer``` ihre Operation auf dem App-Zustannd schon mitbringen, brauchen sie kein individuelles Dispatching, sondern sie können selbst ausgeführt werden. Die Methode ```S get state``` bringt die Klasse ```Bloc``` bereits mit und die Methode ```Reducible.reduce``` kann direkt auf die Methode ```Bloc.add``` abgebildet werden.  
 
-
 ```dart
 class ReducibleStateNotifier<S> extends StateNotifier<S>
     implements Reducible<S> {
@@ -614,7 +620,6 @@ class ReducibleStateNotifier<S> extends StateNotifier<S>
 ### Extension für dem BuildContext
 
 Riverpod benötigt keine Extension für den BuildContext.
-
 
 ### wrapWithProvider-Implementierung für Riverpod
 
@@ -685,6 +690,7 @@ Durch die Verwendung der 'reduced'-API wird neben der Trennung von Verantwortlic
 export 'binder/statesrebuilder_binder.dart';
 ```
 
+<div style="page-break-after: always;"></div>
 # Offene Enden
 
 ## Grauzonen zwischen UI und App-Logik
@@ -727,6 +733,7 @@ Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahru
 
 In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. Ich hoffe, die 'reduced'-Abstraktion ist den Auwand wert.
 
+<div style="page-break-after: always;"></div>
 # Referenzen
 
 [^1]: Flutter</br> [flutter.dev](https://flutter.dev/)
