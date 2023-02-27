@@ -520,6 +520,10 @@ zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür s
 
 ## Fazit zur Anwendung des State-Reducer-Pattern
 
+Auf Basis des State-Reducer-Pattern wurde eine minimale API für State-Management-Frameworks definiert,
+die trotzdem die grundlegenden State-Management-Anwendungsszenarien abdeckt.
+Durch die Reduktion auf das Notwendige lässt sich die API leicht für existierende State-Management-Frameworks implementieren, wie später noch gezeigt wird.
+
 Da die 'reduced'-API für jedes konkrete State-Management-Framework nur einmal implementiert werden muss, verursacht sie keinen zusätzlichen Boilerplate-Code, sondern nur eine zusätzliche Abstraktionsschicht. 
 Aber auch jede Abstraktionsschicht verursacht Aufwände, die gegenüber dem Nutzen abgewogen werden sollten.
 <br/>
@@ -729,13 +733,13 @@ Für den separierten Flutter-UI-Code werden allerdings für größere Projekte w
 
 * Wie separiere ich den Code für Animationen?
 
-## Groß-Projekt-Erprobung
+## Praxis-Erprobung
 
-Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen  Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^20] und im Google- [^21] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf größere Projekte anwenden lassen, muss sich erst noch erweisen.
+Die in diesem Artikel vorgestellte Code-Struktur ist ein Ergebnis meiner Erfahrungen aus kleinen und mittleren Flutter-Projekten. Eines davon ist das Projekt Cantarei - die Taizé-Lieder-App. Die App ist frei im Apple- [^20] und im Google- [^21] App-Store verfügbar, so dass jeder Interessierte selbst einen Eindruck gewinnen kann, für welche Projekt-Größen die hier vorgeschlagenen Konzepte bereits praxiserprobt sind. Ob sie sich, so wie sie sind, mit Erfolg auf viele und vor allem auch auf größere Projekte anwenden lassen, muss sich erst noch erweisen.
 
 # Schlußwort
 
-In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. Ich hoffe, die 'reduced'-Abstraktion ist den Auwand wert.
+In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum Verbergen von Abhängigkeiten verursacht Kosten und sollte genug Vorteile bringen, um die Kosten zu rechtfertigen [^23]. Ich hoffe, die 'reduced'-Abstraktion, insbesondere in Kombination mit der Anwendung des Humble-Object-Pattern, ist den Aufwand wert.
 
 <div style="page-break-after: always;"></div>
 # Referenzen
