@@ -368,6 +368,8 @@ Fünf Verantwortlichkeiten wurden aus der Klasse _MyHomePageState in eigene Klas
 4. Konvertierung des App-Zustands in Anzeige-Properties
 5. Abbildung von Gesten-Callbacks auf App-Zustands-Änderungs-Operationen
 
+Der Source-Code der refaktorisierten Counter-Demo-App kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/counter_app](https://github.com/partmaster/reduced/tree/main/examples/counter_app).
+<br/> 
 Ich habe dieses Refactoring mit dem Humble-Object-Pattern neben der Counter-Demo-App auch noch für das Beispiel-Projekt aus der offiziellen Dokumentation-Dokumentation für das State-Management [^6]. Das Resultat kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
 
 In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code [^5] entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
@@ -523,7 +525,8 @@ zum Einpacken eines Widgets in ein sogenanntes Consumer-Widget, welches dafür s
 Auf Basis des State-Reducer-Pattern wurde eine minimale API für State-Management-Frameworks definiert,
 die trotzdem die grundlegenden State-Management-Anwendungsszenarien abdeckt.
 Durch die Reduktion auf das Notwendige lässt sich die API leicht für existierende State-Management-Frameworks implementieren, wie später noch gezeigt wird.
-
+Der Source-Code für die API kann hier gefunden werden: [github.com/partmaster/reduced](https://github.com/partmaster/reduced)
+<br/>
 Da die 'reduced'-API für jedes konkrete State-Management-Framework nur einmal implementiert werden muss, verursacht sie keinen zusätzlichen Boilerplate-Code, sondern nur eine zusätzliche Abstraktionsschicht. 
 Aber auch jede Abstraktionsschicht verursacht Aufwände, die gegenüber dem Nutzen abgewogen werden sollten.
 <br/>
