@@ -13,8 +13,7 @@ class IncrementCounterReducer extends Reducer<MyAppState> {
   call(state) => state.copyWith(counter: state.counter + 1);
 }
 
-extension IncrementCounterReducerOnReducible
-    on Reducible<MyAppState> {
+extension IncrementCounterReducerOnReducible on Reducible<MyAppState> {
   ReducerOnReducible get incrementCounterReducer =>
       ReducerOnReducible(this, IncrementCounterReducer.instance);
 }

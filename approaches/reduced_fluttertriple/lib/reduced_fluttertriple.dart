@@ -7,8 +7,8 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:inherited_widgets/inherited_widgets.dart';
 import 'package:reduced/reduced.dart';
 
-class ReducibleStreamStore<S extends Object>
-    extends StreamStore<Object, S> implements Reducible<S> {
+class ReducibleStreamStore<S extends Object> extends StreamStore<Object, S>
+    implements Reducible<S> {
   ReducibleStreamStore(super.initialState);
 
   @override

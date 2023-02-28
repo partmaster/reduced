@@ -25,8 +25,7 @@ class MyHomePageBinder extends StatelessWidget {
   const MyHomePageBinder({super.key});
 
   @override
-  Widget build(context) =>
-      wrapWithConsumer(builder: MyHomePageBuilder.new);
+  Widget build(context) => wrapWithConsumer(builder: MyHomePageBuilder.new);
 }
 
 class MyCounterWidgetBinder extends StatelessWidget {

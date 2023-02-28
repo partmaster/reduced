@@ -6,9 +6,7 @@ import 'package:reduced/functions.dart';
 
 typedef ReducibleScope = ProviderScope;
 
-
-Widget wrapWithScope({required Widget child}) =>
-    ReducibleScope(child: child);
+Widget wrapWithScope({required Widget child}) => ReducibleScope(child: child);
 
 Widget wrapWithConsumer<S, P>({
   required StateProvider<P> provider,

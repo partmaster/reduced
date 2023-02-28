@@ -15,15 +15,13 @@ void main() {
     await tester.pumpWidget(binder);
 
     final homePage0 = find.singleWidgetByType(MyHomePageBuilder);
-    final counterWidget0 =
-        find.singleWidgetByType(MyCounterWidgetBuilder);
+    final counterWidget0 = find.singleWidgetByType(MyCounterWidgetBuilder);
 
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
     final homePage1 = find.singleWidgetByType(MyHomePageBuilder);
-    final counterWidget1 =
-        find.singleWidgetByType(MyCounterWidgetBuilder);
+    final counterWidget1 = find.singleWidgetByType(MyCounterWidgetBuilder);
 
     expect(identical(homePage0, homePage1), isTrue);
     expect(identical(counterWidget0, counterWidget1), isFalse);

@@ -13,8 +13,7 @@ part 'reduced_mobx.g.dart';
 class ReducibleStore<S, P1, P2> = ReducibleStoreBase<S, P1, P2>
     with _$ReducibleStore;
 
-abstract class ReducibleStoreBase<S, P1, P2> extends Reducible<S>
-    with Store {
+abstract class ReducibleStoreBase<S, P1, P2> extends Reducible<S> with Store {
   ReducibleStoreBase(
     this.value,
     this.transformer1,

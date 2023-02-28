@@ -151,8 +151,7 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  call(value) =>
-      reducible.reduce(Reducer1Adapter(reducer, value));
+  call(value) => reducible.reduce(Reducer1Adapter(reducer, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.
@@ -214,8 +213,7 @@ class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Reducer3].
 /// The type parameter `V2` is the type of the 2nd value of the [Reducer3].
 /// The type parameter `V3` is the type of the 3rd value of the [Reducer3].
-class Reducer3OnReducible<S, V1, V2, V3>
-    extends Callable3<void, V1, V2, V3> {
+class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   const Reducer3OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
@@ -229,8 +227,8 @@ class Reducer3OnReducible<S, V1, V2, V3>
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  call(value1, value2, value3) => reducible
-      .reduce(Reducer3Adapter(reducer, value1, value2, value3));
+  call(value1, value2, value3) =>
+      reducible.reduce(Reducer3Adapter(reducer, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.
@@ -245,4 +243,3 @@ class Reducer3OnReducible<S, V1, V2, V3>
       reducer == other.reducer &&
       reducible == other.reducible;
 }
-

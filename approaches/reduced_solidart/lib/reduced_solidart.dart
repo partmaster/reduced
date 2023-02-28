@@ -11,8 +11,7 @@ extension ReducibleSignal<S> on Signal<S> {
 
   void reduce(Reducer<S> reducer) => value = reducer(value);
 
-  Reducible<S> get reducible =>
-      ReducibleProxy(getState, reduce, this);
+  Reducible<S> get reducible => ReducibleProxy(getState, reduce, this);
 }
 
 extension ExtensionSignalOnBuildContext on BuildContext {

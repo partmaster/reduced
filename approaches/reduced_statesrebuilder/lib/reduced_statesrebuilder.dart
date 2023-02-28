@@ -15,11 +15,9 @@ class Store<S> {
 
   S getState() => value.state;
 
-  void reduce(Reducer<S> reducer) =>
-      value.state = reducer(value.state);
+  void reduce(Reducer<S> reducer) => value.state = reducer(value.state);
 
-  late final Reducible<S> reducible =
-      ReducibleProxy(getState, reduce, this);
+  late final Reducible<S> reducible = ReducibleProxy(getState, reduce, this);
 }
 
 extension ExtensionStoreOnBuildContext on BuildContext {

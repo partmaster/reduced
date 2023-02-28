@@ -16,7 +16,5 @@ class MyAppState {
 
   @override
   operator ==(other) =>
-      other is MyAppState &&
-      title == other.title &&
-      counter == other.counter;
+      other is MyAppState && title == other.title && counter == other.counter;
 }

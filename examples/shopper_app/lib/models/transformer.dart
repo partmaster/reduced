@@ -8,8 +8,7 @@ import 'state.dart';
 import 'reducer.dart';
 
 class CatalogItemPropsTransformer {
-  static CatalogItemProps transform(
-      Reducible<AppState> reducible, int id) {
+  static CatalogItemProps transform(Reducible<AppState> reducible, int id) {
     final item = reducible.state.getById(id);
     return CatalogItemProps(
         name: item.name,

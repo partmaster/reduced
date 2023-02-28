@@ -5,8 +5,7 @@ library reduced_getx;
 import 'package:get/get.dart';
 import 'package:reduced/reduced.dart';
 
-class ReducibleGetx<S> extends GetxController
-    implements Reducible<S> {
+class ReducibleGetx<S> extends GetxController implements Reducible<S> {
   ReducibleGetx(S state) : _state = state;
 
   S _state;

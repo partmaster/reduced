@@ -21,8 +21,7 @@ class DecrementCounterReducer extends Reducer<MyAppState> {
   call(state) => state.copyWith(counter: state.counter - 1);
 }
 
-extension DecrementCounterReducerOnReducible
-    on Reducible<MyAppState> {
+extension DecrementCounterReducerOnReducible on Reducible<MyAppState> {
   ReducerOnReducible get decrementCounterReducer =>
       ReducerOnReducible(this, DecrementCounterReducer.instance);
 }
@@ -54,8 +53,7 @@ void main() {
     );
     final onIncrementPressed = reducible.incrementCounterReducer;
     final onDecrementPressed = reducible.decrementCounterReducer;
-    final objectUnderTest =
-        MyHomePagePropsTransformer.transform(reducible);
+    final objectUnderTest = MyHomePagePropsTransformer.transform(reducible);
     final expected = MyHomePageProps(
       title: title,
       onIncrementPressed: onIncrementPressed,

@@ -6,7 +6,6 @@ import 'package:reduced/callbacks.dart';
 
 import '../data/props.dart';
 
-
 class MyMockProps {
   final MyHomePageProps myHomePageProps;
   final MyCounterWidgetProps counterWidgetProps;
@@ -30,7 +29,7 @@ extension ExtensionMockOnBuildContext on BuildContext {
 
 class MockCallable extends VoidCallable {
   int count = 0;
-  
+
   @override
   void call() => ++count;
 }

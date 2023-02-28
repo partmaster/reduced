@@ -6,8 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reduced/reduced.dart';
 
-class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
-    implements Reducible<S> {
+class ReducibleBloc<S> extends Bloc<Reducer<S>, S> implements Reducible<S> {
   ReducibleBloc(super.initialState) {
     on<Reducer<S>>((event, emit) => emit(event(state)));
   }
@@ -19,6 +18,5 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
 }
 
 extension ExtensionBlocOnBuildContext on BuildContext {
-  ReducibleBloc<S> bloc<S>() =>
-      BlocProvider.of<ReducibleBloc<S>>(this);
+  ReducibleBloc<S> bloc<S>() => BlocProvider.of<ReducibleBloc<S>>(this);
 }

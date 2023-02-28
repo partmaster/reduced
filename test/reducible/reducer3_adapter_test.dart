@@ -6,7 +6,6 @@ class MockReducer3 extends Reducer3<String, String, String, String> {
   call(state, value1, value2, value3) => '$state $value1 $value2 $value3';
 }
 
-
 void main() {
   test('Reducer3Adapter call test', () {
     final reducer = MockReducer3();

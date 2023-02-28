@@ -10,8 +10,7 @@ import '../../logic/transformer.dart';
 import '../builder.dart';
 
 final appStateProvider = StateNotifierProvider(
-  (ref) =>
-      ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
+  (ref) => ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
 );
 
 class MyAppStateBinder extends StatelessWidget {
