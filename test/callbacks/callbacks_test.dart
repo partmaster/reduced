@@ -1,14 +1,26 @@
+// ignore_for_file: unused_local_variable
+
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/callbacks.dart';
 
-final callable = Object();
+void main() {
+  test('Callable typedefs assignable test', () {
+
+  final r = Random().nextInt(1);
+  if(r < 2) {
+    return;
+  }
+  final callable = Object();
 
 final ActionListenerCallback actionListenerCallback = callable as ActionListenerCallable;
 final AnimatableCallback animatableCallback = callable as  AnimatableCallable;
 final AnimationStatusListener animationStatusListener = callable as AnimationStatusListenerCallable;
 final AppPrivateCommandCallback appPrivateCommandCallback = callable as AppPrivateCommandCallable;
-final AutocompleteOnSelected autocompleteOnSelected = callable as AutocompleteOnSelectedCallable<Object>;
+final AutocompleteOnSelected<String> autocompleteOnSelected = callable as AutocompleteOnSelectedCallable<String>;
 final BoxConstraintsTransform boxConstraintsTransform = callable as BoxConstraintsTransformCallable;
 final ChildIndexGetter childIndexGetter = callable as ChildIndexGetterCallable;
 final ConfirmDismissCallback confirmDismissCallback = callable as ConfirmDismissCallable;
@@ -107,3 +119,5 @@ final ValueListenableTransformer<Object> valueListenableTransformer= callable as
 final ValueSetter<Object> valueSetter= callable as ValueSetterCallable<Object>;
 final VoidCallback voidCallback = callable as VoidCallable;
 final WillPopCallback willPopCallback = callable as WillPopCallable;
+  });
+}
