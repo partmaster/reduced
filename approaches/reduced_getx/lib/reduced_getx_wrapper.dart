@@ -2,11 +2,11 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
 
 import 'reduced_getx.dart';
 
-Widget wrapWithProvider<S>({
+Widget registerReducible<S>({
   required S initialState,
   required Widget child,
 }) {

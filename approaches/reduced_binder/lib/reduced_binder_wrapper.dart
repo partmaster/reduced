@@ -3,12 +3,14 @@
 import 'package:binder/binder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
 
 import 'reduced_binder.dart';
 
-Widget wrapWithProvider({required Widget child}) =>
-    BinderScope(child: child);
+typedef ReducibleScope = BinderScope;
+
+Widget wrapWithScope({required Widget child}) =>
+    ReducibleScope(child: child);
 
 extension WrapWithConsumer<S> on ReducibleLogic<S> {
   Widget wrapWithConsumer<P>({

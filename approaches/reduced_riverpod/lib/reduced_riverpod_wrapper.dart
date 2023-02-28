@@ -2,11 +2,13 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
+
+typedef ReducibleScope = ProviderScope;
 
 
-Widget wrapWithProvider({required Widget child}) =>
-    ProviderScope(child: child);
+Widget wrapWithScope({required Widget child}) =>
+    ReducibleScope(child: child);
 
 Widget wrapWithConsumer<S, P>({
   required StateProvider<P> provider,

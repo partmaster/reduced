@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
 
 import 'reduced_provider.dart';
 

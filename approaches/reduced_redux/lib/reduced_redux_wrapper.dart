@@ -3,7 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
 import 'package:redux/redux.dart' hide Reducer;
 
 import 'reduced_redux.dart';

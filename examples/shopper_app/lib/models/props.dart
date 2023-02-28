@@ -5,7 +5,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:reduced/reduced_callbacks.dart';
+import 'package:reduced/callbacks.dart';
 import 'package:collection/collection.dart';
 
 class CatalogItemProps {

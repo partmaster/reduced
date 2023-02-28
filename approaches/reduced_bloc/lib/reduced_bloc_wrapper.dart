@@ -2,7 +2,7 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reduced/reduced_functions.dart';
+import 'package:reduced/functions.dart';
 
 import 'reduced_bloc.dart';
 

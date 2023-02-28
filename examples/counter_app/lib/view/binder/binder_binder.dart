@@ -23,7 +23,7 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => wrapWithProvider(child: child);
+  Widget build(context) => wrapWithScope(child: child);
 }
 
 class MyHomePageBinder extends StatelessWidget {

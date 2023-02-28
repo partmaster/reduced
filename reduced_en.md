@@ -148,15 +148,19 @@ Here is the result of applying the pattern in the form of the new classes in whi
 <br/><br/>
 |Note|
 |---|
-| In the extracted classes I have used an abstraction for the state management system, consisting of the interfaces ```Reducible```, ```Reducer``` and ```Callable```, the class ```ReducerOnReducible ``` and the ```wrapWithProvider``` and ```wrapWithConsumer``` functions, which I'll discuss later. |
+| In the extracted classes, I used an abstraction for the state management framework consisting of the ```Reducible```, ```Reducer```, and ```Callable``` interfaces, the ```ReducerOnReducible``` class, and the ```wrapWithScope```, ```wrapWithProvider```, ```registerReducible```, and ```wrapWithConsumer``` functions, which I discuss later. |
 
 ### App state storage
 
-I have modeled two constructs for storing the app state:
-A class ```MyAppState``` for the actual app state.
-A class ```MyAppStateBinder``` that sets the initial value of the app state and passes it to the ```wrapWithProvider``` function.
+I have provided two constructs for storing the app state:
+A class ```MyAppState``` for the actual app state, 
+A class ```MyAppStateBinder``` which, depending on the state management framework used
 
-The ```wrapWithProvider``` function abstracts the state management framework used and makes it accessible for subsequent widgets in the widget tree.
+1. either with the function ```wrapWithScope``` creates a state management scope
+2. or with the function ```wrapWithProvider``` creates a ```Reducible``` and sets the initial value of the app state
+3. or use the ```registerReducible``` function to create a ```Reducible``` and set the initial value of the app state.
+
+The ```wrapWithScope```, ```wrapWithProvider```, and ```registerReducible``` functions abstract the state management framework used and make it accessible to subsequent widgets in the widget tree. For each abstraction of a state management framework, exactly one of these three functions is provided.
 
 #### MyAppState
 
@@ -380,7 +384,7 @@ The source code of the refactored counter demo app can be found here: [github.co
 <br/><br/> 
 In addition to the counter demo app, I also refactored the example project [Simple app state management](https://docs.flutter.dev/development/data-and-backend/state -mgmt/simple) from the official Flutter state management documentation. The result can be found here:[github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
 <br/><br/>
-In the classes and functions extracted after the Humble Object Pattern, a lot of boilerplate code was created and a state management abstraction was used. The abstraction consists of the interfaces ```Reducible```, ```Reducer``` and ```Callable```, the class ```ReducerOnReducible``` and the functions ```wrapWithProvider``` and ```wrapWithConsumer```. 
+In the classes and functions extracted after the Humble Object Pattern, a lot of boilerplate code was created and a state management abstraction was used. The abstraction consists of the interfaces ```Reducible```, ```Reducer``` and ```Callable```, the class ```ReducerOnReducible``` and the functions ```wrapWithScope```, ```wrapWithProvider```, ```registerReducible``` and ```wrapWithConsumer```.
 <br/><br/>
 I hope this has piqued your interest, as I now want to present the abstraction used for the state management system.
 
@@ -409,8 +413,8 @@ for use in the Props classes mentioned in the chapter on using the Humble Object
 4. Klasse **ReducerOnReducible**<br/>
 Association of an app state operation with the state management instance on which it is to be executed.
 
-5. Funktion **wrapWithProvider**<br/>
-The ```wrapWithProvider``` function makes state management functionality accessible for subsequent widgets in the widget tree. 
+5. Functions **wrapWithScope**, **wrapWithProvider** and **registerReducible**<br/>
+The functions ```wrapWithScope```, ```wrapWithProvider``` and ```registerReducible``` make state management functionality accessible for subsequent widgets in the widget tree. Exactly one of the three functions is provided for each state management framework.
 
 6. Funktion **wrapWithConsumer**<br/>
 The ```wrapWithConsumer``` function ensures that the rebuild of a widget is appropriately triggered by the state management framework.
@@ -523,13 +527,24 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
 }
 ```
 
-## Function wrapWithProvider
+## wrapWithScope, wrapWithProvider, and registerReducible functions
 
-The ```wrapWithProvider``` function makes state management functionality accessible for subsequent widgets in the widget tree.
-<br/><br/>
-The function always has a parameter ```child``` of type Widget. The complete signature of the function depends on the state management framework.
-<br/><br/>
-In the implementation, the given ```child``` widget is often wrapped in a so-called 'provider' widget, which provides access to a state management instance in the widget tree.
+The various state management frameworks differ in how state management functionality is exposed in the widget tree. Three concepts can be distinguished, which are so different that I have modeled them in the abstraction with three different functions:
+
+1. **wrapWithScope**<br/>
+The state management frameworks Binder [^28] and Riverpod [^17] offer so-called 'scope' widgets with which nestable scopes for state management instances can be created.
+<br/>
+This is mapped with the ```wrapWithScope``` function.
+
+2. **registerReducible**<br/>
+The state management frameworks GetIt [^29] and GetX [^30] do not use any integration of the state management instances in the widget tree but only an independent register of the instances.
+<br/>
+This is mapped with the ```registerReducible``` function.
+
+3. **wrapWithProvider**<br/>
+The remaining state management frameworks examined offer so-called 'provider' widgets with which a state management instance that manages an app state can be created.
+<br/>
+This is mapped with the ```wrapWithProvider``` function.
 
 ## Funktion wrapWithConsumer
 
@@ -557,7 +572,7 @@ If in a project the need for direct use of the state management framework API do
 <div style="page-break-after: always;"></div>
 # Part 4<br/>Implementation of the 'reduced' API
 
-An implementation of the 'reduced' API for a concrete state management framework consists of the implementation of the interface ```Reducible``` and the implementation of the functions ```wrapWithProvider``` and ```wrapWithConsumer```. Optionally, an extension for the ```BuildContext``` can be added, which provides convenient access to the state management instance.
+An implementation of the 'reduced' API for a concrete state management framework consists of the implementation of the interface ```Reducible``` and the implementation of the function ```wrapWithConsumer``` and one of the functions ```wrapWithScope` ``, ```wrapWithProvider``` or ```registerReducible```. Optionally, an extension for the ```BuildContext``` can be added, which provides convenient access to the state management instance.
 <br/>
 The frameworks 'Bloc' [^16] and 'Riverpod' [^17] will be used to show how a 'reduced' implementation looks like.
 
@@ -595,9 +610,9 @@ extension ExtensionBlocOnBuildContext on BuildContext {
 }
 ```
 
-### wrapWithProvider implementation for Bloc
+### wrapWithScope implementation for Bloc
 
-The wrapWithProvider function creates the ```BlocProvider``` widget.
+The wrapWithScope function creates the ```BlocProvider``` widget.
 
 ```dart
 Widget wrapWithProvider<S>({
@@ -820,3 +835,9 @@ In software development, over-motivation is unfavorable. Any abstraction to hide
 [^26]: The app *Cantarei* in the Google Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
 
 [^27]: Unfavorable abstractions [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+
+[^28]: Binder [pub.dev/packages/binder](https://pub.dev/packages/binder)
+
+[^29]: GetIt [pub.dev/packages/get_it](https://pub.dev/packages/get_it)
+
+[^30]: GetX [pub.dev/packages/get](https://pub.dev/packages/get)

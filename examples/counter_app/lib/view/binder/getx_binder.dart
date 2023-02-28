@@ -13,7 +13,7 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => wrapWithProvider(
+  Widget build(context) => registerReducible(
         initialState: const MyAppState(title: 'GetX'),
         child: child,
       );

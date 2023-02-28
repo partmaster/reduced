@@ -149,15 +149,19 @@ Hier nun das Ergebnis der Anwendung des Pattern in Form der neuen Klassen, in di
 
 |Hinweis|
 |---|
-| In den extrahierten Klassen habe ich eine Abstraktion für das State-Management-System, bestehend aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider```und ```wrapWithConsumer``` verwendet, die ich später vorstelle. |
+| In den extrahierten Klassen habe ich eine Abstraktion für das State-Management-Framework, bestehend aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithScope```, ```wrapWithProvider```, ```registerReducible``` und ```wrapWithConsumer``` verwendet, die ich später vorstelle. |
 
 ### App-Zustands-Speicherung
 
 Für die Speicherung des App-Zustands habe ich zwei Konstrukte vorgesehen:
 Eine Klasse ```MyAppState```für den eigentlichen App-Zustand, 
-Eine Klasse ```MyAppStateBinder```, die den initialen Wert des App-Zustands festlegt und an die Funktion ```wrapWithProvider``` übergibt. 
+Eine Klasse ```MyAppStateBinder```, die, je nach verwendetem State-Management-Framework
 
-Die Funktion ```wrapWithProvider``` abstrahiert das verwendete State-Management-Framework und sorgt dafür, dass es für die nachfolgenden Widgets im Widget-Baum zugreifbar wird. 
+1. entweder mit der Funktion ```wrapWithScope``` einen State-Management-Scope erzeugt
+2. oder mit der Funktion ```wrapWithProvider``` ein ```Reducible``` erzeugt und den initialen Wert des App-Zustands festlegt
+3. oder mit der Funktion ```registerReducible``` ein ```Reducible``` erzeugt und den initialen Wert des App-Zustands festlegt.
+
+Die Funktionen ```wrapWithScope```, ```wrapWithProvider``` und ```registerReducible``` abstrahieren das verwendete State-Management-Framework und sorgen dafür, dass es für die nachfolgenden Widgets im Widget-Baum zugreifbar wird. Für jede Abstraktion eines State-Management-Frameworks wird genau eine dieser drei Funktionen bereitgestellt.
 
 #### MyAppState
 
@@ -381,7 +385,7 @@ Der Source-Code der refaktorisierten Counter-Demo-App kann hier gefunden werden:
 <br/><br/> 
 Neben der Counter-Demo-App habe ich das Refactoring nach dem Humble-Object-Pattern auch für das Beispiel-Projekt [Simple app state management](https://docs.flutter.dev/development/data-and-backend/state-mgmt/simple) aus der offiziellen Flutter-Dokumentation für das State-Management durchgeführt. Das Resultat kann hier gefunden werden: [github.com/partmaster/reduced/tree/main/examples/shopper_app](https://github.com/partmaster/reduced/tree/main/examples/shopper_app).
 <br/><br/>
-In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithProvider``` und ```wrapWithConsumer```.  
+In den nach dem Humble-Object-Pattern extrahierten Klassen und Funktionen ist viel Boilerplate-Code entstanden und es wurde eine Abstraktion für das State-Management verwendet. Die Abstraktion besteht aus den Interfaces ```Reducible```, ```Reducer``` und ```Callable```, der  Klasse ```ReducerOnReducible``` sowie den Funktionen ```wrapWithScope```, ```wrapWithProvider```, ```registerReducible``` und ```wrapWithConsumer```.  
 <br/><br/>
 Ich hoffe, das Interesse ist geweckt, denn ich will nun die verwendete Abstraktion für das State-Management-System vorstellen. 
 
@@ -407,8 +411,8 @@ Basis für die Defintion von Klassen mit Wertsemantik [^10], deren Instanzen an 
 4. Klasse **ReducerOnReducible**<br/>
 Verknüpfung einer App-Zustands-Operation mit der State-Management-Instanz, auf der sie ausgeführt werden soll.
 
-5. Funktion **wrapWithProvider**<br/>
-Die Funktion ```wrapWithProvider``` sorgt dafür, dass State-Management-Funktionalität für die nachfolgenden Widgets im Widget-Baum zugreifbar wird. 
+5. Funktionen **wrapWithScope**, **wrapWithProvider** und **registerReducible**<br/>
+Die Funktionen ```wrapWithScope```, ```wrapWithProvider``` und ```registerReducible``` sorgen dafür, dass State-Management-Funktionalität für die nachfolgenden Widgets im Widget-Baum zugreifbar wird. Für jedes State-Management-Framework wird genau eine der drei Funktionen bereitgestellt.
 
 6. Funktion **wrapWithConsumer**<br/>
 Die Funktion ```wrapWithConsumer``` sorgt dafür, dass der Rebuild eines Widgets durch das State-Management-Framework passend getriggert wird.
@@ -469,7 +473,7 @@ abstract class Reducible<S> {
 
 ## Interface Callable
 
-Basis-Interface für Implementierungen von Callbacks. Die Implementierung von Callbacks als Klassen und nicht als Funktionen erlaubt das Überschreiben von ```get hashCode``` und ```operator==(other)```für Wertsemantik.
+Basis-Interface für Implementierungen von Callbacks. Die Implementierung von Callbacks als Klassen und nicht als Funktionen erlaubt das Überschreiben von ```get hashCode``` und ```operator==(other)``` für Wertsemantik.
 
 ```dart
 abstract class Callable<R> {
@@ -521,13 +525,24 @@ class Reducer1OnReducible<S, V> extends Callable1<void, V> {
 }
 ```
 
-## Funktion wrapWithProvider
+## Funktionen wrapWithScope, wrapWithProvider und registerReducible
 
-Die Funktion ```wrapWithProvider``` sorgt dafür, dass State-Management-Funktionalität für die nachfolgenden Widgets im Widget-Baum zugreifbar wird. 
-<br/><br/>
-Die Funktion hat immer einen Parameter ```child``` vom Typ Widget. Die komplette Signatur der Funktion ist abhängig vom State-Management-Framework,.
-<br/><br/>
-In der Implementierung wird das übergebene ```child```-Widget oft in ein sogenanntes 'Provider'-Widget eingepackt, welches im Widget-Baum den Zugriff auf eine State-Management-Instanz zur Verfügung stellt. 
+Die verschiedenen State-Management-Frameworks unterscheiden sich darin, wie State-Management-Funktionalität im Widget-Baum zur Verfügung gestellt wird. Dabei lassen sich drei Konzepte unterscheiden, die so unterschiedlich sind, dass ich sie in der Abstraktion mit drei verschiedenen Funktionen modelliert habe:
+
+1. **wrapWithScope**<br/> 
+Die State-Management-Frameworks Binder [^28] und Riverpod [^17] bieten sogenante 'Scope'-Widgets, mit denen schachtelbare Scopes für State-Management-Instanzen erzeugt werden können.
+<br/>
+Dies wird mit der Funktion ```wrapWithScope``` abgebildet.
+
+2. **registerReducible**<br/>
+Die State-Management-Frameworks GetIt [^29] und GetX [^30] verwenden keine Integration der State-Management-Instanzen in den Widget-Baum sondern nur ein unabhängiges Register der Instanzen.
+<br/>
+Dies wird mit der Funktion ```registerReducible``` abgebildet.
+
+3. **wrapWithProvider**<br/>
+Die restlichen untersuchten State-Management-Frameworks bieten sogenannte 'Provider'-Widgets, mit denen eine State-Management-Instanz, die einen App-Zustand verwaltet, erzeugt werden kann.
+<br/>
+Dies wird mit der Funktion ```wrapWithProvider``` abgebildet.
 
 ## Funktion wrapWithConsumer
 
@@ -555,7 +570,7 @@ Falls in einem Projekt die Notwendigkeit für direkte Nutzung der State-Manageme
 <div style="page-break-after: always;"></div>
 # Teil 4<br/>Implementierung der 'reduced'-API
 
-Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktionen ```wrapWithProvider```und ```wrapWithConsumer```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
+Eine Implementierung der 'reduced'-API für ein konkretes State-Management-Framework besteht aus der Implementierung des Interfaces ```Reducible``` sowie den Implementierungen der Funktion ```wrapWithConsumer``` und einer der Funktionen ```wrapWithScope```,  ```wrapWithProvider``` oder ```registerReducible```. Optional kann noch eine Extension für den ```BuildContext``` hinzukommen, die einen bequemen Zugriff auf die State-Management-Instanz bereitstellt.
 <br/>
 Wie eine 'reduced'-Implementierung aussieht, soll beispielhaft anhand der Frameworks 'Bloc' [^16] und 'Riverpod' [^17] gezeigt werden.
 
@@ -650,12 +665,12 @@ class ReducibleStateNotifier<S> extends StateNotifier<S>
 
 Riverpod benötigt keine Extension für den BuildContext.
 
-### wrapWithProvider-Implementierung für Riverpod
+### wrapWithScope-Implementierung für Riverpod
 
-Die Funktion wrapWithProvider erzeugt das Widget ```ProviderScope```.
+Die Funktion wrapWithScope erzeugt das Widget ```ProviderScope```.
 
 ```dart
-Widget wrapWithProvider({required Widget child}) =>
+Widget wrapWithScope({required Widget child}) =>
     ProviderScope(child: child);
 ```
 
@@ -818,3 +833,9 @@ In der Software-Entwicklung ist Übermotivation ungünstig. Jede Abstraktion zum
 [^26]: Die App *Cantarei* im Google-Playstore [play.google.com/store/apps/details?id=de.partmaster.cantarei](https://play.google.com/store/apps/details?id=de.partmaster.cantarei)
 
 [^27]: Unvorteilhafte Abstraktionen [twitter.com/remi_rousselet/status/1604603131500941317](https://twitter.com/remi_rousselet/status/1604603131500941317)
+
+[^28]: Binder [pub.dev/packages/binder](https://pub.dev/packages/binder)
+
+[^29]: GetIt [pub.dev/packages/get_it](https://pub.dev/packages/get_it)
+
+[^30]: GetX [pub.dev/packages/get](https://pub.dev/packages/get)

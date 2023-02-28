@@ -1,3 +1,5 @@
+// callbacks.dart
+
 import 'dart:io' show HttpClient;
 import 'dart:ui'
     show Image, Locale, Offset, Picture, Rect, VoidCallback;
@@ -26,10 +28,7 @@ import 'package:flutter/gestures.dart'
 import 'package:flutter/rendering.dart'
     show ImageSizeInfo, Shader, TextSelection;
 import 'package:flutter/services.dart'
-    show
-        PlatformViewController,
-        SelectionChangedCause,
-        TextEditingValue;
+    show KeyEvent, PlatformViewController, SelectionChangedCause, TextEditingValue;
 import 'package:flutter/widgets.dart'
     show
         Action,
@@ -67,7 +66,7 @@ import 'package:reduced/callable.dart'
     show Callable, Callable1, Callable2, Callable3;
 
 /// typedef ActionListenerCallback = void Function(Action<Intent> action);
-typedef ActionListenerObjectCallable
+typedef ActionListenerCallable
     = Callable1<void, Action<Intent>>;
 
 /// typedef AnimatableCallback<T> = T Function(double);
@@ -159,7 +158,7 @@ typedef FocusOnKeyCallable
 
 /// typedef FocusOnKeyEventCallback = KeyEventResult Function(FocusNode node, KeyEvent event);
 typedef FocusOnKeyEventCallable
-    = Callable2<KeyEventResult, FocusNode, RawKeyEvent>;
+    = Callable2<KeyEventResult, FocusNode, KeyEvent>;
 
 /// typedef FormFieldSetter<T> = void Function(T? newValue);
 typedef FormFieldSetterCallable<T> = Callable1<void, T?>;
@@ -373,7 +372,7 @@ typedef ScrollNotificationPredicateCallable
 
 /// typedef SelectionChangedCallback = void Function(TextSelection selection, SelectionChangedCause? cause);
 typedef SelectionChangedCallable
-    = Callable2<void, TextSelection, SelectionChangedCause>;
+    = Callable2<void, TextSelection, SelectionChangedCause?>;
 
 /// typedef SemanticIndexCallback = int? Function(Widget widget, int localIndex);
 typedef SemanticIndexCallable = Callable2<int?, Widget, int>;

@@ -1,6 +1,6 @@
 // props.dart
 
-import 'package:reduced/reduced_callbacks.dart';
+import 'package:reduced/callbacks.dart';
 
 class MyHomePageProps {
   const MyHomePageProps({
