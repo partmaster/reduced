@@ -47,12 +47,12 @@ void main() {
         callable as DraggableCanceledCallable;
     final DragSelectionUpdateCallback dragSelectionUpdateCallback =
         callable as DragSelectionUpdateCallable;
-    final DragTargetAccept<Object> dragTargetAccept =
-        callable as DragTargetAcceptCallable<Object>;
+    final DragTargetAccept<String> dragTargetAccept =
+        callable as DragTargetAcceptCallable<String>;
     final DragTargetAcceptWithDetails<Object> dragTargetAcceptWithDetails =
         callable as DragTargetAcceptWithDetailsCallable<Object>;
-    final DragTargetLeave<Object> dragTargetLeave =
-        callable as DragTargetLeaveCallable<Object>;
+    final DragTargetLeave<String> dragTargetLeave =
+        callable as DragTargetLeaveCallable<String>;
     final DragTargetMove<Object> dragTargetMove =
         callable as DragTargetMoveCallable<Object>;
     final DragTargetWillAccept<Object> dragTargetWillAccept =
@@ -64,8 +64,8 @@ void main() {
         callable as FocusOnKeyCallable;
     final FocusOnKeyEventCallback focusOnKeyEventCallback =
         callable as FocusOnKeyEventCallable;
-    final FormFieldSetter<Object> formFieldSetter =
-        callable as FormFieldSetterCallable<Object>;
+    final FormFieldSetter<String> formFieldSetter =
+        callable as FormFieldSetterCallable<String>;
     final FormFieldValidator<Object> formFieldValidator =
         callable as FormFieldValidatorCallable<Object>;
     final GenerateAppTitle generateAppTitle =
@@ -164,8 +164,8 @@ void main() {
     final ReorderCallback reorderCallback = callable as ReorderCallable;
     final ReorderItemProxyDecorator reorderItemProxyDecorator =
         callable as ReorderItemProxyDecoratorCallable;
-    final RouteCompletionCallback<Object> routeCompletionCallback =
-        callable as RouteCompletionCallable<Object>;
+    final RouteCompletionCallback<String> routeCompletionCallback =
+        callable as RouteCompletionCallable<String>;
     final RouteFactory routeFactory = callable as RouteFactoryCallable;
     final RouteListFactory routeListFactory =
         callable as RouteListFactoryCallable;
@@ -196,14 +196,14 @@ void main() {
     final TweenConstructor<String> tweenConstructor =
         callable as TweenConstructorCallable<String>;
     final TweenVisitor tweenVisitor = callable as TweenVisitorCallable;
-    final ValueChanged<Object> valueChanged =
-        callable as ValueChangedCallable<Object>;
+    final ValueChanged<String> valueChanged =
+        callable as ValueChangedCallable<String>;
     final ValueGetter<Object> valueGetter =
         callable as ValueGetterCallable<Object>;
     final ValueListenableTransformer<Object> valueListenableTransformer =
         callable as ValueListenableTransformerCallable<Object>;
-    final ValueSetter<Object> valueSetter =
-        callable as ValueSetterCallable<Object>;
+    final ValueSetter<String> valueSetter =
+        callable as ValueSetterCallable<String>;
     final VoidCallback voidCallback = callable as VoidCallable;
     final WillPopCallback willPopCallback = callable as WillPopCallable;
   });
