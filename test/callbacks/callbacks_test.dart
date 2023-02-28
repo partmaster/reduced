@@ -17,8 +17,9 @@ void main() {
 
     final ActionListenerCallback actionListenerCallback =
         callable as ActionListenerCallable;
-    final AnimatableCallback animatableCallback =
-        callable as AnimatableCallable;
+// CHECK check flutter version
+//    final AnimatableCallback animatableCallback =
+//        callable as AnimatableCallable;
     final AnimationStatusListener animationStatusListener =
         callable as AnimationStatusListenerCallable;
     final AppPrivateCommandCallback appPrivateCommandCallback =
@@ -33,7 +34,8 @@ void main() {
         callable as ConfirmDismissCallable;
     final CreatePlatformViewCallback createPlatformViewCallback =
         callable as CreatePlatformViewCallable;
-    final CreateRectTween createRectTween = callable as CreateRectTweenCallable;
+    final CreateRectTween createRectTween =
+        callable as CreateRectTweenCallable;
 // final DecoderBufferCallback decoderBufferCallback = callable as DecoderBufferCallable;
 // final DecoderCallback decoderCallback = callable as DecoderCallable;
     final DismissDirectionCallback dismissDirectionCallback =
@@ -42,14 +44,16 @@ void main() {
         callable as DismissUpdateCallable;
     final DragAnchorStrategy dragAnchorStrategy =
         callable as DragAnchorStrategyCallable;
-    final DragEndCallback dragEndCallback = callable as DragEndCallable;
+    final DragEndCallback dragEndCallback =
+        callable as DragEndCallable;
     final DraggableCanceledCallback draggableCanceledCallback =
         callable as DraggableCanceledCallable;
     final DragSelectionUpdateCallback dragSelectionUpdateCallback =
         callable as DragSelectionUpdateCallable;
     final DragTargetAccept<String> dragTargetAccept =
         callable as DragTargetAcceptCallable<String>;
-    final DragTargetAcceptWithDetails<Object> dragTargetAcceptWithDetails =
+    final DragTargetAcceptWithDetails<Object>
+        dragTargetAcceptWithDetails =
         callable as DragTargetAcceptWithDetailsCallable<Object>;
     final DragTargetLeave<String> dragTargetLeave =
         callable as DragTargetLeaveCallable<String>;
@@ -59,7 +63,8 @@ void main() {
         callable as DragTargetWillAcceptCallable<Object>;
     final DragUpdateCallback dragUpdateCallback =
         callable as DragUpdateCallable;
-    final ElementVisitor elementVisitor = callable as ElementVisitorCallable;
+    final ElementVisitor elementVisitor =
+        callable as ElementVisitorCallable;
     final FocusOnKeyCallback focusOnKeyCallback =
         callable as FocusOnKeyCallable;
     final FocusOnKeyEventCallback focusOnKeyEventCallback =
@@ -82,11 +87,14 @@ void main() {
         callable as GestureDragUpdateCallable;
     final GestureForcePressEndCallback gestureForcePressEndCallback =
         callable as GestureForcePressEndCallable;
-    final GestureForcePressPeakCallback gestureForcePressPeakCallback =
+    final GestureForcePressPeakCallback
+        gestureForcePressPeakCallback =
         callable as GestureForcePressPeakCallable;
-    final GestureForcePressStartCallback gestureForcePressStartCallback =
+    final GestureForcePressStartCallback
+        gestureForcePressStartCallback =
         callable as GestureForcePressStartCallable;
-    final GestureForcePressUpdateCallback gestureForcePressUpdateCallback =
+    final GestureForcePressUpdateCallback
+        gestureForcePressUpdateCallback =
         callable as GestureForcePressUpdateCallable;
     final GestureLongPressCallback gestureLongPressCallback =
         callable as GestureLongPressCallable;
@@ -95,16 +103,17 @@ void main() {
     final GestureLongPressMoveUpdateCallback
         gestureLongPressMoveUpdateCallback =
         callable as GestureLongPressMoveUpdateCallable;
-    final GestureLongPressStartCallback gestureLongPressStartCallback =
+    final GestureLongPressStartCallback
+        gestureLongPressStartCallback =
         callable as GestureLongPressStartCallable;
     final GestureLongPressUpCallback gestureLongPressUpCallback =
         callable as GestureLongPressUpCallable;
     final GestureRecognizerFactoryConstructor<GestureRecognizer>
-        gestureRecognizerFactoryConstructor =
-        callable as GestureRecognizerFactoryConstructor<GestureRecognizer>;
+        gestureRecognizerFactoryConstructor = callable
+            as GestureRecognizerFactoryConstructor<GestureRecognizer>;
     final GestureRecognizerFactoryInitializer<GestureRecognizer>
-        gestureRecognizerFactoryInitializer =
-        callable as GestureRecognizerFactoryInitializer<GestureRecognizer>;
+        gestureRecognizerFactoryInitializer = callable
+            as GestureRecognizerFactoryInitializer<GestureRecognizer>;
     final GestureScaleEndCallback gestureScaleEndCallback =
         callable as GestureScaleEndCallable;
     final GestureScaleStartCallback gestureScaleStartCallback =
@@ -125,19 +134,22 @@ void main() {
         callable as ImageChunkListenerCallable;
     final ImageErrorListener imageErrorListener =
         callable as ImageErrorListenerCallable;
-    final ImageListener imageListener = callable as ImageListenerCallable;
+    final ImageListener imageListener =
+        callable as ImageListenerCallable;
     final InitialRouteListFactory initialRouteListFactory =
         callable as InitialRouteListFactoryCallable;
     final InlineSpanVisitor inlineSpanVisitor =
         callable as InlineSpanVisitorCallable;
-    final InspectorSelectionChangedCallback inspectorSelectionChangedCallback =
+    final InspectorSelectionChangedCallback
+        inspectorSelectionChangedCallback =
         callable as InspectorSelectionChangedCallable;
     final LocaleListResolutionCallback localeListResolutionCallback =
         callable as LocaleListResolutionCallable;
     final LocaleResolutionCallback localeResolutionCallback =
         callable as LocaleResolutionCallable;
-    final MenuItemSerializableIdGenerator menuItemSerializableIdGenerator =
-        callable as MenuItemSerializableIdGeneratorCallable;
+// CHECK check flutter version
+//    final MenuItemSerializableIdGenerator menuItemSerializableIdGenerator =
+//        callable as MenuItemSerializableIdGeneratorCallable;
     final NavigatorFinderCallback navigatorFinderCallback =
         callable as NavigatorFinderCallable;
     final NotificationListenerCallback notificationListenerCallback =
@@ -157,19 +169,23 @@ void main() {
         callable as PointerMoveEventListenerCallable;
     final PointerUpEventListener pointerUpEventListener =
         callable as PointerUpEventListenerCallable;
-    final PopPageCallback popPageCallback = callable as PopPageCallable;
+    final PopPageCallback popPageCallback =
+        callable as PopPageCallable;
     final RebuildDirtyWidgetCallback rebuildDirtyWidgetCallback =
         callable as RebuildDirtyWidgetCallable;
 // final RegisterServiceExtensionCallback registerServiceExtensionCallback = callable as RegisterServiceExtensionCallable;
-    final ReorderCallback reorderCallback = callable as ReorderCallable;
+    final ReorderCallback reorderCallback =
+        callable as ReorderCallable;
     final ReorderItemProxyDecorator reorderItemProxyDecorator =
         callable as ReorderItemProxyDecoratorCallable;
     final RouteCompletionCallback<String> routeCompletionCallback =
         callable as RouteCompletionCallable<String>;
-    final RouteFactory routeFactory = callable as RouteFactoryCallable;
+    final RouteFactory routeFactory =
+        callable as RouteFactoryCallable;
     final RouteListFactory routeListFactory =
         callable as RouteListFactoryCallable;
-    final RoutePredicate routePredicate = callable as RoutePredicateCallable;
+    final RoutePredicate routePredicate =
+        callable as RoutePredicateCallable;
     final RoutePresentationCallback routePresentationCallback =
         callable as RoutePresentationCallable;
     final ScrollIncrementCalculator scrollIncrementCalculator =
@@ -187,24 +203,29 @@ void main() {
         callable as ShaderWarmUpImageCallable;
     final ShaderWarmUpPictureCallback shaderWarmUpPictureCallback =
         callable as ShaderWarmUpPictureCallable;
-    final SharedAppDataInitCallback<Object> sharedAppDataInitCallback =
+    final SharedAppDataInitCallback<Object>
+        sharedAppDataInitCallback =
         callable as SharedAppDataInitCallable<Object>;
     final StateSetter stateSetter = callable as StateSetterCallable;
-    final TapRegionCallback tapRegionCallback = callable as TapRegionCallable;
+// CHECK check flutter version
+//    final TapRegionCallback tapRegionCallback = callable as TapRegionCallable;
     final TextEditingValueCallback textEditingValueCallback =
         callable as TextEditingValueCallable;
     final TweenConstructor<String> tweenConstructor =
         callable as TweenConstructorCallable<String>;
-    final TweenVisitor tweenVisitor = callable as TweenVisitorCallable;
+    final TweenVisitor tweenVisitor =
+        callable as TweenVisitorCallable;
     final ValueChanged<String> valueChanged =
         callable as ValueChangedCallable<String>;
     final ValueGetter<Object> valueGetter =
         callable as ValueGetterCallable<Object>;
-    final ValueListenableTransformer<Object> valueListenableTransformer =
-        callable as ValueListenableTransformerCallable<Object>;
+// CHECK check flutter version
+//    final ValueListenableTransformer<Object> valueListenableTransformer =
+//        callable as ValueListenableTransformerCallable<Object>;
     final ValueSetter<String> valueSetter =
         callable as ValueSetterCallable<String>;
     final VoidCallback voidCallback = callable as VoidCallable;
-    final WillPopCallback willPopCallback = callable as WillPopCallable;
+    final WillPopCallback willPopCallback =
+        callable as WillPopCallable;
   });
 }
