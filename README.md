@@ -4,7 +4,9 @@ The 'reduced' package defines a minimal API for the basic features of state mana
 2. Update a current state value.
 3. Transform a state value to derived 'selective' properties inclusive callback property values for 'selective' widget build.
 
-There are dozens of state management frameworks, and each provides its own API for these basic features. The app logic based mainly on these features should remain as independent as possible from the state management framework used. Therefore, the app logic needs a neutral state management API and an implementation of this API for the state management framework used.
+There are dozens of state management frameworks, and each provides its own API for these basic features. 
+<br/>
+The app logic based mainly on these features should remain as independent as possible from the state management framework used. Therefore, the app logic needs a neutral state management API and an implementation of this API for the state management framework used.
 <br/>
 The former is provided by this package. The latter is provided by other packages listed at the end of the README.
 
@@ -12,7 +14,7 @@ The former is provided by this package. The latter is provided by other packages
 
 The 'reduced' API covers the following features of a state management framework:
 
-1. Read a current state value.
+#### 1. Read a current state value.
 
 ```dart
 abstract class Reducible {
@@ -21,7 +23,7 @@ abstract class Reducible {
 }
 ```
 
-2. Update a current state value.
+#### 2. Update a current state value.
 
 ```dart
 abstract class Reducible {
@@ -31,7 +33,7 @@ abstract class Reducible {
 ```
 
 Instead of writing the state value directly, the API provides a ```reduce``` method that accepts a so-called ```reducer``` as a parameter. 
-In the ```reduce``` method the ```reducer``` is executed with the current state value as a paramerter and the return value of the ```reducer``` is stored as the new state value.
+In the ```reduce``` method the ```reducer``` is executed with the current state value as a parameter and the return value of the ```reducer``` is stored as the new state value.
 
 ```dart
 abstract class Reducer<S> {
@@ -39,7 +41,7 @@ abstract class Reducer<S> {
 }
 ```
 
-3. Transform a state value to derived 'selective' properties inclusive callback property values for 'selective' widget builds
+#### 3. Transform a state value to derived 'selective' properties inclusive callback property values for 'selective' widget builds
 
 A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```reducible``` parameter to transform the current state value into a derived ```selective``` state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics.
 
@@ -92,7 +94,7 @@ A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from t
 typedef ReducedWidgetBuilder<P> = Widget Function({required P props});
 ```
 
-4. Adapter implementations of Callable(s)
+#### 4. Adapter implementations of Callable(s)
 
 ```dart
 class ReducerOnReducible<S> extends Callable<void> {
@@ -120,7 +122,7 @@ class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> ...
 class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> ...
 ```
 
-5. Adapter implementations of Reducer(s)
+#### 5. Adapter implementations of Reducer(s)
 
 ```dart
 class Reducer1Adapter<S, V> extends Reducer<S> {
@@ -204,7 +206,7 @@ In addition to the basic features, state management frameworks also offer these 
 
 A neutral API has also been developed for this features in the form of the ```registerState```, ```wrapWithProvider```, ```wrapWithConsumer``` and ```wrapWithScope``` functions. Since the features differ for the concrete frameworks, the signature of the functions is also different, so these functions were not included in the 'reduced' API, but are part of the additional API of the implementations of the 'reduced' API.
 
-1. Register a state for management.
+#### 1. Register a state for management.
 
 ```dart
 void registerState(S initialValue);
@@ -214,7 +216,7 @@ void registerState(S initialValue);
 Widget wrapWithProvider<S>({required S initialState, required Widget child}});
 ```
 
-2. Trigger a rebuild on widgets selectively after a state change.
+#### 2. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
 Widget wrapWithConsumer({
@@ -223,7 +225,7 @@ Widget wrapWithConsumer({
 });
 ```
 
-3. Set up a new scope for state management.
+#### 3. Set up a new scope for state management.
 
 ```dart
 Widget wrapWithScope({required Widget child});
