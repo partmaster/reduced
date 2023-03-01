@@ -9,9 +9,12 @@ import 'reduced_binder.dart';
 
 typedef ReducibleScope = BinderScope;
 
-Widget wrapWithScope({required Widget child}) => ReducibleScope(child: child);
+/// Wraps the given child with a ReducibleScope.
+Widget wrapWithScope({required Widget child}) =>
+    ReducibleScope(child: child);
 
 extension WrapWithConsumer<S> on ReducibleLogic<S> {
+  /// Builds a widget with the given builder and wraps it with a Consumer.
   Widget wrapWithConsumer<P>({
     required StateRef<S> stateRef,
     required ReducibleTransformer<S, P> transformer,
