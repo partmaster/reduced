@@ -7,7 +7,7 @@ import 'package:reduced/functions.dart';
 
 import 'reduced_getit.dart';
 
-void registerReducible<S>({required S initialState}) =>
+void registerState<S>({required S initialState}) =>
     GetIt.instance.registerSingleton<ValueNotifier<S>>(
       ValueNotifier<S>(initialState),
     );

@@ -6,7 +6,7 @@ import 'package:reduced/functions.dart';
 
 import 'reduced_getx.dart';
 
-void registerReducible<S>({required S initialState}) =>
+void registerState<S>({required S initialState}) =>
     Get.put(ReducibleGetx(initialState));
 
 Widget wrapWithConsumer<S, P extends Object>({

@@ -7,7 +7,7 @@ import '../../data/state.dart';
 import '../../logic/transformer.dart';
 import '../builder.dart';
 
-void registerState() => wrapper.registerReducible(
+void registerState() => wrapper.registerState(
       initialState: const MyAppState(title: 'GetX'),
     );
 
