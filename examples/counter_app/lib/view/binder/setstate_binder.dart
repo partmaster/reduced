@@ -7,6 +7,8 @@ import '../../data/state.dart';
 import '../../logic/transformer.dart';
 import '../builder.dart';
 
+void registerState() {}
+
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 

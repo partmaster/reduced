@@ -13,6 +13,8 @@ final appStateProvider = StateNotifierProvider(
   (ref) => ReducibleStateNotifier(const MyAppState(title: 'riverpod')),
 );
 
+void registerState() {}
+
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 

@@ -7,15 +7,10 @@ import 'package:reduced/functions.dart';
 
 import 'reduced_getit.dart';
 
-Widget registerReducible<S>({
-  required S initialState,
-  required Widget child,
-}) {
-  GetIt.instance.registerSingleton<ValueNotifier<S>>(
-    ValueNotifier<S>(initialState),
-  );
-  return child;
-}
+void registerReducible<S>({required S initialState}) =>
+    GetIt.instance.registerSingleton<ValueNotifier<S>>(
+      ValueNotifier<S>(initialState),
+    );
 
 Widget wrapWithConsumer<S, P>({
   required ReducibleTransformer<S, P> transformer,

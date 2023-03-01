@@ -6,5 +6,6 @@ import 'view/binder.dart';
 import 'view/builder.dart';
 
 void main() {
+  registerState();
   runApp(const MyAppStateBinder(child: MyAppBuilder()));
 }

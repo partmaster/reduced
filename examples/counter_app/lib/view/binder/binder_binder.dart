@@ -17,6 +17,8 @@ final logicRef = LogicRef(
   (scope) => ReducibleLogic(scope, stateRef),
 );
 
+void registerState() {}
+
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
 

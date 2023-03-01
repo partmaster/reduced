@@ -1,11 +1,15 @@
 // getx_binder.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced_getx/reduced_getx_wrapper.dart';
+import 'package:reduced_getx/reduced_getx_wrapper.dart' as wrapper;
 
 import '../../data/state.dart';
 import '../../logic/transformer.dart';
 import '../builder.dart';
+
+void registerState() => wrapper.registerReducible(
+      initialState: const MyAppState(title: 'GetX'),
+    );
 
 class MyAppStateBinder extends StatelessWidget {
   const MyAppStateBinder({super.key, required this.child});
@@ -13,10 +17,7 @@ class MyAppStateBinder extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(context) => registerReducible(
-        initialState: const MyAppState(title: 'GetX'),
-        child: child,
-      );
+  Widget build(context) => child;
 }
 
 class MyHomePageBinder extends StatelessWidget {

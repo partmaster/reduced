@@ -6,13 +6,8 @@ import 'package:reduced/functions.dart';
 
 import 'reduced_getx.dart';
 
-Widget registerReducible<S>({
-  required S initialState,
-  required Widget child,
-}) {
-  Get.put(ReducibleGetx(initialState));
-  return child;
-}
+void registerReducible<S>({required S initialState}) =>
+    Get.put(ReducibleGetx(initialState));
 
 Widget wrapWithConsumer<S, P extends Object>({
   required ReducibleTransformer<S, P> transformer,
