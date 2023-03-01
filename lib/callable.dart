@@ -4,7 +4,7 @@ import 'reducible.dart';
 
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
 ///
-/// Can be assigned to Widget callback properties without parameters, e.g. [VoidCallbck].
+/// Can be assigned to Widget callback properties without parameters, e.g. [VoidCallback]
 ///
 /// When the constructor parameters for a widget change, it usually needs to be rebuilt.
 /// If the properties in the state of a stateful widget change,
@@ -213,7 +213,8 @@ class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Reducer3].
 /// The type parameter `V2` is the type of the 2nd value of the [Reducer3].
 /// The type parameter `V3` is the type of the 3rd value of the [Reducer3].
-class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
+class Reducer3OnReducible<S, V1, V2, V3>
+    extends Callable3<void, V1, V2, V3> {
   const Reducer3OnReducible(this.reducible, this.reducer);
 
   /// The reducible to whose method [reduce](Reducible.reduce)
@@ -227,8 +228,8 @@ class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
   ///  with the [reducer] as parameter.
   @override
-  call(value1, value2, value3) =>
-      reducible.reduce(Reducer3Adapter(reducer, value1, value2, value3));
+  call(value1, value2, value3) => reducible
+      .reduce(Reducer3Adapter(reducer, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [reducible] and [reducer] should have value semantics.

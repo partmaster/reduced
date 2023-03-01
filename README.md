@@ -150,6 +150,26 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
 
 In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_bloc'.
 
+```
+dependencies:
+  reduced: ^0.0.1
+  reduced_bloc: ^0.0.1
+  bloc: ^8.1.1
+  flutter_bloc: ^8.1.2
+```
+
+Import package 'reduced' to implement the logic.
+
+```dart
+import 'package:reduced/reduced.dart';
+```
+
+Import choosen implementation package for the 'reduced' API to use the logic, e.g.
+
+```dart
+import 'package:reduced_bloc/reduced_bloc.dart';
+```
+
 ## Usage (Part 1)
 
 Implementation of the counter demo app logic with the 'reduced' API without further dependencies on state management packages.
@@ -264,7 +284,6 @@ void main() => runApp(
 
 Implementations of the 'reduced' API are available for the following state management frameworks:
 
-|Framework|'reduced'-Implementierung|
+|Framework|implementation package for 'reduced' API|
 |---|---|
-|[Bloc]()|[reduced_bloc]()|
-
+|[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc]()|
