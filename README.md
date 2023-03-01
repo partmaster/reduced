@@ -99,8 +99,8 @@ typedef ReducedWidgetBuilder<P> = Widget Function({required P props});
 #### 4. Adapter implementations of Callable(s)
 
 ```dart
-class ReducerOnReducible<S> extends Callable<void> {
-  const ReducerOnReducible(this.reducible, this.reducer);
+class CallableAdapter<S> extends Callable<void> {
+  const CallableAdapter(this.reducible, this.reducer);
 
   final Reducible<S> reducible;
   final Reducer<S> reducer;
@@ -113,15 +113,15 @@ class ReducerOnReducible<S> extends Callable<void> {
 ```
 
 ```dart
-class Reducer1OnReducible<S, V> extends Callable1<void, V> ...
+class Callable1Adapter<S, V> extends Callable1<void, V> ...
 ```
 
 ```dart
-class Reducer2OnReducible<S, V1, V2> extends Callable2<void, V1, V2> ...
+class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> ...
 ```
 
 ```dart
-class Reducer3OnReducible<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> ...
+class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> ...
 ```
 
 #### 5. Adapter implementations of Reducer(s)
@@ -194,7 +194,7 @@ class Props {
 
 Props transformer(Reducible<int> reducible) => Props(
       counterText: '${reducible.state}',
-      onPressed: ReducerOnReducible(reducible, Incrementer()),
+      onPressed: CallableAdapter(reducible, Incrementer()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(

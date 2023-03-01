@@ -1,8 +1,9 @@
 // reduced.dart
 
-/// Abstractions for a state management instance.
-/// Enables decoupling of UI and logic from the state management framework used.
+/// Minimal API for the basic features of state management frameworks.
 library reduced;
 
-export 'reducible.dart';
-export 'callable.dart';
+export 'src/reducible.dart';
+export 'src/callable.dart';
+export 'src/callbacks.dart';
+export 'src/functions.dart';

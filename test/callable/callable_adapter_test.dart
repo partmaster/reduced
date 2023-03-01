@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/callable.dart';
-import 'package:reduced/reducible.dart';
+import 'package:reduced/src/callable.dart';
+import 'package:reduced/src/reducible.dart';
 
 class MockReducer extends Reducer<Object> {
   MockReducer(this.newState);
@@ -22,16 +22,16 @@ class MockReducible extends Reducible<Object> {
 }
 
 void main() {
-  test('ReducerOnReducible init test', () {
-    final objectUnterTest = ReducerOnReducible(
+  test('CallableAdapter init test', () {
+    final objectUnterTest = CallableAdapter(
       MockReducible(0),
       MockReducer(1),
     );
     expect(objectUnterTest.reducible.state, 0);
   });
 
-  test('ReducerOnReducible call test', () {
-    final objectUnterTest = ReducerOnReducible(
+  test('CallableAdapter call test', () {
+    final objectUnterTest = CallableAdapter(
       MockReducible(0),
       MockReducer(1),
     );
@@ -39,50 +39,53 @@ void main() {
     expect(objectUnterTest.reducible.state, 1);
   });
 
-  test('ReducerOnReducible hashCode test', () {
+  test('CallableAdapter hashCode test', () {
     final reducible1 = MockReducible(1);
     final reducer1 = MockReducer(1);
     final reducible2 = MockReducible(2);
     final reducer2 = MockReducer(2);
-    final objectUnterTest11 = ReducerOnReducible(
+    final objectUnterTest11 = CallableAdapter(
       reducible1,
       reducer1,
     );
-    final objectUnterTest12 = ReducerOnReducible(
+    final objectUnterTest12 = CallableAdapter(
       reducible1,
       reducer2,
     );
-    final objectUnterTest21 = ReducerOnReducible(
+    final objectUnterTest21 = CallableAdapter(
       reducible2,
       reducer1,
     );
-    final objectUnterTest22 = ReducerOnReducible(
+    final objectUnterTest22 = CallableAdapter(
       reducible1,
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode,
+        isNot(objectUnterTest21.hashCode));
   });
-  test('ReducerOnReducible operator== test', () {
+  test('CallableAdapter operator== test', () {
     final reducible1 = MockReducible(1);
     final reducer1 = MockReducer(1);
     final reducible2 = MockReducible(2);
     final reducer2 = MockReducer(2);
-    final objectUnterTest11 = ReducerOnReducible(
+    final objectUnterTest11 = CallableAdapter(
       reducible1,
       reducer1,
     );
-    final objectUnterTest12 = ReducerOnReducible(
+    final objectUnterTest12 = CallableAdapter(
       reducible1,
       reducer2,
     );
-    final objectUnterTest21 = ReducerOnReducible(
+    final objectUnterTest21 = CallableAdapter(
       reducible2,
       reducer1,
     );
-    final objectUnterTest22 = ReducerOnReducible(
+    final objectUnterTest22 = CallableAdapter(
       reducible1,
       reducer1,
     );
