@@ -13,7 +13,7 @@ typedef ReducedTransformer<S, P> = P Function(Reducible<S>);
 // A function that builds a Widget from a property parameter.
 ///
 /// The type parameter `P` is the type of the parameter.
-typedef PropsWidgetBuilder<P> = Widget Function({
+typedef ReducedWidgetBuilder<P> = Widget Function({
   Key? key,
   required P props,
 });

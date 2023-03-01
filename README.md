@@ -162,8 +162,8 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: ^0.0.1
-  reduced_bloc: ^0.0.1
+  reduced: ^0.1.0
+  reduced_bloc: ^0.1.0
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
 ```
