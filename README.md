@@ -299,4 +299,4 @@ Implementations of the 'reduced' API are available for the following state manag
 
 |Framework|implementation package for 'reduced' API|
 |---|---|
-|[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc]()|
+|[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc](https://github.com/partmaster/reduced_bloc)|
