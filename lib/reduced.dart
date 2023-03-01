@@ -1,6 +1,5 @@
 // reduced.dart
 
-/// Minimal API for the basic features of state management frameworks.
 library reduced;
 
 export 'src/reducible.dart';
