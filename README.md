@@ -1,3 +1,4 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/partmaster/reduced)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/partmaster/reduced/dart.yml)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/partmaster/reduced)
 ![GitHub last commit](https://img.shields.io/github/last-commit/partmaster/reduced)
