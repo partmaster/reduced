@@ -1,4 +1,6 @@
-The 'reduced' package defines a minimal API for the basic features of state management frameworks.
+# reduced
+
+Minimal API for the basic features of state management frameworks:
 
 1. Read a current state value.
 2. Update a current state value.
