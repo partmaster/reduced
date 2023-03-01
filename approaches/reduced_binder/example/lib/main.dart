@@ -50,12 +50,11 @@ void main() => runApp(
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) =>
-                context.logic(logicRef).wrapWithConsumer(
-                      stateRef: stateRef,
-                      transformer: transformer,
-                      builder: builder,
-                    ),
+            builder: (context) => context.logic(logicRef).wrapWithConsumer(
+                  stateRef: stateRef,
+                  transformer: transformer,
+                  builder: builder,
+                ),
           ),
         ),
       ),

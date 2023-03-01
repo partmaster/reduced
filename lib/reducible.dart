@@ -34,8 +34,10 @@ abstract class Reducible<S> {
 /// The type parameter `S` is the type of the state of the Reducible.
 class ReducibleProxy<S> extends Reducible<S> {
   const ReducibleProxy(
-      ValueGetter<S> state, Reduce<S> reduce, this.identity)
-      : _state = state,
+    ValueGetter<S> state,
+    Reduce<S> reduce,
+    this.identity,
+  )   : _state = state,
         _reduce = reduce;
 
   /// Reads the current state of the state management instance.
@@ -197,8 +199,7 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
   final V2 value2;
   final V3 value3;
 
-  Reducer3Adapter(
-      this.adaptee, this.value1, this.value2, this.value3);
+  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
 
   @override
   call(state) => adaptee.call(state, value1, value2, value3);
