@@ -298,6 +298,7 @@ void main() => runApp(
 
 Implementations of the 'reduced' API are available for the following state management frameworks:
 
-|Framework|implementation package for 'reduced' API|
+|framework|implementation package for 'reduced' API|
 |---|---|
 |[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc](https://github.com/partmaster/reduced_bloc)|
+|[Riverpod](https://riverpod.dev/)|[reduced_riverpod](https://github.com/partmaster/reduced_riverpod)|
