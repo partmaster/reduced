@@ -199,8 +199,7 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
   final V2 value2;
   final V3 value3;
 
-  Reducer3Adapter(
-      this.adaptee, this.value1, this.value2, this.value3);
+  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
 
   @override
   call(state) => adaptee.call(state, value1, value2, value3);

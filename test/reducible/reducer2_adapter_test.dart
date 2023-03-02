@@ -20,12 +20,9 @@ void main() {
     final objectUnderTest21 = Reducer2Adapter(reducer2, '1', '2');
     final objectUnderTest22 = Reducer2Adapter(reducer1, '1', '2');
     expect(objectUnderTest11.hashCode, objectUnderTest22.hashCode);
-    expect(objectUnderTest11.hashCode,
-        isNot(objectUnderTest12.hashCode));
-    expect(objectUnderTest11.hashCode,
-        isNot(objectUnderTest21.hashCode));
-    expect(objectUnderTest12.hashCode,
-        isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest11.hashCode, isNot(objectUnderTest12.hashCode));
+    expect(objectUnderTest11.hashCode, isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest12.hashCode, isNot(objectUnderTest21.hashCode));
   });
   test('Reducer2Adapter operator== test', () {
     final reducer1 = MockReducer2();

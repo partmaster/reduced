@@ -61,12 +61,9 @@ void main() {
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode,
-        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
   });
   test('CallableAdapter operator== test', () {
     final reducible1 = MockReducible(1);
