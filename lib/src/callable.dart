@@ -113,7 +113,7 @@ class CallableAdapter<S> extends Callable<void> {
   final Reducer<S> reducer;
 
   /// Executes the [reduce](Reducible.reduce) method of the [reducible]
-  ///  with the [reducer] as parameter.
+  /// with the [reducer] as parameter.
   @override
   call() => reducible.reduce(reducer);
 

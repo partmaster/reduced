@@ -5,7 +5,7 @@ homepage: https://github.com/partmaster/reduced
 repository: https://github.com/partmaster/reduced.git
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=2.19.3 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -16,4 +16,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  test: ^1.16.6
+  test: ^1.22.0

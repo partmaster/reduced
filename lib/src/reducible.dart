@@ -143,10 +143,12 @@ abstract class Reducer3<S, V1, V2, V3> {
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V` is the type of the value.
 class Reducer1Adapter<S, V> extends Reducer<S> {
-  final Reducer1<S, V> adaptee;
-  final V value;
+  const Reducer1Adapter(this.adaptee, this.value);
 
-  Reducer1Adapter(this.adaptee, this.value);
+  final Reducer1<S, V> adaptee;
+
+  /// The value used as parameter in adaptee.call.
+  final V value;
 
   @override
   call(state) => adaptee.call(state, value);
@@ -167,11 +169,15 @@ class Reducer1Adapter<S, V> extends Reducer<S> {
 /// The type parameter `V1` is the type of the 1st value.
 /// The type parameter `V2` is the type of the 2nd value.
 class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
-  final Reducer2<S, V1, V2> adaptee;
-  final V1 value1;
-  final V2 value2;
+  const Reducer2Adapter(this.adaptee, this.value1, this.value2);
 
-  Reducer2Adapter(this.adaptee, this.value1, this.value2);
+  final Reducer2<S, V1, V2> adaptee;
+
+  /// The value used as parameter in adaptee.call.
+  final V1 value1;
+
+  /// The value used as parameter in adaptee.call.
+  final V2 value2;
 
   @override
   call(state) => adaptee.call(state, value1, value2);
@@ -194,12 +200,18 @@ class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
 class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
-  final Reducer3<S, V1, V2, V3> adaptee;
-  final V1 value1;
-  final V2 value2;
-  final V3 value3;
-
   Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
+
+  final Reducer3<S, V1, V2, V3> adaptee;
+
+  /// The value used as parameter in adaptee.call.
+  final V1 value1;
+
+  /// The value used as parameter in adaptee.call.
+  final V2 value2;
+
+  /// The value used as parameter in adaptee.call.
+  final V3 value3;
 
   @override
   call(state) => adaptee.call(state, value1, value2, value3);
