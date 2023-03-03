@@ -1,7 +1,7 @@
 // callbacks.dart
 
-import 'dart:io' show HttpClient;
-import 'dart:ui' show Image, Locale, Offset, Picture, Rect, VoidCallback;
+import 'dart:ui'
+    show Image, Locale, Offset, Picture, Rect, VoidCallback;
 
 import 'package:flutter/animation.dart' show Animation;
 import 'package:flutter/gestures.dart'
@@ -75,14 +75,16 @@ typedef ActionListenerCallable = Callable1<void, Action<Intent>>;
 typedef AnimatableCallable = Callable1<void, double>;
 
 /// typedef AnimationStatusListener = void Function(AnimationStatus status);
-typedef AnimationStatusListenerCallable = Callable1<void, AnimationStatus>;
+typedef AnimationStatusListenerCallable
+    = Callable1<void, AnimationStatus>;
 
 /// typedef AppPrivateCommandCallback = void Function(String, Map<String, dynamic>);
 typedef AppPrivateCommandCallable
     = Callable2<void, String, Map<String, dynamic>>;
 
 /// typedef AutocompleteOnSelected<T extends Object> = void Function(T option);
-typedef AutocompleteOnSelectedCallable<T extends Object> = Callable1<void, T>;
+typedef AutocompleteOnSelectedCallable<T extends Object>
+    = Callable1<void, T>;
 
 /// typedef BoxConstraintsTransform = BoxConstraints Function(BoxConstraints);
 typedef BoxConstraintsTransformCallable
@@ -92,14 +94,16 @@ typedef BoxConstraintsTransformCallable
 typedef ChildIndexGetterCallable = Callable1<int?, Key>;
 
 /// typedef ConfirmDismissCallback = Future<bool?> Function(DismissDirection direction);
-typedef ConfirmDismissCallable = Callable1<Future<bool?>, DismissDirection>;
+typedef ConfirmDismissCallable
+    = Callable1<Future<bool?>, DismissDirection>;
 
 /// typedef CreatePlatformViewCallback = PlatformViewController Function(PlatformViewCreationParams params);
 typedef CreatePlatformViewCallable
     = Callable1<PlatformViewController, PlatformViewCreationParams>;
 
 /// typedef CreateRectTween = Tween<Rect?> Function(Rect? begin, Rect? end);
-typedef CreateRectTweenCallable = Callable2<Tween<Rect?>, Rect?, Rect?>;
+typedef CreateRectTweenCallable
+    = Callable2<Tween<Rect?>, Rect?, Rect?>;
 
 /// typedef DecoderBufferCallback = Future<ui.Codec> Function(ui.ImmutableBuffer buffer, {int? cacheWidth, int? cacheHeight, bool allowUpscaling});
 /// typedef DecoderBufferCallable = DecoderBufferCallback;
@@ -138,7 +142,8 @@ typedef DragTargetAcceptWithDetailsCallable<T>
 typedef DragTargetLeaveCallable<T> = Callable1<void, T?>;
 
 /// typedef DragTargetMove<T> = void Function(DragTargetDetails<T> details);
-typedef DragTargetMoveCallable<T> = Callable1<void, DragTargetDetails<T>>;
+typedef DragTargetMoveCallable<T>
+    = Callable1<void, DragTargetDetails<T>>;
 
 /// typedef DragTargetWillAccept<T> = bool Function(T? data);
 typedef DragTargetWillAcceptCallable<T> = Callable1<bool, T?>;
@@ -150,7 +155,8 @@ typedef DragUpdateCallable = Callable1<void, DragUpdateDetails>;
 typedef ElementVisitorCallable = Callable1<void, Element>;
 
 /// typedef FocusOnKeyCallback = KeyEventResult Function(FocusNode node, RawKeyEvent event);
-typedef FocusOnKeyCallable = Callable2<KeyEventResult, FocusNode, RawKeyEvent>;
+typedef FocusOnKeyCallable
+    = Callable2<KeyEventResult, FocusNode, RawKeyEvent>;
 
 /// typedef FocusOnKeyEventCallback = KeyEventResult Function(FocusNode node, KeyEvent event);
 typedef FocusOnKeyEventCallable
@@ -178,52 +184,63 @@ typedef GestureDragEndCallable = Callable1<void, DragEndDetails>;
 typedef GestureDragStartCallable = Callable1<void, DragStartDetails>;
 
 /// typedef GestureDragUpdateCallback = void Function(DragUpdateDetails details);
-typedef GestureDragUpdateCallable = Callable1<void, DragUpdateDetails>;
+typedef GestureDragUpdateCallable
+    = Callable1<void, DragUpdateDetails>;
 
 /// typedef GestureForcePressEndCallback = void Function(ForcePressDetails details);
-typedef GestureForcePressEndCallable = Callable1<void, ForcePressDetails>;
+typedef GestureForcePressEndCallable
+    = Callable1<void, ForcePressDetails>;
 
 /// typedef GestureForcePressPeakCallback = void Function(ForcePressDetails details);
-typedef GestureForcePressPeakCallable = Callable1<void, ForcePressDetails>;
+typedef GestureForcePressPeakCallable
+    = Callable1<void, ForcePressDetails>;
 
 /// typedef GestureForcePressStartCallback = void Function(ForcePressDetails details);
-typedef GestureForcePressStartCallable = Callable1<void, ForcePressDetails>;
+typedef GestureForcePressStartCallable
+    = Callable1<void, ForcePressDetails>;
 
 /// typedef GestureForcePressUpdateCallback = void Function(ForcePressDetails details);
-typedef GestureForcePressUpdateCallable = Callable1<void, ForcePressDetails>;
+typedef GestureForcePressUpdateCallable
+    = Callable1<void, ForcePressDetails>;
 
 /// typedef GestureLongPressCallback = void Function();
 typedef GestureLongPressCallable = Callable<void>;
 
 /// typedef GestureLongPressEndCallback = void Function(LongPressEndDetails details);
-typedef GestureLongPressEndCallable = Callable1<void, LongPressEndDetails>;
+typedef GestureLongPressEndCallable
+    = Callable1<void, LongPressEndDetails>;
 
 /// typedef GestureLongPressMoveUpdateCallback = void Function(LongPressMoveUpdateDetails details);
 typedef GestureLongPressMoveUpdateCallable
     = Callable1<void, LongPressMoveUpdateDetails>;
 
 /// typedef GestureLongPressStartCallback = void Function(LongPressStartDetails details);
-typedef GestureLongPressStartCallable = Callable1<void, LongPressStartDetails>;
+typedef GestureLongPressStartCallable
+    = Callable1<void, LongPressStartDetails>;
 
 /// typedef GestureLongPressUpCallback = void Function();
 typedef GestureLongPressUpCallable = Callable<void>;
 
 /// typedef GestureRecognizerFactoryConstructor<T extends GestureRecognizer> = T Function();
-typedef GestureRecognizerFactoryConstructorCallable<T extends GestureRecognizer>
+typedef GestureRecognizerFactoryConstructorCallable<
+        T extends GestureRecognizer>
     = Callable<T>;
 
 /// typedef GestureRecognizerFactoryInitializer<T extends GestureRecognizer> = void Function(T instance);
-typedef GestureRecognizerFactoryInitializerCallable<T extends GestureRecognizer>
+typedef GestureRecognizerFactoryInitializerCallable<
+        T extends GestureRecognizer>
     = Callable1<void, T>;
 
 /// typedef GestureScaleEndCallback = void Function(ScaleEndDetails details);
 typedef GestureScaleEndCallable = Callable1<void, ScaleEndDetails>;
 
 /// typedef GestureScaleStartCallback = void Function(ScaleStartDetails details);
-typedef GestureScaleStartCallable = Callable1<void, ScaleStartDetails>;
+typedef GestureScaleStartCallable
+    = Callable1<void, ScaleStartDetails>;
 
 /// typedef GestureScaleUpdateCallback = void Function(ScaleUpdateDetails details);
-typedef GestureScaleUpdateCallable = Callable1<void, ScaleUpdateDetails>;
+typedef GestureScaleUpdateCallable
+    = Callable1<void, ScaleUpdateDetails>;
 
 /// typedef GestureTapCallback = void Function();
 typedef GestureTapCallable = Callable<void>;
@@ -237,14 +254,12 @@ typedef GestureTapDownCallable = Callable1<void, TapDownDetails>;
 /// typedef GestureTapUpCallback = void Function(TapUpDetails details);
 typedef GestureTapUpCallable = Callable1<void, TapUpDetails>;
 
-/// typedef HttpClientProvider = HttpClient Function();
-typedef HttpClientProviderCallable = Callable<HttpClient>;
-
 /// typedef ImageChunkListener = void Function(ImageChunkEvent event);
 typedef ImageChunkListenerCallable = Callable1<void, ImageChunkEvent>;
 
 /// typedef ImageErrorListener = void Function(Object exception, StackTrace? stackTrace);
-typedef ImageErrorListenerCallable = Callable2<void, Object, StackTrace?>;
+typedef ImageErrorListenerCallable
+    = Callable2<void, Object, StackTrace?>;
 
 /// typedef ImageListener = void Function(ImageInfo image, bool synchronousCall);
 typedef ImageListenerCallable = Callable2<void, ImageInfo, bool>;
@@ -272,7 +287,8 @@ typedef MenuItemSerializableIdGeneratorCallable
     = Callable1<int, PlatformMenuItem>;
 
 /// typedef NavigatorFinderCallback = NavigatorState Function(BuildContext context);
-typedef NavigatorFinderCallable = Callable1<NavigatorState, BuildContext>;
+typedef NavigatorFinderCallable
+    = Callable1<NavigatorState, BuildContext>;
 
 /// typedef NotificationListenerCallback<T extends Notification> = bool Function(T notification);
 typedef NotificationListenerCallable<T extends Notification>
@@ -296,13 +312,16 @@ typedef PointerCancelEventListenerCallable
     = Callable1<void, PointerCancelEvent>;
 
 /// typedef PointerDownEventListener = void Function(PointerDownEvent event);
-typedef PointerDownEventListenerCallable = Callable1<void, PointerDownEvent>;
+typedef PointerDownEventListenerCallable
+    = Callable1<void, PointerDownEvent>;
 
 /// typedef PointerMoveEventListener = void Function(PointerMoveEvent event);
-typedef PointerMoveEventListenerCallable = Callable1<void, PointerMoveEvent>;
+typedef PointerMoveEventListenerCallable
+    = Callable1<void, PointerMoveEvent>;
 
 /// typedef PointerUpEventListener = void Function(PointerUpEvent event);
-typedef PointerUpEventListenerCallable = Callable1<void, PointerUpEvent>;
+typedef PointerUpEventListenerCallable
+    = Callable1<void, PointerUpEvent>;
 
 /// typedef PopPageCallback = bool Function(Route<dynamic> route, dynamic result);
 typedef PopPageCallable = Callable2<bool, Route<dynamic>, dynamic>;
@@ -324,7 +343,8 @@ typedef ReorderItemProxyDecoratorCallable
 typedef RouteCompletionCallable<T> = Callable1<void, T>;
 
 /// typedef RouteFactory = Route<dynamic>? Function(RouteSettings settings);
-typedef RouteFactoryCallable = Callable1<Route<dynamic>?, RouteSettings>;
+typedef RouteFactoryCallable
+    = Callable1<Route<dynamic>?, RouteSettings>;
 
 /// typedef RouteListFactory = List<Route<dynamic>> Function(NavigatorState navigator, String initialRoute);
 typedef RouteListFactoryCallable
@@ -334,14 +354,16 @@ typedef RouteListFactoryCallable
 typedef RoutePredicateCallable = Callable1<bool, Route<dynamic>>;
 
 /// typedef RoutePresentationCallback = String Function(NavigatorState navigator, Object? arguments);
-typedef RoutePresentationCallable = Callable2<String, NavigatorState, Object?>;
+typedef RoutePresentationCallable
+    = Callable2<String, NavigatorState, Object?>;
 
 /// typedef ScrollIncrementCalculator = double Function(ScrollIncrementDetails details);
 typedef ScrollIncrementCalculatorCallable
     = Callable1<double, ScrollIncrementDetails>;
 
 /// typedef ScrollNotificationCallback = void Function(ScrollNotification notification);
-typedef ScrollNotificationCallable = Callable1<void, ScrollNotification>;
+typedef ScrollNotificationCallable
+    = Callable1<void, ScrollNotification>;
 
 /// typedef ScrollNotificationPredicate = bool Function(ScrollNotification notification);
 typedef ScrollNotificationPredicateCallable
@@ -377,7 +399,8 @@ typedef TapRegionCallable = Callable1<void, PointerDownEvent>;
 typedef TextEditingValueCallable = Callable1<void, TextEditingValue>;
 
 /// typedef TweenConstructor<T extends Object> = Tween<T> Function(T targetValue);
-typedef TweenConstructorCallable<T extends Object> = Callable1<Tween<T>, T>;
+typedef TweenConstructorCallable<T extends Object>
+    = Callable1<Tween<T>, T>;
 
 /// typedef TweenVisitor<T extends Object> = Tween<T>? Function(Tween<T>? tween, T targetValue, TweenConstructor<T> constructor);
 typedef TweenVisitorCallable<T extends Object>
