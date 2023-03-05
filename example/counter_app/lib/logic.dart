@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('reduced_fluttercommand example'),
+          title: const Text('reduced_bloc example'),
         ),
         body: Center(
           child: Column(

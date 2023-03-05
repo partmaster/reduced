@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_provider/reduced_provider.dart';
 
 import '../models/props.dart';
 import '../models/transformer.dart';

@@ -139,16 +139,20 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "../.."
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "4bcf5f09450dfb2d7c947c3c32fd60995bcc12e1"
+      url: "https://github.com/partmaster/reduced.git"
+    source: git
     version: "0.1.0"
-  reduced_setstate:
+  reduced_provider:
     dependency: "direct main"
     description:
-      path: "../reduced_setstate"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "6a8d9a7b9c07a2d6049a79cdec6ddbdef0c72efa"
+      url: "https://github.com/partmaster/reduced_provider.git"
+    source: git
     version: "0.1.0"
   sky_engine:
     dependency: transitive

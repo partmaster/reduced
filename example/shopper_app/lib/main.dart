@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_provider/reduced_provider.dart';
 import 'package:window_size/window_size.dart';
 
 import 'common/theme.dart';

@@ -1,5 +1,5 @@
 name: shopper_app
-description: Shopper sample application that originally used 'provider' for state management, implemented with "reduced" API and "reduced_setstate" implementation as an example of using the "reduced" package.Shopper sample app that originally used 'provider' for state management implemented with 'reduced' API and 'reduced_setstate' implementation as an example of the usage of the 'reduced' package.
+description: porting the shopper sample application from the Flutter documentation using the 'Provider' state management framework via the 'reduced' API and the 'reduced_provider' implementation as an example of how to use the 'reduced' package.
 publish_to: none
 
 version: 1.0.0+1
@@ -10,10 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reduced: 
-    path: ../../
-  reduced_setstate: 
-    path: ../reduced_setstate
+  reduced:
+    git: 
+      url: https://github.com/partmaster/reduced.git
+      ref: main
+  reduced_provider: 
+    git: 
+      url: https://github.com/partmaster/reduced_provider.git
+      ref: main
   go_router: ^6.0.0
   provider: ^6.0.2
   window_size:
