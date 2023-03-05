@@ -1,5 +1,5 @@
 name: counter_app
-description: Counter demo app implemented with 'reduced' API and 'reduced_setstate' implementation as an example of the usage of the 'reduced' package.
+description: Counter demo app implemented with 'reduced' API and 'reduced_bloc' implementation as an example of the usage of the 'reduced' package.
 publish_to: 'none' 
 version: 0.1.0+1
 
@@ -9,10 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reduced: 
-    path: ../../
-  reduced_setstate: 
-    path: ../reduced_setstate
+    git: 
+      url: https://github.com/partmaster/reduced.git
+      ref: main
+  reduced_bloc: 
+    git: 
+      url: https://github.com/partmaster/reduced_bloc.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

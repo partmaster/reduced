@@ -159,14 +159,13 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
 
 ## Getting started
 
-In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_bloc'.
+In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_setstate'.
 
 ```
 dependencies:
   reduced: ^0.1.0
-  reduced_bloc: ^0.1.0
-  bloc: ^8.1.1
-  flutter_bloc: ^8.1.2
+  reduced_setstate: 
+    path: ../reduced_setstate
 ```
 
 Import package 'reduced' to implement the logic.
@@ -178,7 +177,7 @@ import 'package:reduced/reduced.dart';
 Import choosen implementation package for the 'reduced' API to use the logic, e.g.
 
 ```dart
-import 'package:reduced_bloc/reduced_bloc.dart';
+import 'package:reduced_setstate/reduced_setstate.dart';
 ```
 
 ## Usage (Part 1)
@@ -190,41 +189,60 @@ Implementation of the counter demo app logic with the 'reduced' API without furt
 
 import 'package:flutter/material.dart';
 import 'package:reduced/reduced.dart';
+```
 
+```dart
 class Incrementer extends Reducer<int> {
+  @override
   int call(int state) => state + 1;
 }
+```
 
+```dart
 class Props {
   Props({required this.counterText, required this.onPressed});
+
   final String counterText;
   final Callable<void> onPressed;
 }
+```
 
-Props transformer(Reducible<int> reducible) => Props(
+```dart
+Props transformProps(Reducible<int> reducible) => Props(
       counterText: '${reducible.state}',
       onPressed: CallableAdapter(reducible, Incrementer()),
     );
+```
 
-Widget builder({Key? key, required Props props}) => Scaffold(
-      appBar: AppBar(title: Text('reduced_bloc example')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text('${props.counterText}'),
-          ],
+```dart
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key, required this.props});
+
+  final Props props;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('reduced_fluttercommand example'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: props.onPressed,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              Text(props.counterText),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: props.onPressed,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+      );
+}
 ```
 
 ## Extended Features
@@ -267,31 +285,35 @@ Widget wrapWithScope({required Widget child});
 
 # Usage (Part 2)
 
-Finished counter demo app using logic.dart and 'reduced_bloc' package, an implementation of the 'reduced' API on the 'Bloc' state management framework:
+Finished counter demo app using logic.dart and 'reduced_bloc' package, an implementation of the 'reduced' API on [Bloc](https://bloclibrary.dev/#/):
 
 ```dart
 // main.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced/reduced.dart';
 import 'package:reduced_bloc/reduced_bloc.dart';
+
 import 'logic.dart';
 
-void main() => runApp(
-      wrapWithProvider(
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => wrapWithProvider(
         initialState: 0,
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) =>
-                context.bloc<int>().wrapWithConsumer(
-                      transformer: transformer,
-                      builder: builder,
-                    ),
+            builder: (context) => context.bloc<int>().wrapWithConsumer(
+              transformer: transformProps,
+              builder: MyHomePage.new,
+            ),
           ),
         ),
-      ),
-    );
+      );
+}
 ```
 
 # Additional information

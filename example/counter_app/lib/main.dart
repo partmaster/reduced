@@ -1,7 +1,7 @@
 // main.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_bloc/reduced_bloc.dart';
 
 import 'logic.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) => wrapWithConsumer(
+            builder: (context) => context.bloc<int>().wrapWithConsumer(
               transformer: transformProps,
               builder: MyHomePage.new,
             ),
