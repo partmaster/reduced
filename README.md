@@ -182,7 +182,7 @@ import 'package:reduced/reduced.dart';
 Import choosen implementation package for the 'reduced' API to use the logic, e.g.
 
 ```dart
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_bloc/reduced_bloc.dart';
 ```
 
 ## Usage (Part 1)
@@ -311,10 +311,11 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) => context.bloc<int>().wrapWithConsumer(
-              transformer: transformProps,
-              builder: MyHomePage.new,
-            ),
+            builder: (context) =>
+                context.bloc<int>().wrapWithConsumer(
+                      transformer: transformProps,
+                      builder: MyHomePage.new,
+                    ),
           ),
         ),
       );
