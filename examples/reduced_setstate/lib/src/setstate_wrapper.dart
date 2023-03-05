@@ -1,48 +1,49 @@
 // setstate_wrapper.dart
 
 import 'package:flutter/widgets.dart';
-import 'inherited_widgets.dart';
 import 'package:reduced/reduced.dart';
 
+import 'inherited_widgets.dart';
 import 'setstate_reducible.dart';
 
-Widget wrapWithProvider1<S, P1>({
+class _ReducibleAndState<S> {
+  _ReducibleAndState(this.reducible) : state = reducible.state;
+
+  final Reducible<S> reducible;
+  final S state;
+
+  @override
+  get hashCode => Object.hash(reducible, state);
+
+  @override
+  operator ==(other) =>
+      other is ReducibleAndState &&
+      state == other.state &&
+      reducible == other.reducible;
+}
+
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
-  required ReducedTransformer<S, P1> transformer1,
 }) =>
     ReducibleStatefulWidget(
       initialState: initialState,
       child: child,
-      builder: (value, child) => InheritedValueWidget(
-        value: transformer1(value),
+      builder: (reducible, child) => InheritedValueWidget(
+        value: _ReducibleAndState(reducible),
         child: child,
       ),
     );
 
-Widget wrapWithProvider2<S, P1, P2>({
-  required S initialState,
-  required Widget child,
-  required ReducedTransformer<S, P1> transformer1,
-  required ReducedTransformer<S, P2> transformer2,
-}) =>
-    ReducibleStatefulWidget(
-      initialState: initialState,
-      child: child,
-      builder: (value, child) => InheritedValueWidget(
-        value: transformer1(value),
-        child: InheritedValueWidget(
-          value: transformer2(value),
-          child: child,
-        ),
-      ),
-    );
-
-Widget wrapWithConsumer<P extends Object>({
+Widget wrapWithConsumer<S, P extends Object>({
   required ReducedWidgetBuilder<P> builder,
+  required ReducedTransformer<S, P> transformer,
 }) =>
     Builder(
-      builder: (context) => builder(
-        props: InheritedValueWidget.of<P>(context),
+      builder: (context) => InheritedValueWidget(
+        value: transformer(
+            InheritedValueWidget.of<_ReducibleAndState<S>>(context)
+                .reducible),
+        child: ReducedStatefulBuilderWidget<P>(builder: builder),
       ),
     );

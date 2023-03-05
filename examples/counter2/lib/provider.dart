@@ -12,9 +12,7 @@ class MyAppStateProvider extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => wrapWithProvider2(
-        transformer1: transformMyHomePageProps,
-        transformer2: transformMyCounterWidgetProps,
+  Widget build(BuildContext context) => wrapWithProvider(
         initialState: MyAppState(title: 'reduced setstate example'),
         child: child,
       );

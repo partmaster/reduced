@@ -1,5 +1,6 @@
 // consumer.dart
 
+import 'package:counter2/transformer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:reduced/reduced.dart';
 import 'package:reduced_setstate/reduced_setstate.dart';
@@ -15,7 +16,10 @@ class MyHomePagePropsConsumer extends StatelessWidget {
   final ReducedWidgetBuilder<MyHomePageProps> builder;
 
   @override
-  Widget build(BuildContext context) => wrapWithConsumer(builder: builder);
+  Widget build(BuildContext context) => wrapWithConsumer(
+        transformer: transformMyHomePageProps,
+        builder: builder,
+      );
 }
 
 class MyCounterWidgetPropsConsumer extends StatelessWidget {
@@ -27,5 +31,8 @@ class MyCounterWidgetPropsConsumer extends StatelessWidget {
   final ReducedWidgetBuilder<MyCounterWidgetProps> builder;
 
   @override
-  Widget build(context) => wrapWithConsumer(builder: builder);
+  Widget build(context) => wrapWithConsumer(
+    transformer: transformMyCounterWidgetProps,
+        builder: builder,
+      );
 }

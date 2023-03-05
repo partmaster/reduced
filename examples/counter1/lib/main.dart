@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
             builder: (context) => wrapWithConsumer(
+              transformer: transformProps,
               builder: MyHomePage.new,
             ),
           ),

@@ -2,9 +2,10 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:reduced/reduced.dart';
+import 'package:reduced_setstate/reduced_setstate.dart';
 
 typedef ReducibleWidgetBuilder<S> = Widget Function(
-  Reducible<S> value,
+  Reducible<S> reducible,
   Widget child,
 );
 
@@ -22,17 +23,16 @@ class ReducibleStatefulWidget<S> extends StatefulWidget {
 
   @override
   State<ReducibleStatefulWidget> createState() =>
-      // ignore: no_logic_in_create_state
-      _ReducibleStatefulWidgetState<S>(initialState);
+      _ReducibleStatefulWidgetState<S>();
 }
 
 class _ReducibleStatefulWidgetState<S>
     extends State<ReducibleStatefulWidget<S>>
     implements Reducible<S> {
-  _ReducibleStatefulWidgetState(S initialState)
-      : _state = initialState;
+  late S _state;
 
-  S _state;
+  @override
+  initState() => _state = widget.initialState;
 
   @override
   S get state => _state;

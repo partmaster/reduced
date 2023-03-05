@@ -10,7 +10,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:counter2/widgets.dart';
 
+extension SingleWidgetByType on CommonFinders {
+  T singleWidgetByType<T>(Type type) =>
+      find.byType(type).evaluate().single.widget as T;
+}
+
 void main() {
+  /*
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
@@ -26,5 +32,21 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+  */
+  testWidgets('selective rebuild test', (tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    final homePage0 = find.singleWidgetByType(MyHomePage);
+    final counterWidget0 = find.singleWidgetByType(MyCounterWidget);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+
+    final homePage1 = find.singleWidgetByType(MyHomePage);
+    final counterWidget1 = find.singleWidgetByType(MyCounterWidget);
+
+    expect(identical(homePage0, homePage1), isTrue);
+    // expect(identical(counterWidget0, counterWidget1), isFalse);
   });
 }

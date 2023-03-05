@@ -10,6 +10,15 @@ class MyHomePageProps {
 
   final String title;
   final Callable<void> onPressed;
+
+  @override
+  get hashCode => Object.hash(title, onPressed);
+
+  @override
+  operator ==(other) =>
+      other is MyHomePageProps &&
+      title == other.title &&
+      onPressed == other.onPressed;
 }
 
 class MyCounterWidgetProps {
@@ -18,4 +27,12 @@ class MyCounterWidgetProps {
   });
 
   final String counterText;
+
+  @override
+  get hashCode => counterText.hashCode;
+
+  @override
+  operator ==(other) =>
+      other is MyCounterWidgetProps &&
+      counterText == other.counterText;
 }

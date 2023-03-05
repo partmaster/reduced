@@ -32,8 +32,7 @@ class ReducibleStatefulWidget<S> extends StatefulWidget {
 
   @override
   State<ReducibleStatefulWidget> createState() =>
-      // ignore: no_logic_in_create_state
-      _ReducibleStatefulWidgetState<S>(initialState);
+      _ReducibleStatefulWidgetState<S>();
 }
 ```
 
@@ -60,37 +59,28 @@ class _ReducibleStatefulWidgetState<S>
 #### 2. Register a state for management.
 
 ```dart
-Widget wrapWithProvider1<S, P1>({
-  required S initialState,
-  required Widget child,
-  required ReducedTransformer<S, P1> transformer1,
-}) =>
-    ReducibleStatefulWidget(
-      initialState: initialState,
-      child: child,
-      builder: (value, child) => InheritedValueWidget(
-        value: transformer1(value),
-        child: child,
-      ),
-    );
+class _ReducibleAndState<S> {
+  _ReducibleAndState(this.reducible) : state = reducible.state;
+
+  final Reducible<S> reducible;
+  final S state;
+
+  @override get hashCode => ...
+  @override operator ==(other) ...
+}
 ```
 
 ```dart
-Widget wrapWithProvider2<S, P1, P2>({
+Widget wrapWithProvider<S>({
   required S initialState,
   required Widget child,
-  required ReducedTransformer<S, P1> transformer1,
-  required ReducedTransformer<S, P2> transformer2,
 }) =>
     ReducibleStatefulWidget(
       initialState: initialState,
       child: child,
-      builder: (value, child) => InheritedValueWidget(
-        value: transformer1(value),
-        child: InheritedValueWidget(
-          value: transformer2(value),
-          child: child,
-        ),
+      builder: (reducible, child) => InheritedValueWidget(
+        value: _ReducibleAndState(reducible),
+        child: child,
       ),
     );
 ```
@@ -98,12 +88,16 @@ Widget wrapWithProvider2<S, P1, P2>({
 #### 4. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
-Widget wrapWithConsumer<P extends Object>({
+Widget wrapWithConsumer<S, P extends Object>({
   required ReducedWidgetBuilder<P> builder,
+  required ReducedTransformer<S, P> transformer,
 }) =>
     Builder(
-      builder: (context) => builder(
-        props: InheritedValueWidget.of<P>(context),
+      builder: (context) => InheritedValueWidget(
+        value: transformer(
+            InheritedValueWidget.of<_ReducibleAndState<S>>(context)
+                .reducible),
+        child: ReducedStatefulBuilderWidget<P>(builder: builder),
       ),
     );
 ```
