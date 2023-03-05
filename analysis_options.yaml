@@ -2,5 +2,6 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - approaches/**
-    - examples/**
+    - example/counter_app/**
+    - example/counter_app_with_selective_rebuild/**
+    - example/shopper_app/**
