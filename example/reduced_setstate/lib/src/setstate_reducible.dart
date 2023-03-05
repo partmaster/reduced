@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:reduced/reduced.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
 
 typedef ReducibleWidgetBuilder<S> = Widget Function(
   Reducible<S> reducible,
@@ -23,15 +22,18 @@ class ReducibleStatefulWidget<S> extends StatefulWidget {
 
   @override
   State<ReducibleStatefulWidget> createState() =>
-      _ReducibleStatefulWidgetState<S>();
+      ReducibleStatefulWidgetState<S>();
 }
 
-class _ReducibleStatefulWidgetState<S> extends State<ReducibleStatefulWidget<S>>
+class ReducibleStatefulWidgetState<S> extends State<ReducibleStatefulWidget<S>>
     implements Reducible<S> {
   late S _state;
 
   @override
-  initState() => _state = widget.initialState;
+  initState() {
+    super.initState();
+    _state = widget.initialState;
+  }
 
   @override
   S get state => _state;

@@ -1,6 +1,7 @@
 name: reduced_setstate
 description: Implementation of the state management API 'reduced' on top of StatefulWidget and InheritedWidget'.
 version: 0.1.0
+publish_to: none
 
 environment:
   sdk: '>=2.19.3 <3.0.0'

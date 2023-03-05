@@ -6,8 +6,8 @@ import 'package:reduced/reduced.dart';
 import 'inherited_widgets.dart';
 import 'setstate_reducible.dart';
 
-class _ReducibleAndState<S> {
-  _ReducibleAndState(this.reducible) : state = reducible.state;
+class ReducibleAndState<S> {
+  ReducibleAndState(this.reducible) : state = reducible.state;
 
   final Reducible<S> reducible;
   final S state;
@@ -17,7 +17,7 @@ class _ReducibleAndState<S> {
 
   @override
   operator ==(other) =>
-      other is _ReducibleAndState &&
+      other is ReducibleAndState &&
       state == other.state &&
       reducible == other.reducible;
 }
@@ -30,7 +30,7 @@ Widget wrapWithProvider<S>({
       initialState: initialState,
       child: child,
       builder: (reducible, child) => InheritedValueWidget(
-        value: _ReducibleAndState(reducible),
+        value: ReducibleAndState(reducible),
         child: child,
       ),
     );
@@ -42,7 +42,7 @@ Widget wrapWithConsumer<S, P extends Object>({
     Builder(
       builder: (context) => InheritedValueWidget(
         value: transformer(
-            InheritedValueWidget.of<_ReducibleAndState<S>>(context).reducible),
+            InheritedValueWidget.of<ReducibleAndState<S>>(context).reducible),
         child: ReducedStatefulBuilderWidget<P>(builder: builder),
       ),
     );
