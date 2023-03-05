@@ -32,8 +32,7 @@ class RemoveItemReducer extends Reducer1<AppState, int> {
 }
 
 extension RemoveItemReducerOnReducible on Reducible<AppState> {
-  CallableAdapter<AppState> removeItemReducer(int value) =>
-      CallableAdapter(
+  CallableAdapter<AppState> removeItemReducer(int value) => CallableAdapter(
         this,
         Reducer1Adapter(RemoveItemReducer(), value),
       );
