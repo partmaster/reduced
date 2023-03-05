@@ -85,7 +85,7 @@ Widget wrapWithProvider<S>({
     );
 ```
 
-#### 4. Trigger a rebuild on widgets selectively after a state change.
+#### 3. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
 Widget wrapWithConsumer<S, P extends Object>({
