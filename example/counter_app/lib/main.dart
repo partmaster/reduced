@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
             builder: (context) => context.bloc<int>().wrapWithConsumer(
-              transformer: transformProps,
-              builder: MyHomePage.new,
-            ),
+                  transformer: transformProps,
+                  builder: MyHomePage.new,
+                ),
           ),
         ),
       );
