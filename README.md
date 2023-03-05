@@ -159,13 +159,18 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
 
 ## Getting started
 
-In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_setstate'.
+In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_bloc'.
 
 ```
 dependencies:
-  reduced: ^0.1.0
-  reduced_setstate: 
-    path: ../reduced_setstate
+  reduced:
+    git: 
+      url: https://github.com/partmaster/reduced.git
+      ref: main
+  reduced_bloc: 
+    git: 
+      url: https://github.com/partmaster/reduced_bloc.git
+      ref: main
 ```
 
 Import package 'reduced' to implement the logic.
