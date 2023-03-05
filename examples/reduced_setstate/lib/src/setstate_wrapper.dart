@@ -17,7 +17,7 @@ class _ReducibleAndState<S> {
 
   @override
   operator ==(other) =>
-      other is ReducibleAndState &&
+      other is _ReducibleAndState &&
       state == other.state &&
       reducible == other.reducible;
 }
@@ -42,7 +42,8 @@ Widget wrapWithConsumer<S, P extends Object>({
     Builder(
       builder: (context) => InheritedValueWidget(
         value: transformer(
-            InheritedValueWidget.of<_ReducibleAndState<S>>(context).reducible),
+            InheritedValueWidget.of<_ReducibleAndState<S>>(context)
+                .reducible),
         child: ReducedStatefulBuilderWidget<P>(builder: builder),
       ),
     );
