@@ -15,18 +15,17 @@ class InheritedValueWidget<V> extends InheritedWidget {
   static U of<U>(BuildContext context) =>
       _widgetOf<InheritedValueWidget<U>>(context).value;
 
-  static W _widgetOf<W extends InheritedValueWidget>(
-      BuildContext context) {
+  static W _widgetOf<W extends InheritedValueWidget>(BuildContext context) {
     final result = context.dependOnInheritedWidgetOfExactType<W>();
     if (result == null) {
-      throw AssertionError(
-          'InheritedValueWidget._widgetOf<$W> return null');
+      throw AssertionError('InheritedValueWidget._widgetOf<$W> return null');
     }
     return result;
   }
 
   @override
-  bool updateShouldNotify(InheritedValueWidget oldWidget) => value != oldWidget.value;
+  bool updateShouldNotify(InheritedValueWidget oldWidget) =>
+      value != oldWidget.value;
 }
 
 typedef Converter<V, S> = V Function(S rawValue);
@@ -76,12 +75,10 @@ class StatefulValueWidget<V> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<StatefulValueWidget> createState() =>
-      _StatefulValueWidgetState<V>();
+  State<StatefulValueWidget> createState() => _StatefulValueWidgetState<V>();
 }
 
-class _StatefulValueWidgetState<V>
-    extends State<StatefulValueWidget<V>> {
+class _StatefulValueWidgetState<V> extends State<StatefulValueWidget<V>> {
   late final V value;
 
   @override
@@ -128,6 +125,6 @@ class _ReducedStatefulBuilderWidgetState<V>
   }
 
   @override
-  Widget build(BuildContext context) => child ??=
-      widget.builder(props: InheritedValueWidget.of<V>(context));
+  Widget build(BuildContext context) =>
+      child ??= widget.builder(props: InheritedValueWidget.of<V>(context));
 }

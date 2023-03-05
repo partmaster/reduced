@@ -13,8 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MyAppStateProvider(
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
-          home:
-              const MyHomePagePropsConsumer(builder: MyHomePage.new),
+          home: const MyHomePagePropsConsumer(builder: MyHomePage.new),
         ),
       );
 }

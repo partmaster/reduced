@@ -32,7 +32,7 @@ class MyCounterWidgetPropsConsumer extends StatelessWidget {
 
   @override
   Widget build(context) => wrapWithConsumer(
-    transformer: transformMyCounterWidgetProps,
+        transformer: transformMyCounterWidgetProps,
         builder: builder,
       );
 }

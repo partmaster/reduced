@@ -26,8 +26,7 @@ class ReducibleStatefulWidget<S> extends StatefulWidget {
       _ReducibleStatefulWidgetState<S>();
 }
 
-class _ReducibleStatefulWidgetState<S>
-    extends State<ReducibleStatefulWidget<S>>
+class _ReducibleStatefulWidgetState<S> extends State<ReducibleStatefulWidget<S>>
     implements Reducible<S> {
   late S _state;
 

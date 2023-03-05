@@ -42,8 +42,7 @@ Widget wrapWithConsumer<S, P extends Object>({
     Builder(
       builder: (context) => InheritedValueWidget(
         value: transformer(
-            InheritedValueWidget.of<_ReducibleAndState<S>>(context)
-                .reducible),
+            InheritedValueWidget.of<_ReducibleAndState<S>>(context).reducible),
         child: ReducedStatefulBuilderWidget<P>(builder: builder),
       ),
     );
