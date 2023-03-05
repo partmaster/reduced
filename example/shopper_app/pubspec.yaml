@@ -1,5 +1,5 @@
 name: shopper_app
-description: Shopper sample application that originally used "provider" for state management, implemented with "reduced" API and "reduced_setstate" implementation as an example of using the "reduced" package.Shopper sample app that originally used 'provider' for state management implemented with 'reduced' API and 'reduced_setstate' implementation as an example of the usage of the 'reduced' package.
+description: Shopper sample application that originally used 'provider' for state management, implemented with "reduced" API and "reduced_setstate" implementation as an example of using the "reduced" package.Shopper sample app that originally used 'provider' for state management implemented with 'reduced' API and 'reduced_setstate' implementation as an example of the usage of the 'reduced' package.
 publish_to: none
 
 version: 1.0.0+1
