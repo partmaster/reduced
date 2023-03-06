@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) => context.bloc<int>().wrapWithConsumer(
-                  transformer: transformProps,
-                  builder: MyHomePage.new,
-                ),
+            builder: (context) => wrapWithConsumer(
+              transformer: transformProps,
+              builder: MyHomePage.new,
+            ),
           ),
         ),
       );

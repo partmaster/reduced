@@ -150,18 +150,17 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "898e5c65df053b14b7a1d23eb9df907f046f37d9"
-      url: "https://github.com/partmaster/reduced.git"
-    source: git
+      name: reduced
+      sha256: "403d266eb7c2303affe654f75942d58af2dc4a7a826e54623ea544148e2c6944"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.1.0"
   reduced_bloc:
     dependency: "direct main"
     description:
       path: "."
       ref: main
-      resolved-ref: "6985f0e72235d7cd029d7a529d0ced8029c20ad8"
+      resolved-ref: af77867984ae4a523b755f42c092f567da790fef
       url: "https://github.com/partmaster/reduced_bloc.git"
     source: git
     version: "0.1.0"
