@@ -9,10 +9,10 @@ class Incrementer extends Reducer<int> {
 }
 
 class Props {
-  Props({required this.counterText, required this.onPressed});
+  const Props({required this.counterText, required this.onPressed});
 
   final String counterText;
-  final Callable<void> onPressed;
+  final VoidCallable onPressed;
 }
 
 Props transformProps(Reducible<int> reducible) => Props(

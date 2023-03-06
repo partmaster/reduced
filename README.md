@@ -29,6 +29,16 @@ abstract class Reducible {
 }
 ```
 
+*Samples of ```Reducible.get state``` use*
+
+```get state => super.state;```
+<br/>
+[*reduced_riverpod/lib/src/riverpod_reducible.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L12)
+
+```get state => _state;```
+<br/>
+[*reduced_getx/lib/src/getx_reducible.dart#L13*](https://github.com/partmaster/reduced_getx/blob/d9133163aba67a700a1d86bdce9a2248693891d0/lib/src/getx_reducible.dart#L13)
+
 ### 2. Update a current state value.
 
 ```dart
@@ -41,11 +51,30 @@ abstract class Reducible {
 Instead of writing the state value directly, the API provides a ```reduce``` method that accepts a so-called ```reducer``` as a parameter. 
 In the ```reduce``` method the ```reducer``` is executed with the current state value as a parameter and the return value of the ```reducer``` is stored as the new state value.
 
+*Samples of ```Reducible.reduce``` use*
+
+```reduce(reducer) => add(reducer);```
+<br/>
+[*reduced_bloc/lib/src/bloc_reducible.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_reducible.dart#L15)
+
+```reduce(reducer) => state = reducer(state);```
+<br/>
+[*reduced_riverpod/lib/src/riverpod_reducible.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L15)
+
 ```dart
 abstract class Reducer<S> {
     S call(S state);
 }
 ```
+
+All Reducer implementations must be derived from the ```Reducer``` base class.
+
+*Samples of ```Reducer``` use*
+
+```class Incrementer extends Reducer<int>```
+<br/>
+[*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L6)
+
 
 #### 2.1 ReducedTransformer function typedef
 
@@ -59,6 +88,17 @@ A ```ReducedTransformer``` is a ```Function``` that uses the read and update met
 <br/>
 With a ```ReducedTransformer``` function usually a ```props``` parameter for a ```ReducedWidgetBuilder``` function is created. 
 
+*Samples of ```ReducedTransformer``` use*
+
+```final ReducedTransformer<S, P1> transformer1;```
+<br/>
+[*reduced_mobx/lib/src/mobx_reducible.dart#L25*](https://github.com/partmaster/reduced_mobx/blob/8e4664a3aa20ea8b9f2eb32005e6c58ae74f7615/lib/src/mobx_reducible.dart#L25)
+
+```required ReducedTransformer<S, P> transformer,```
+<br/>
+[*reduced_bloc/lib/src/bloc_wrapper.dart#L21*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L21)
+
+
 #### 2.2 ReducedWidgetBuilder function typedef
 
 ```dart
@@ -69,7 +109,41 @@ typedef ReducedWidgetBuilder<P> = Widget Function({
 
 A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from the properties of the passed ```props``` parameter. That is, the ```props``` parameter must contain all the properties necessary for building the widget. 
 
-#### 2.3 Adapter implementations of Reducer(s)
+*Samples of ```ReducedWidgetBuilder``` use*
+
+```final ReducedWidgetBuilder<MyHomePageProps> builder;```
+<br/>
+[*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
+
+```required ReducedWidgetBuilder<P> builder,```
+<br/>
+[*reduced_bloc/lib/src/bloc_wrapper.dart#L22*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L22)
+
+#### 2.3 Reducers with additional parameters
+
+```dart
+abstract class Reducer1<S, V> {
+  S call(S state, V value);
+}
+```
+
+```dart
+abstract class Reducer2<S, V1, V2> {
+  S call(S state, V1 value1, V2 value2);
+}
+```
+
+```dart
+abstract class Reducer3<S, V1, V2, V3> ...
+```
+
+*Sample of ```Reducer1``` use*
+
+```class AddItemReducer extends Reducer1<AppState, int>```
+<br/>
+[*reducedexample/shopper_app/lib/models/reducer.dart#L9*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L9)
+
+#### 2.4 Adapter implementations for Reducers with parameters
 
 ```dart
 class Reducer1Adapter<S, V> extends Reducer<S> {
@@ -92,6 +166,12 @@ class Reducer2Adapter<S, V1, V2> extends Reducer<S> ...
 ```dart
 class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
 ```
+
+*Sample of ```Reducer1Adapter``` use*
+
+```Reducer1Adapter(RemoveItemReducer(), value),```
+<br/>
+[*reduced/example/shopper_app/lib/models/reducer.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L37)
 
 ### 3. Callbacks with value semantics 
 
@@ -121,6 +201,16 @@ abstract class Callable3<T, V1, V2, V3> {
     T call(V1 value1, V2 value2, V3 value3);
 }
 ```
+
+*Samples of ```Callable``` use*
+
+```typedef VoidCallable = Callable<void>;```
+<br/>
+[*reduced/lib/src/callbacks.dart#L395*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/lib/src/callbacks.dart#L395)
+
+```final Callable<void> onPressed;```
+<br/>
+[*reduced/example/counter_app/lib/logic.dart#L15*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L15)
 
 If the signatures of a widget callback property's function and the ```call``` method of a ```callable``` match, then the ```callable``` is assignment-compatible with the widget callback property, e.g.:
 
@@ -160,6 +250,11 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> ...
 class Callable3Adapter<S, V1, V2, V3> 
   extends Callable3<void, V1, V2, V3> ...
 ```
+
+*Samples of ```CallableAdapter``` use*
+
+```onPressed: CallableAdapter(reducible, Incrementer()),```
+[*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L20)
 
 ## Getting started
 
