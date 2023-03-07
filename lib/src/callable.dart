@@ -214,8 +214,7 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Reducer3].
 /// The type parameter `V2` is the type of the 2nd value of the [Reducer3].
 /// The type parameter `V3` is the type of the 3rd value of the [Reducer3].
-class Callable3Adapter<S, V1, V2, V3>
-    extends Callable3<void, V1, V2, V3> {
+class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   const Callable3Adapter(this.store, this.reducer);
 
   /// The store to whose method [reduce](ReducedStore.reduce)

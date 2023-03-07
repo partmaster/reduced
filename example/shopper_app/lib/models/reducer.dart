@@ -16,8 +16,7 @@ class AddItemReducer extends Reducer1<AppState, int> {
 }
 
 extension AddItemReducerOnReducedStore on ReducedStore<AppState> {
-  CallableAdapter<AppState> addItemReducer(int value) =>
-      CallableAdapter(
+  CallableAdapter<AppState> addItemReducer(int value) => CallableAdapter(
         this,
         Reducer1Adapter(AddItemReducer(), value),
       );
@@ -33,8 +32,7 @@ class RemoveItemReducer extends Reducer1<AppState, int> {
 }
 
 extension RemoveItemReducerOnReducedStore on ReducedStore<AppState> {
-  CallableAdapter<AppState> removeItemReducer(int value) =>
-      CallableAdapter(
+  CallableAdapter<AppState> removeItemReducer(int value) => CallableAdapter(
         this,
         Reducer1Adapter(RemoveItemReducer(), value),
       );

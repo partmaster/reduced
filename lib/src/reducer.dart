@@ -126,8 +126,7 @@ class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
 class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
-  Reducer3Adapter(
-      this.adaptee, this.value1, this.value2, this.value3);
+  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
 
   final Reducer3<S, V1, V2, V3> adaptee;
 

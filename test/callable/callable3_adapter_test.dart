@@ -7,8 +7,7 @@ class MockReducer3 extends Reducer3<String, String, String, String> {
   MockReducer3();
 
   @override
-  call(state, value1, value2, value3) =>
-      '$state $value1 $value2 $value3';
+  call(state, value1, value2, value3) => '$state $value1 $value2 $value3';
 }
 
 class MockReducedStore extends ReducedStore<String> {
@@ -61,12 +60,9 @@ void main() {
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode,
-        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
   });
   test('Callable3Adapter operator== test', () {
     final store1 = MockReducedStore('1');

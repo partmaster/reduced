@@ -9,15 +9,13 @@ import 'state.dart';
 import 'reducer.dart';
 
 class CatalogItemPropsTransformer {
-  static CatalogItemProps transform(
-      ReducedStore<AppState> store, int id) {
+  static CatalogItemProps transform(ReducedStore<AppState> store, int id) {
     final item = store.state.getById(id);
     return CatalogItemProps(
         name: item.name,
         color: item.color,
-        onPressed: store.state.itemIds.contains(id)
-            ? null
-            : store.addItemReducer(id));
+        onPressed:
+            store.state.itemIds.contains(id) ? null : store.addItemReducer(id));
   }
 }
 

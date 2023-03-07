@@ -21,12 +21,10 @@ class ReducedProvider<S> extends StatefulWidget {
   final Widget child;
 
   @override
-  State<ReducedProvider> createState() =>
-      ReducedProviderState<S>();
+  State<ReducedProvider> createState() => ReducedProviderState<S>();
 }
 
-class ReducedProviderState<S>
-    extends State<ReducedProvider<S>>
+class ReducedProviderState<S> extends State<ReducedProvider<S>>
     implements ReducedStore<S> {
   late S _state;
 
