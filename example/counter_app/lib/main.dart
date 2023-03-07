@@ -1,8 +1,7 @@
 // main.dart
 
 import 'package:flutter/material.dart';
-// import 'package:reduced_bloc/reduced_bloc.dart';
-import 'package:reduced_setstate/reduced_setstate.dart';
+import 'package:reduced_bloc/reduced_bloc.dart';
 
 import 'logic.dart';
 

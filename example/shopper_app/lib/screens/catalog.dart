@@ -39,7 +39,7 @@ class _AddButton extends StatelessWidget {
   const _AddButton({required this.id});
 
   @override
-  Widget build(BuildContext context) => wrapWithConsumer(
+  Widget build(BuildContext context) => ReducedConsumer(
         transformer: (ReducedStore<AppState> store) =>
             CatalogItemPropsTransformer.transform(store, id),
         builder: builder,
@@ -82,7 +82,7 @@ class _MyListItem extends StatelessWidget {
   const _MyListItem(this.id);
 
   @override
-  Widget build(BuildContext context) => wrapWithConsumer(
+  Widget build(BuildContext context) => ReducedConsumer(
         transformer: (ReducedStore<AppState> store) =>
             CatalogItemPropsTransformer.transform(store, id),
         builder: builder,

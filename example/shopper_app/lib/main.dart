@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => wrapWithProvider(
+  Widget build(BuildContext context) => ReducedProvider(
         initialState: AppState(itemIds: []),
         child: MaterialApp.router(
           title: 'Provider Demo',
