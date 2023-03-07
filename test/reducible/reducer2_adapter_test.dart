@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/src/reducible.dart';
+import 'package:reduced/src/reducer.dart';
 
 class MockReducer2 extends Reducer2<String, String, String> {
   @override
@@ -20,9 +20,12 @@ void main() {
     final objectUnderTest21 = Reducer2Adapter(reducer2, '1', '2');
     final objectUnderTest22 = Reducer2Adapter(reducer1, '1', '2');
     expect(objectUnderTest11.hashCode, objectUnderTest22.hashCode);
-    expect(objectUnderTest11.hashCode, isNot(objectUnderTest12.hashCode));
-    expect(objectUnderTest11.hashCode, isNot(objectUnderTest21.hashCode));
-    expect(objectUnderTest12.hashCode, isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest11.hashCode,
+        isNot(objectUnderTest12.hashCode));
+    expect(objectUnderTest11.hashCode,
+        isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest12.hashCode,
+        isNot(objectUnderTest21.hashCode));
   });
   test('Reducer2Adapter operator== test', () {
     final reducer1 = MockReducer2();

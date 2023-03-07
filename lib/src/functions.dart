@@ -2,13 +2,13 @@
 
 import 'package:flutter/widgets.dart' show Key, Widget;
 
-import 'reducible.dart';
+import 'store.dart';
 
-/// A function that transforms a Reducible to another type.
+/// A function that transforms a ReducedStore to another type.
 ///
-/// The type parameter `S` is the type of the state of the [Reducible].
+/// The type parameter `S` is the type of the state of the [ReducedStore].
 /// The type parameter `P` is the return type of the function.
-typedef ReducedTransformer<S, P> = P Function(Reducible<S>);
+typedef ReducedTransformer<S, P> = P Function(ReducedStore<S>);
 
 // A function that builds a Widget from a property parameter.
 ///

@@ -1,78 +1,4 @@
-// reducible.dart
-
-import 'package:flutter/foundation.dart' show ValueGetter;
-
-/// A function that accepts a parameter of type [Reducer].
-///
-/// State management instances can provide this method
-/// so that the state can be changed from outside.
-/// The type parameter `S` is the type of the state of the state management instance.
-typedef Reduce<S> = void Function(Reducer<S>);
-
-/// An Reducible is an abstraction for a state management instance.
-///
-/// The type parameter `S` is the type of the state of the state management instance.
-abstract class Reducible<S> {
-  const Reducible();
-
-  /// Reads the current state of the state management instance.
-  ///
-  /// The state is read again from the state management instance with each call.
-  S get state;
-
-  /// Updates the state of the state management instance.
-  ///
-  /// When the method is executed, the passed `reducer` is called
-  /// with the current state of the state management instance
-  /// and the return value is taken as the new state of the state management instance.
-  /// The reducer must be executed synchronously.
-  void reduce(Reducer<S> reducer);
-}
-
-/// A ReducibleProxy is an implementation of Reducible as a proxy.
-///
-/// The type parameter `S` is the type of the state of the Reducible.
-class ReducibleProxy<S> extends Reducible<S> {
-  const ReducibleProxy(
-    ValueGetter<S> state,
-    Reduce<S> reduce,
-    this.identity,
-  )   : _state = state,
-        _reduce = reduce;
-
-  /// Reads the current state of the state management instance.
-  ///
-  /// The state is read again from the state management instance with each call.
-  final ValueGetter<S> _state;
-
-  /// Updates the state of the state management instance.
-  ///
-  /// When the method is executed, the passed `reducer` is called
-  /// with the current state of the state management instance
-  /// and the return value is taken as the new state of the state management instance.
-  /// The reducer must be executed synchronously.
-  final Reduce<S> _reduce;
-
-  /// Controls the value semantics of this class.
-  ///
-  /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
-  final Object identity;
-
-  @override
-  get state => _state();
-
-  @override
-  reduce(reducer) => _reduce(reducer);
-
-  /// This class delegates [hashCode] to the [identity] object.
-  @override
-  get hashCode => identity.hashCode;
-
-  /// This class delegates [operator==] to the [identity] object.
-  @override
-  operator ==(other) =>
-      other is ReducibleProxy<S> && identity == other.identity;
-}
+// reducer.dart
 
 /// A Reducer creates from a given state a new state of the same type.
 ///
@@ -200,7 +126,8 @@ class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
 class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
-  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
+  Reducer3Adapter(
+      this.adaptee, this.value1, this.value2, this.value3);
 
   final Reducer3<S, V1, V2, V3> adaptee;
 

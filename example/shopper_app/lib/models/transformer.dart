@@ -9,27 +9,28 @@ import 'state.dart';
 import 'reducer.dart';
 
 class CatalogItemPropsTransformer {
-  static CatalogItemProps transform(Reducible<AppState> reducible, int id) {
-    final item = reducible.state.getById(id);
+  static CatalogItemProps transform(
+      ReducedStore<AppState> store, int id) {
+    final item = store.state.getById(id);
     return CatalogItemProps(
         name: item.name,
         color: item.color,
-        onPressed: reducible.state.itemIds.contains(id)
+        onPressed: store.state.itemIds.contains(id)
             ? null
-            : reducible.addItemReducer(id));
+            : store.addItemReducer(id));
   }
 }
 
 class CartPropsTransformer {
-  static CartProps transform(Reducible<AppState> reducible) {
-    final state = reducible.state;
+  static CartProps transform(ReducedStore<AppState> store) {
+    final state = store.state;
     return CartProps(
       totalPrice: '${state.totalPrice}',
       items: state.itemIds
           .map((e) => state.getById(e))
           .map((e) => CartItemProps(
                 name: e.name,
-                onPressed: reducible.removeItemReducer(e.id),
+                onPressed: store.removeItemReducer(e.id),
               ))
           .toList(),
     );

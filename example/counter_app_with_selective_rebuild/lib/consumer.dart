@@ -16,7 +16,7 @@ class MyHomePagePropsConsumer extends StatelessWidget {
   final ReducedWidgetBuilder<MyHomePageProps> builder;
 
   @override
-  Widget build(BuildContext context) => wrapWithConsumer(
+  Widget build(BuildContext context) => ReducedConsumer(
         transformer: transformMyHomePageProps,
         builder: builder,
       );
@@ -31,7 +31,7 @@ class MyCounterWidgetPropsConsumer extends StatelessWidget {
   final ReducedWidgetBuilder<MyCounterWidgetProps> builder;
 
   @override
-  Widget build(context) => wrapWithConsumer(
+  Widget build(context) => ReducedConsumer(
         transformer: transformMyCounterWidgetProps,
         builder: builder,
       );

@@ -9,11 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reduced: ^0.1.0
-  reduced_bloc: 
-    git: 
-      url: https://github.com/partmaster/reduced_bloc.git
-      ref: main
+#  reduced: ^0.1.0
+  reduced:
+    path: ../../
+  reduced_setstate:
+    path: ../reduced_setstate
+#  reduced_bloc: 
+#    git: 
+#      url: https://github.com/partmaster/reduced_bloc.git
+#      ref: main
 
 dev_dependencies:
   flutter_test:

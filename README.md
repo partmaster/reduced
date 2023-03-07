@@ -23,13 +23,13 @@ The 'reduced' API covers the following features of a state management framework:
 ### 1. Read a current state value.
 
 ```dart
-abstract class Reducible {
+abstract class ReducedStore {
     S get state;
     ...
 }
 ```
 
-*Samples of ```Reducible.get state``` use*
+*Samples of ```ReducedStore.get state``` use*
 
 ```get state => super.state;```
 <br/>
@@ -42,7 +42,7 @@ abstract class Reducible {
 ### 2. Update a current state value.
 
 ```dart
-abstract class Reducible {
+abstract class ReducedStore {
     ...
     void reduce(Reducer<S> reducer);
 }
@@ -51,7 +51,7 @@ abstract class Reducible {
 Instead of writing the state value directly, the API provides a ```reduce``` method that accepts a so-called ```reducer``` as a parameter. 
 In the ```reduce``` method the ```reducer``` is executed with the current state value as a parameter and the return value of the ```reducer``` is stored as the new state value.
 
-*Samples of ```Reducible.reduce``` use*
+*Samples of ```ReducedStore.reduce``` use*
 
 ```reduce(reducer) => add(reducer);```
 <br/>
@@ -80,11 +80,11 @@ All Reducer implementations must be derived from the ```Reducer``` base class.
 
 ```dart
 typedef ReducedTransformer<S, P> = P Function(
-  Reducible<S> reducible,
+  ReducedStore<S> store,
 );
 ```
 
-A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```reducible``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. 
+A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. 
 <br/>
 With a ```ReducedTransformer``` function usually a ```props``` parameter for a ```ReducedWidgetBuilder``` function is created. 
 
@@ -226,12 +226,12 @@ TextFormField(
 
 ```dart
 class CallableAdapter<S> extends Callable<void> {
-  const CallableAdapter(this.reducible, this.reducer);
+  const CallableAdapter(this.store, this.reducer);
 
-  final Reducible<S> reducible;
+  final ReducedStore<S> store;
   final Reducer<S> reducer;
 
-  @override call() => reducible.reduce(reducer);
+  @override call() => store.reduce(reducer);
 
   @override get hashCode => ...
   @override operator ==(other) => ...
@@ -253,7 +253,7 @@ class Callable3Adapter<S, V1, V2, V3>
 
 *Samples of ```CallableAdapter``` use*
 
-```onPressed: CallableAdapter(reducible, Incrementer()),```
+```onPressed: CallableAdapter(store, Incrementer()),```
 [*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L20)
 
 ## Getting started
@@ -312,9 +312,9 @@ class Props {
 ```
 
 ```dart
-Props transformProps(Reducible<int> reducible) => Props(
-      counterText: '${reducible.state}',
-      onPressed: CallableAdapter(reducible, Incrementer()),
+Props transformProps(ReducedStore<int> store) => Props(
+      counterText: '${store.state}',
+      onPressed: CallableAdapter(store, Incrementer()),
     );
 ```
 
@@ -357,7 +357,7 @@ In addition to the basic features, state management frameworks also offer these 
 2. Trigger a rebuild on widgets selectively after a state change.
 3. Set up a new scope for state management.
 
-A neutral API has also been developed for this features in the form of the ```registerState```, ```wrapWithProvider```, ```wrapWithConsumer``` and ```wrapWithScope``` functions. Since the features differ for the concrete frameworks, the signature of the functions is also different, so these functions were not included in the 'reduced' API, but are part of the additional API of the implementations of the 'reduced' API.
+A neutral API has also been developed for this features in the form of the ```registerState``` function and the ```ReducedProvider```, ```ReducedConsumer``` and ```ReducedScope``` widget classes. Since the features differ for the concrete frameworks, the signatures of the function and the widget constructors are also different, so these function and classes were not included in the 'reduced' API, but are part of the additional API of the implementations of the 'reduced' API.
 
 ### 1. Register a state for management.
 
@@ -366,25 +366,41 @@ void registerState(S initialValue);
 ```
 
 ```dart
-Widget wrapWithProvider<S>({
-  required S initialState, 
-  required Widget child,
-});
+class ReducedProvider<S> extends Statelesswidget {
+  ReducedProvider({
+    required this.initialState,
+    required this.child,
+  }) ...
+  final S initialState, 
+  final Widget child,
+  ...
+}
 ```
 
 ### 2. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
-Widget wrapWithConsumer<S, P>({
-    required ReducedTransformer<S, P> transformer,
-    required ReducedWidgetBuilder<P> builder,
-});
+class ReducedConsumer<S, P> extends StatelessWidget {
+  ReducedConsumer({
+    required this.transformer,
+    required this.builder,
+  }) ...
+  final ReducedTransformer<S, P> transformer,
+  final ReducedWidgetBuilder<P> builder,
+  ...
+}
 ```
 
 ### 3. Set up a new scope for state management.
 
 ```dart
-Widget wrapWithScope({required Widget child});
+class ReducedScope extends StatelessWidget {
+  ReducedScope({
+    required this.child,
+  }) ...
+  final Widget child,
+  ...
+}
 ```
 
 # Usage (Part 2)
@@ -405,16 +421,15 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => wrapWithProvider(
+  Widget build(BuildContext context) => ReducedProvider(
         initialState: 0,
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) =>
-                context.bloc<int>().wrapWithConsumer(
-                      transformer: transformProps,
-                      builder: MyHomePage.new,
-                    ),
+            builder: (context) => const ReducedConsumer(
+              transformer: transformProps,
+              builder: MyHomePage.new,
+            ),
           ),
         ),
       );

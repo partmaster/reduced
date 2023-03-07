@@ -21,21 +21,24 @@ class Incrementer extends Reducer<int> {
 }
 
 void main() {
-  testWidgets('Reducible reduce test', (WidgetTester tester) async {
+  testWidgets('ReducedStore reduce test',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
-      wrapWithProvider(
+      ReducedProvider(
         initialState: 0,
-        child: wrapWithConsumer<int, int>(
-          builder: ({Key? key, required int props}) => const SizedBox(),
-          transformer: (reducible) => reducible.state,
+        child: ReducedConsumer<int, int>(
+          builder: ({Key? key, required int props}) =>
+              const SizedBox(),
+          transformer: (store) => store.state,
         ),
       ),
     );
 
-    final InheritedValueWidget<ReducibleAndState<int>> widget =
-        find.singleWidgetByType(InheritedValueWidget<ReducibleAndState<int>>);
+    final InheritedValueWidget<ReducedStoreAndState<int>> widget =
+        find.singleWidgetByType(
+            InheritedValueWidget<ReducedStoreAndState<int>>);
 
-    final objectUnderTest = widget.value.reducible;
+    final objectUnderTest = widget.value.store;
     objectUnderTest.reduce(Incrementer());
     expect(objectUnderTest.state, 1);
   });

@@ -15,9 +15,9 @@ class Props {
   final VoidCallable onPressed;
 }
 
-Props transformProps(Reducible<int> reducible) => Props(
-      counterText: '${reducible.state}',
-      onPressed: CallableAdapter(reducible, Incrementer()),
+Props transformProps(ReducedStore<int> store) => Props(
+      counterText: '${store.state}',
+      onPressed: CallableAdapter(store, Incrementer()),
     );
 
 class MyHomePage extends StatelessWidget {

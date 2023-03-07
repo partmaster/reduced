@@ -40,8 +40,8 @@ class _AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => wrapWithConsumer(
-        transformer: (Reducible<AppState> reducible) =>
-            CatalogItemPropsTransformer.transform(reducible, id),
+        transformer: (ReducedStore<AppState> store) =>
+            CatalogItemPropsTransformer.transform(store, id),
         builder: builder,
       );
 
@@ -49,7 +49,8 @@ class _AddButton extends StatelessWidget {
       builder: (context) => TextButton(
             onPressed: props.onPressed?.call,
             style: ButtonStyle(
-              overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+              overlayColor:
+                  MaterialStateProperty.resolveWith<Color?>((states) {
                 if (states.contains(MaterialState.pressed)) {
                   return Theme.of(context).primaryColor;
                 }
@@ -65,7 +66,8 @@ class _AddButton extends StatelessWidget {
 class _MyAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SliverAppBar(
-        title: Text('Catalog', style: Theme.of(context).textTheme.displayLarge),
+        title: Text('Catalog',
+            style: Theme.of(context).textTheme.displayLarge),
         floating: true,
         actions: [
           IconButton(
@@ -83,8 +85,8 @@ class _MyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => wrapWithConsumer(
-        transformer: (Reducible<AppState> reducible) =>
-            CatalogItemPropsTransformer.transform(reducible, id),
+        transformer: (ReducedStore<AppState> store) =>
+            CatalogItemPropsTransformer.transform(store, id),
         builder: builder,
       );
 
@@ -92,7 +94,8 @@ class _MyListItem extends StatelessWidget {
       Builder(builder: (context) {
         final textTheme = Theme.of(context).textTheme.titleLarge;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: LimitedBox(
             maxHeight: 48,
             child: Row(

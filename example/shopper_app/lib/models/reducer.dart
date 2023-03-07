@@ -15,8 +15,9 @@ class AddItemReducer extends Reducer1<AppState, int> {
       state.copyWith(itemIds: [...state.itemIds, value]);
 }
 
-extension AddItemReducerOnReducible on Reducible<AppState> {
-  CallableAdapter<AppState> addItemReducer(int value) => CallableAdapter(
+extension AddItemReducerOnReducedStore on ReducedStore<AppState> {
+  CallableAdapter<AppState> addItemReducer(int value) =>
+      CallableAdapter(
         this,
         Reducer1Adapter(AddItemReducer(), value),
       );
@@ -31,8 +32,9 @@ class RemoveItemReducer extends Reducer1<AppState, int> {
       state.copyWith(itemIds: [...state.itemIds]..remove(value));
 }
 
-extension RemoveItemReducerOnReducible on Reducible<AppState> {
-  CallableAdapter<AppState> removeItemReducer(int value) => CallableAdapter(
+extension RemoveItemReducerOnReducedStore on ReducedStore<AppState> {
+  CallableAdapter<AppState> removeItemReducer(int value) =>
+      CallableAdapter(
         this,
         Reducer1Adapter(RemoveItemReducer(), value),
       );

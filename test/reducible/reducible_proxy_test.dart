@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/src/reducible.dart';
+import 'package:reduced/src/reducer.dart';
+import 'package:reduced/src/store.dart';
 
 class MockReducer extends Reducer<Object> {
   MockReducer(this.newState);
@@ -10,8 +11,8 @@ class MockReducer extends Reducer<Object> {
   call(state) => newState;
 }
 
-class MockReducible extends Reducible<Object> {
-  MockReducible(this.state);
+class MockReducedStore extends ReducedStore<Object> {
+  MockReducedStore(this.state);
 
   @override
   Object state;
@@ -21,35 +22,35 @@ class MockReducible extends Reducible<Object> {
 }
 
 void main() {
-  test('ReducibleProxy init test', () {
-    final reducible = MockReducible('0');
+  test('ReducedStoreProxy init test', () {
+    final store = MockReducedStore('0');
     final objectUnderTest =
-        ReducibleProxy(() => reducible.state, reducible.reduce, reducible);
+        ReducedStoreProxy(() => store.state, store.reduce, store);
     expect(objectUnderTest.state, '0');
   });
-  test('ReducibleProxy reduce test', () {
-    final reducible = MockReducible('0');
+  test('ReducedStoreProxy reduce test', () {
+    final store = MockReducedStore('0');
     final reducer = MockReducer('1');
     final objectUnderTest =
-        ReducibleProxy(() => reducible.state, reducible.reduce, reducible);
+        ReducedStoreProxy(() => store.state, store.reduce, store);
     objectUnderTest.reduce(reducer);
     expect(objectUnderTest.state, '1');
   });
-  test('ReducibleProxy hashCode test', () {
-    final reducible = MockReducible('0');
+  test('ReducedStoreProxy hashCode test', () {
+    final store = MockReducedStore('0');
     final objectUnderTest =
-        ReducibleProxy(() => reducible.state, reducible.reduce, reducible);
-    expect(objectUnderTest.hashCode, reducible.hashCode);
+        ReducedStoreProxy(() => store.state, store.reduce, store);
+    expect(objectUnderTest.hashCode, store.hashCode);
   });
-  test('ReducibleProxy operator== test', () {
-    final reducible1 = MockReducible('1');
+  test('ReducedStoreProxy operator== test', () {
+    final store1 = MockReducedStore('1');
     final objectUnderTest1 =
-        ReducibleProxy(() => reducible1.state, reducible1.reduce, reducible1);
+        ReducedStoreProxy(() => store1.state, store1.reduce, store1);
     final objectUnderTest3 =
-        ReducibleProxy(() => reducible1.state, reducible1.reduce, reducible1);
-    final reducible2 = MockReducible('2');
+        ReducedStoreProxy(() => store1.state, store1.reduce, store1);
+    final store2 = MockReducedStore('2');
     final objectUnderTest2 =
-        ReducibleProxy(() => reducible2.state, reducible2.reduce, reducible2);
+        ReducedStoreProxy(() => store2.state, store2.reduce, store2);
     expect(objectUnderTest1, objectUnderTest3);
     expect(objectUnderTest1, isNot(objectUnderTest2));
     expect(objectUnderTest2, isNot(objectUnderTest3));

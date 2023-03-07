@@ -1,7 +1,8 @@
 // main.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced_bloc/reduced_bloc.dart';
+// import 'package:reduced_bloc/reduced_bloc.dart';
+import 'package:reduced_setstate/reduced_setstate.dart';
 
 import 'logic.dart';
 
@@ -11,12 +12,12 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => wrapWithProvider(
+  Widget build(BuildContext context) => ReducedProvider(
         initialState: 0,
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) => wrapWithConsumer(
+            builder: (context) => const ReducedConsumer(
               transformer: transformProps,
               builder: MyHomePage.new,
             ),

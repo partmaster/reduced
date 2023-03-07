@@ -7,16 +7,16 @@ import 'reducer.dart';
 import 'state.dart';
 
 MyHomePageProps transformMyHomePageProps(
-  Reducible<MyAppState> reducible,
+  ReducedStore<MyAppState> store,
 ) =>
     MyHomePageProps(
-      onPressed: CallableAdapter(reducible, Incrementer.instance),
-      title: reducible.state.title,
+      onPressed: CallableAdapter(store, Incrementer.instance),
+      title: store.state.title,
     );
 
 MyCounterWidgetProps transformMyCounterWidgetProps(
-  Reducible<MyAppState> reducible,
+  ReducedStore<MyAppState> store,
 ) =>
     MyCounterWidgetProps(
-      counterText: '${reducible.state.counter}',
+      counterText: '${store.state.counter}',
     );

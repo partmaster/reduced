@@ -1,5 +1,5 @@
 // reduced_setstate.dart;
 
 export 'src/inherited_widgets.dart';
-export 'src/setstate_reducible.dart';
-export 'src/setstate_wrapper.dart';
+export 'src/setstate_store.dart';
+export 'src/setstate_widgets.dart';
