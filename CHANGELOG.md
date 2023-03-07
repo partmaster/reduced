@@ -12,3 +12,7 @@
 ## 0.2.1
 
 * use reduced_bloc and reduced_provider v2.0.1 from git in examples
+
+## 0.2.2
+
+* replace <br/> with backslash in README.md

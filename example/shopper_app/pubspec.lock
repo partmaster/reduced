@@ -139,21 +139,20 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.2.0"
-      resolved-ref: "9b410210b5f02ff7fefa11ec8a38352ec7dd7173"
-      url: "https://github.com/partmaster/reduced.git"
-    source: git
-    version: "0.2.0"
+      name: reduced
+      sha256: "44101e94061ae2006e6d4467d898307363cdb3d49f31f82998808fdbd58baec9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   reduced_provider:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
-      resolved-ref: "80d82e03cf7fdb2553462fffa6385e96cae06a7f"
+      ref: "v0.2.1"
+      resolved-ref: "37b9a571e83d0dedbeb1f3580429a025efd26478"
       url: "https://github.com/partmaster/reduced_provider.git"
     source: git
-    version: "0.2.0"
+    version: "0.2.1"
   sky_engine:
     dependency: transitive
     description: flutter
