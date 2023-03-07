@@ -8,3 +8,7 @@
 * replace function wrapWithProvider with widget class ReducedProvider
 * replace function wrapWithConsumer with widget class ReducedConsumer
 * replace function wrapWithScope with widget class ReducedScope
+
+## 0.2.1
+
+* use reduced_bloc and reduced_provider v2.0.1 from git in examples
