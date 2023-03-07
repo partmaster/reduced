@@ -12,8 +12,7 @@ Minimal API for the basic features of state management frameworks:
 2. Update a current state value.
 3. Callbacks with value semantics 
 
-The app logic based mainly on these features should remain as independent as possible from the state management framework used. Therefore, the app logic needs a neutral state management API and an implementation of this API for the state management framework used.
-<br/>
+The app logic based mainly on these features should remain as independent as possible from the state management framework used. Therefore, the app logic needs a neutral state management API and an implementation of this API for the state management framework used. \
 The former is provided by this package. The latter is provided by other packages listed at the end of the README.
 
 ## Features
@@ -31,12 +30,10 @@ abstract class ReducedStore {
 
 *Samples of ```ReducedStore.get state``` use*
 
-```get state => super.state;```
-<br/>
+```get state => super.state;``` \
 [*reduced_riverpod/lib/src/riverpod_reducible.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L12)
 
-```get state => _state;```
-<br/>
+```get state => _state;``` \
 [*reduced_getx/lib/src/getx_reducible.dart#L13*](https://github.com/partmaster/reduced_getx/blob/d9133163aba67a700a1d86bdce9a2248693891d0/lib/src/getx_reducible.dart#L13)
 
 ### 2. Update a current state value.
@@ -53,12 +50,10 @@ In the ```reduce``` method the ```reducer``` is executed with the current state 
 
 *Samples of ```ReducedStore.reduce``` use*
 
-```reduce(reducer) => add(reducer);```
-<br/>
+```reduce(reducer) => add(reducer);``` \
 [*reduced_bloc/lib/src/bloc_reducible.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_reducible.dart#L15)
 
-```reduce(reducer) => state = reducer(state);```
-<br/>
+```reduce(reducer) => state = reducer(state);``` \
 [*reduced_riverpod/lib/src/riverpod_reducible.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L15)
 
 ```dart
@@ -71,8 +66,7 @@ All Reducer implementations must be derived from the ```Reducer``` base class.
 
 *Samples of ```Reducer``` use*
 
-```class Incrementer extends Reducer<int>```
-<br/>
+```class Incrementer extends Reducer<int>``` \
 [*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L6)
 
 
@@ -84,18 +78,15 @@ typedef ReducedTransformer<S, P> = P Function(
 );
 ```
 
-A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. 
-<br/>
+A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
 With a ```ReducedTransformer``` function usually a ```props``` parameter for a ```ReducedWidgetBuilder``` function is created. 
 
 *Samples of ```ReducedTransformer``` use*
 
-```final ReducedTransformer<S, P1> transformer1;```
-<br/>
+```final ReducedTransformer<S, P1> transformer1;``` \
 [*reduced_mobx/lib/src/mobx_reducible.dart#L25*](https://github.com/partmaster/reduced_mobx/blob/8e4664a3aa20ea8b9f2eb32005e6c58ae74f7615/lib/src/mobx_reducible.dart#L25)
 
-```required ReducedTransformer<S, P> transformer,```
-<br/>
+```required ReducedTransformer<S, P> transformer,``` \
 [*reduced_bloc/lib/src/bloc_wrapper.dart#L21*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L21)
 
 
@@ -111,12 +102,10 @@ A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from t
 
 *Samples of ```ReducedWidgetBuilder``` use*
 
-```final ReducedWidgetBuilder<MyHomePageProps> builder;```
-<br/>
+```final ReducedWidgetBuilder<MyHomePageProps> builder;``` \
 [*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
 
-```required ReducedWidgetBuilder<P> builder,```
-<br/>
+```required ReducedWidgetBuilder<P> builder,``` \
 [*reduced_bloc/lib/src/bloc_wrapper.dart#L22*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L22)
 
 #### 2.3 Reducers with additional parameters
@@ -139,8 +128,7 @@ abstract class Reducer3<S, V1, V2, V3> ...
 
 *Sample of ```Reducer1``` use*
 
-```class AddItemReducer extends Reducer1<AppState, int>```
-<br/>
+```class AddItemReducer extends Reducer1<AppState, int>``` \
 [*reducedexample/shopper_app/lib/models/reducer.dart#L9*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L9)
 
 #### 2.4 Adapter implementations for Reducers with parameters
@@ -169,8 +157,7 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
 
 *Sample of ```Reducer1Adapter``` use*
 
-```Reducer1Adapter(RemoveItemReducer(), value),```
-<br/>
+```Reducer1Adapter(RemoveItemReducer(), value),``` \
 [*reduced/example/shopper_app/lib/models/reducer.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L37)
 
 ### 3. Callbacks with value semantics 
@@ -204,12 +191,10 @@ abstract class Callable3<T, V1, V2, V3> {
 
 *Samples of ```Callable``` use*
 
-```typedef VoidCallable = Callable<void>;```
-<br/>
+```typedef VoidCallable = Callable<void>;``` \
 [*reduced/lib/src/callbacks.dart#L395*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/lib/src/callbacks.dart#L395)
 
-```final Callable<void> onPressed;```
-<br/>
+```final Callable<void> onPressed;``` \
 [*reduced/example/counter_app/lib/logic.dart#L15*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L15)
 
 If the signatures of a widget callback property's function and the ```call``` method of a ```callable``` match, then the ```callable``` is assignment-compatible with the widget callback property, e.g.:
