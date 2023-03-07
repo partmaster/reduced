@@ -1,6 +1,6 @@
 name: reduced
 description: Minimal API for the basic features of state management frameworks.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/partmaster/reduced
 repository: https://github.com/partmaster/reduced.git
 
