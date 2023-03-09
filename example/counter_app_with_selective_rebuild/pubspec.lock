@@ -118,17 +118,20 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "../.."
-      relative: true
-    source: path
-    version: "0.1.0"
+      name: reduced
+      sha256: "44101e94061ae2006e6d4467d898307363cdb3d49f31f82998808fdbd58baec9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   reduced_setstate:
     dependency: "direct main"
     description:
-      path: "../reduced_setstate"
-      relative: true
-    source: path
-    version: "0.1.0"
+      path: "."
+      ref: "v0.2.1"
+      resolved-ref: "67c48553e536195fff24501452d112eb2a6fa2b8"
+      url: "https://github.com/partmaster/reduced_setstate.git"
+    source: git
+    version: "0.2.1"
   sky_engine:
     dependency: transitive
     description: flutter
