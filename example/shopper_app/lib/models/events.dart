@@ -6,7 +6,7 @@ import 'package:reduced/reduced.dart';
 
 import 'state.dart';
 
-class ItemAdded extends Reducer1<AppState, int> {
+class ItemAdded extends Event1<AppState, int> {
   ItemAdded._();
   static final instance = ItemAdded._();
   factory ItemAdded() => instance;
@@ -18,11 +18,11 @@ class ItemAdded extends Reducer1<AppState, int> {
 extension ItemAdedOnReducedStore on ReducedStore<AppState> {
   CallableAdapter<AppState> itemAdded(int value) => CallableAdapter(
         this,
-        Reducer1Adapter(ItemAdded(), value),
+        Event1Adapter(ItemAdded(), value),
       );
 }
 
-class ItemRemoved extends Reducer1<AppState, int> {
+class ItemRemoved extends Event1<AppState, int> {
   ItemRemoved._();
   static final instance = ItemRemoved._();
   factory ItemRemoved() => instance;
@@ -34,6 +34,6 @@ class ItemRemoved extends Reducer1<AppState, int> {
 extension ItemRemovedOnReducedStore on ReducedStore<AppState> {
   CallableAdapter<AppState> itemRemoved(int value) => CallableAdapter(
         this,
-        Reducer1Adapter(ItemRemoved(), value),
+        Event1Adapter(ItemRemoved(), value),
       );
 }

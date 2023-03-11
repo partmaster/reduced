@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:reduced/reduced.dart';
 
-class CounterIncremented extends Reducer<int> {
+class CounterIncremented extends Event<int> {
   @override
   int call(int state) => state + 1;
 }

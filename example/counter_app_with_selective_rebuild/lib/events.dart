@@ -4,7 +4,7 @@ import 'package:reduced/reduced.dart';
 
 import 'state.dart';
 
-class CounterIncremented extends Reducer<MyAppState> {
+class CounterIncremented extends Event<MyAppState> {
   const CounterIncremented._();
 
   static const instance = CounterIncremented._();

@@ -31,10 +31,10 @@ abstract class ReducedStore {
 *Samples of ```ReducedStore.get state``` use*
 
 ```get state => super.state;``` \
-[*reduced_riverpod/lib/src/riverpod_reducible.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L12)
+[*reduced_riverpod/lib/src/riverpod_store.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L12)
 
 ```get state => _state;``` \
-[*reduced_getx/lib/src/getx_reducible.dart#L13*](https://github.com/partmaster/reduced_getx/blob/d9133163aba67a700a1d86bdce9a2248693891d0/lib/src/getx_reducible.dart#L13)
+[*reduced_getx/lib/src/getx_store.dart#L13*](https://github.com/partmaster/reduced_getx/blob/d9087ca57ba25e91af8fac0053335fd3228decb3/lib/src/getx_store.dart#L13)
 
 ### 2. Update a current state value.
 
@@ -50,11 +50,11 @@ In the ```dispatch``` method the ```event``` is executed with the current state 
 
 *Samples of ```ReducedStore.dispatch``` use*
 
-```reduce(reducer) => add(reducer);``` \
-[*reduced_bloc/lib/src/bloc_reducible.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_reducible.dart#L15)
+```dispatch(event) => add(event);``` \
+[*reduced_bloc/lib/src/bloc_store.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/67d937571a4b231e1d26149681614f1590598d75/lib/src/bloc_store.dart#L15)
 
 ```dispatch(event) => state = event(state);``` \
-[*reduced_riverpod/lib/src/riverpod_reducible.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L15)
+[*reduced_riverpod/lib/src/riverpod_store.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L15)
 
 ```dart
 abstract class Event<S> {
@@ -66,8 +66,8 @@ All Event implementations must be derived from the ```Event``` base class.
 
 *Samples of ```Event``` use*
 
-```class Incrementer extends Event<int>``` \
-[*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L6)
+```class CounterIncremented extends Reducer<int>``` \
+[*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/counter_app/lib/logic.dart#L6)
 
 
 #### 2.1 ReducedTransformer function typedef
@@ -84,10 +84,10 @@ With a ```ReducedTransformer``` function usually a ```props``` parameter for a `
 *Samples of ```ReducedTransformer``` use*
 
 ```final ReducedTransformer<S, P1> transformer1;``` \
-[*reduced_mobx/lib/src/mobx_reducible.dart#L25*](https://github.com/partmaster/reduced_mobx/blob/8e4664a3aa20ea8b9f2eb32005e6c58ae74f7615/lib/src/mobx_reducible.dart#L25)
+[*reduced_mobx/lib/src/mobx_store.dart#L45*](https://github.com/partmaster/reduced_mobx/blob/f9fb41e999f3659c2d804146bdf28cf81d5f098f/lib/src/mobx_store.dart#L45)
 
 ```required ReducedTransformer<S, P> transformer,``` \
-[*reduced_bloc/lib/src/bloc_wrapper.dart#L21*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L21)
+[*reduced_bloc/lib/src/bloc_widgets.dart#L33*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L33)
 
 
 #### 2.2 ReducedWidgetBuilder function typedef
@@ -103,10 +103,10 @@ A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from t
 *Samples of ```ReducedWidgetBuilder``` use*
 
 ```final ReducedWidgetBuilder<MyHomePageProps> builder;``` \
-[*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
+[*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
 
 ```required ReducedWidgetBuilder<P> builder,``` \
-[*reduced_bloc/lib/src/bloc_wrapper.dart#L22*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L22)
+[*reduced_bloc/lib/src/bloc_widgets.dart#L34*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L34)
 
 #### 2.3 Events with additional parameters
 
@@ -128,8 +128,8 @@ abstract class Event3<S, V1, V2, V3> ...
 
 *Sample of ```Event1``` use*
 
-```class AddItemEvent extends Event1<AppState, int>``` \
-[*reducedexample/shopper_app/lib/models/event.dart#L9*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/event.dart#L9)
+```class ItemAdded extends Reducer1<AppState, int>``` \
+[*reduced/example/shopper_app/lib/models/events.dart#L9*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/shopper_app/lib/models/events.dart#L9)
 
 #### 2.4 Adapter implementations for Events with parameters
 
@@ -158,7 +158,7 @@ class Event3Adapter<S, V1, V2, V3> extends Event<S> ...
 *Sample of ```Event1Adapter``` use*
 
 ```Event1Adapter(RemoveItemEvent(), value),``` \
-[*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L37)
+[*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/events.dart#L37)
 
 ### 3. Callbacks with value semantics 
 
