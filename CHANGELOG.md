@@ -20,3 +20,7 @@
 ## 0.3.1
 
 * rename 'reduce' to 'dispatch' and 'reducer' to 'event'
+
+## 0.3.2
+
+* use reduced_setstate, reduced_bloc and reduced_provider v0.3.2 from git in examples
