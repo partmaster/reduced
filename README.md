@@ -128,8 +128,8 @@ abstract class Event3<S, V1, V2, V3> ...
 
 *Sample of ```Event1``` use*
 
-```class ItemAdded extends Reducer1<AppState, int>``` \
-[*reduced/example/shopper_app/lib/models/events.dart#L9*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/shopper_app/lib/models/events.dart#L9)
+```class ItemAdded extends Event1<AppState, int>``` \
+[*reduced/example/shopper_app/lib/models/events.dart#L9*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/shopper_app/lib/models/events.dart#L9)
 
 #### 2.4 Adapter implementations for Events with parameters
 
@@ -157,8 +157,8 @@ class Event3Adapter<S, V1, V2, V3> extends Event<S> ...
 
 *Sample of ```Event1Adapter``` use*
 
-```Event1Adapter(RemoveItemEvent(), value),``` \
-[*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/events.dart#L37)
+```Event1Adapter(ItemRemoved(), value),``` \
+[*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/shopper_app/lib/models/events.dart#L37)
 
 ### 3. Callbacks with value semantics 
 
@@ -238,8 +238,8 @@ class Callable3Adapter<S, V1, V2, V3>
 
 *Samples of ```CallableAdapter``` use*
 
-```onPressed: CallableAdapter(store, Incrementer()),```
-[*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L20)
+```onPressed: CallableAdapter(store, CounterIncremented()),```
+[*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/counter_app/lib/logic.dart#L20)
 
 ## Getting started
 
@@ -247,14 +247,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced:
-    git: 
-      url: https://github.com/partmaster/reduced.git
-      ref: main
+  reduced: 0.3.0
   reduced_bloc: 
     git: 
       url: https://github.com/partmaster/reduced_bloc.git
-      ref: main
+      ref: v0.3.1
 ```
 
 Import package 'reduced' to implement the logic.
@@ -281,7 +278,7 @@ import 'package:reduced/reduced.dart';
 ```
 
 ```dart
-class Incrementer extends Event<int> {
+class CounterIncremented extends Event<int> {
   @override
   int call(int state) => state + 1;
 }
@@ -299,7 +296,7 @@ class Props {
 ```dart
 Props transformProps(ReducedStore<int> store) => Props(
       counterText: '${store.state}',
-      onPressed: CallableAdapter(store, Incrementer()),
+      onPressed: CallableAdapter(store, CounterIncremented()),
     );
 ```
 
