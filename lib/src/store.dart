@@ -2,14 +2,14 @@
 
 import 'package:flutter/foundation.dart' show ValueGetter;
 
-import 'reducer.dart';
+import 'event.dart';
 
-/// A function that accepts a parameter of type [Reducer].
+/// A function that accepts a parameter of type [Event].
 ///
 /// State management instances can provide this method
 /// so that the state can be changed from outside.
 /// The type parameter `S` is the type of the state of the state management instance.
-typedef Reduce<S> = void Function(Reducer<S>);
+typedef Dispatcher<S> = void Function(Event<S>);
 
 /// An ReducedStore is an abstraction for a state management instance.
 ///
@@ -24,11 +24,11 @@ abstract class ReducedStore<S> {
 
   /// Updates the state of the state management instance.
   ///
-  /// When the method is executed, the passed `reducer` is called
+  /// When the method is executed, the passed `event.call` is called
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
-  /// The reducer must be executed synchronously.
-  void reduce(Reducer<S> reducer);
+  /// The `event.call` must be executed synchronously.
+  void dispatch(Event<S> event);
 }
 
 /// A ReducedStoreProxy is an implementation of ReducedStore as a proxy.
@@ -37,10 +37,10 @@ abstract class ReducedStore<S> {
 class ReducedStoreProxy<S> extends ReducedStore<S> {
   const ReducedStoreProxy(
     ValueGetter<S> state,
-    Reduce<S> reduce,
+    Dispatcher<S> dispatcher,
     this.identity,
   )   : _state = state,
-        _reduce = reduce;
+        _dispatcher = dispatcher;
 
   /// Reads the current state of the state management instance.
   ///
@@ -49,11 +49,11 @@ class ReducedStoreProxy<S> extends ReducedStore<S> {
 
   /// Updates the state of the state management instance.
   ///
-  /// When the method is executed, the passed `reducer` is called
+  /// When the method is executed, the passed `event.call` is called
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
-  /// The reducer must be executed synchronously.
-  final Reduce<S> _reduce;
+  /// The `event.call` must be executed synchronously.
+  final Dispatcher<S> _dispatcher;
 
   /// Controls the value semantics of this class.
   ///
@@ -64,7 +64,7 @@ class ReducedStoreProxy<S> extends ReducedStore<S> {
   get state => _state();
 
   @override
-  reduce(reducer) => _reduce(reducer);
+  dispatch(event) => _dispatcher(event);
 
   /// This class delegates [hashCode] to the [identity] object.
   @override

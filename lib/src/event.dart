@@ -1,11 +1,11 @@
-// reducer.dart
+// event.dart
 
-/// A Reducer creates from a given state a new state of the same type.
+/// A Event creates from a given state a new state of the same type.
 ///
-/// Because the Reducer is used as a property in [Callable] implementations for callbacks,
-/// and therefore requires value semantics, Reducers are modeled as a class rather than a function.
-abstract class Reducer<S> {
-  const Reducer();
+/// Because the Event is used as a property in [Callable] implementations for callbacks,
+/// and therefore requires value semantics, Events are modeled as a class rather than a function.
+abstract class Event<S> {
+  const Event();
 
   /// The call method creates a new state of the same type `S` from a given state.
   ///
@@ -13,15 +13,15 @@ abstract class Reducer<S> {
   S call(S state);
 }
 
-/// A Reducer creates from a given state and a value a new state of the same type.
+/// A Event creates from a given state and a value a new state of the same type.
 ///
-/// Because the Reducer1 is used as a property in [Callable1] implementations for callbacks,
-/// and therefore requires value semantics, Reducers are modeled as a class rather than a function.
+/// Because the Event1 is used as a property in [Callable1] implementations for callbacks,
+/// and therefore requires value semantics, Events are modeled as a class rather than a function.
 ///
 /// The type parameter S defines the return type and the 1st parameter type of the call method.
 /// The type parameter V defines the type of the 2nd parameter of the call method.
-abstract class Reducer1<S, V> {
-  const Reducer1();
+abstract class Event1<S, V> {
+  const Event1();
 
   /// The call method creates a new state of the same type `S` from a given state.
   ///
@@ -29,16 +29,16 @@ abstract class Reducer1<S, V> {
   S call(S state, V value);
 }
 
-/// A Reducer creates from a given state and two values a new state of the same type.
+/// A Event creates from a given state and two values a new state of the same type.
 ///
-/// Because the Reducer2 is used as a property in [Callable2] implementations for callbacks,
-/// and therefore requires value semantics, Reducers are modeled as a class rather than a function.
+/// Because the Event2 is used as a property in [Callable2] implementations for callbacks,
+/// and therefore requires value semantics, Events are modeled as a class rather than a function.
 ///
 /// The type parameter S defines the return type and the 1st parameter type of the call method.
 /// The type parameter V1 defines the type of the 2nd parameter of the call method.
 /// The type parameter V2 defines the type of the 3rd parameter of the call method.
-abstract class Reducer2<S, V1, V2> {
-  const Reducer2();
+abstract class Event2<S, V1, V2> {
+  const Event2();
 
   /// The call method creates a new state of the same type `S` from a given state.
   ///
@@ -46,17 +46,17 @@ abstract class Reducer2<S, V1, V2> {
   S call(S state, V1 value1, V2 value2);
 }
 
-/// A Reducer creates from a given state and three values a new state of the same type.
+/// A Event creates from a given state and three values a new state of the same type.
 ///
-/// Because the Reducer3 is used as a property in [Callable3] implementations for callbacks,
-/// and therefore requires value semantics, Reducers are modeled as a class rather than a function.
+/// Because the Event3 is used as a property in [Callable3] implementations for callbacks,
+/// and therefore requires value semantics, Events are modeled as a class rather than a function.
 ///
 /// The type parameter S defines the return type and the 1st parameter type of the call method.
 /// The type parameter V1 defines the type of the 2nd parameter of the call method.
 /// The type parameter V2 defines the type of the 3rd parameter of the call method.
 /// The type parameter V3 defines the type of the 4th parameter of the call method.
-abstract class Reducer3<S, V1, V2, V3> {
-  const Reducer3();
+abstract class Event3<S, V1, V2, V3> {
+  const Event3();
 
   /// The call method creates a new state of the same type `S` from a given state.
   ///
@@ -64,14 +64,14 @@ abstract class Reducer3<S, V1, V2, V3> {
   S call(S state, V1 value1, V2 value2, V3 value3);
 }
 
-/// Adapts a Reducer1 as Reducer.
+/// Adapts a Event1 as Event.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V` is the type of the value.
-class Reducer1Adapter<S, V> extends Reducer<S> {
-  const Reducer1Adapter(this.adaptee, this.value);
+class Event1Adapter<S, V> extends Event<S> {
+  const Event1Adapter(this.adaptee, this.value);
 
-  final Reducer1<S, V> adaptee;
+  final Event1<S, V> adaptee;
 
   /// The value used as parameter in adaptee.call.
   final V value;
@@ -84,20 +84,20 @@ class Reducer1Adapter<S, V> extends Reducer<S> {
 
   @override
   operator ==(other) =>
-      other is Reducer1Adapter &&
+      other is Event1Adapter &&
       adaptee == other.adaptee &&
       value == other.value;
 }
 
-/// Adapts a Reducer2 as Reducer.
+/// Adapts a Event2 as Event.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V1` is the type of the 1st value.
 /// The type parameter `V2` is the type of the 2nd value.
-class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
-  const Reducer2Adapter(this.adaptee, this.value1, this.value2);
+class Event2Adapter<S, V1, V2> extends Event<S> {
+  const Event2Adapter(this.adaptee, this.value1, this.value2);
 
-  final Reducer2<S, V1, V2> adaptee;
+  final Event2<S, V1, V2> adaptee;
 
   /// The value used as parameter in adaptee.call.
   final V1 value1;
@@ -113,22 +113,22 @@ class Reducer2Adapter<S, V1, V2> extends Reducer<S> {
 
   @override
   operator ==(other) =>
-      other is Reducer2Adapter &&
+      other is Event2Adapter &&
       adaptee == other.adaptee &&
       value1 == other.value1 &&
       value2 == other.value2;
 }
 
-/// Adapts a Reducer3 as Reducer.
+/// Adapts a Event3 as Event.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V1` is the type of the 1st value.
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
-class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
-  Reducer3Adapter(this.adaptee, this.value1, this.value2, this.value3);
+class Event3Adapter<S, V1, V2, V3> extends Event<S> {
+  Event3Adapter(this.adaptee, this.value1, this.value2, this.value3);
 
-  final Reducer3<S, V1, V2, V3> adaptee;
+  final Event3<S, V1, V2, V3> adaptee;
 
   /// The value used as parameter in adaptee.call.
   final V1 value1;
@@ -147,7 +147,7 @@ class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> {
 
   @override
   operator ==(other) =>
-      other is Reducer3Adapter &&
+      other is Event3Adapter &&
       adaptee == other.adaptee &&
       value1 == other.value1 &&
       value2 == other.value2 &&

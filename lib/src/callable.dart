@@ -1,6 +1,6 @@
 // callable.dart
 
-import 'reducer.dart';
+import 'event.dart';
 import 'store.dart';
 
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
@@ -97,150 +97,141 @@ abstract class Callable3<R, V1, V2, V3> {
   R call(V1 value1, V2 value2, V3 value3);
 }
 
-/// An implementation of a callback as a [ReducedStore.reduce](ReducedStore.reduce) call with a [Reducer].
+/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event].
 ///
-/// Or in other words, a [Reducer] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event] bonded to a [ReducedStore] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [ReducedStore].
 class CallableAdapter<S> extends Callable<void> {
-  const CallableAdapter(this.store, this.reducer);
+  const CallableAdapter(this.store, this.event);
 
-  /// The store to whose method [reduce](ReducedStore.reduce)
-  /// the [reducer] is passed when the method [call] is called.
+  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// the [event] is passed when the method [call] is called.
   final ReducedStore<S> store;
 
-  /// The reducer that is passed as a parameter to the [reduce](ReducedStore.reduce) method
+  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
-  final Reducer<S> reducer;
+  final Event<S> event;
 
-  /// Executes the [reduce](ReducedStore.reduce) method of the [store]
-  /// with the [reducer] as parameter.
+  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  /// with the [event] as parameter.
   @override
-  call() => store.reduce(reducer);
+  call() => store.dispatch(event);
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, reducer);
+  get hashCode => Object.hash(store, event);
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is CallableAdapter &&
-      reducer == other.reducer &&
-      store == other.store;
+      other is CallableAdapter && event == other.event && store == other.store;
 }
 
-/// An implementation of a callback as a [ReducedStore.reduce](ReducedStore.reduce) call with a [Reducer1].
+/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event1].
 ///
-/// Or in other words, a [Reducer] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event] bonded to a [ReducedStore] useable as callback.
 ///
 /// The type parameter `S` is the type of the state of the [ReducedStore].
-/// The type parameter `V` is the type of the value of the [Reducer1].
+/// The type parameter `V` is the type of the value of the [Event1].
 class Callable1Adapter<S, V> extends Callable1<void, V> {
-  const Callable1Adapter(this.store, this.reducer);
+  const Callable1Adapter(this.store, this.event);
 
-  /// The store to whose method [reduce](ReducedStore.reduce)
-  /// the [reducer] is passed when the method [call] is called.
+  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// the [event] is passed when the method [call] is called.
   final ReducedStore<S> store;
 
-  /// The reducer that is passed as a parameter to the [reduce](ReducedStore.reduce) method
+  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
-  final Reducer1<S, V> reducer;
+  final Event1<S, V> event;
 
-  /// Executes the [reduce](ReducedStore.reduce) method of the [store]
-  ///  with the [reducer] as parameter.
+  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  ///  with the [event] as parameter.
   @override
-  call(value) => store.reduce(Reducer1Adapter(reducer, value));
+  call(value) => store.dispatch(Event1Adapter(event, value));
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, reducer);
+  get hashCode => Object.hash(store, event);
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable1Adapter &&
-      reducer == other.reducer &&
-      store == other.store;
+      other is Callable1Adapter && event == other.event && store == other.store;
 }
 
-/// An implementation of a callback as a [ReducedStore.reduce](ReducedStore.reduce) call with a [Reducer2].
+/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event2].
 ///
-/// Or in other words, a [Reducer2] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event2] bonded to a [ReducedStore] useable as callback.
 ///
 /// The type parameter `S` is the type of the state of the [ReducedStore].
-/// The type parameter `V1` is the type of the 1st value of the [Reducer2].
-/// The type parameter `V2` is the type of the 2nd value of the [Reducer2].
+/// The type parameter `V1` is the type of the 1st value of the [Event2].
+/// The type parameter `V2` is the type of the 2nd value of the [Event2].
 class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
-  const Callable2Adapter(this.store, this.reducer);
+  const Callable2Adapter(this.store, this.event);
 
-  /// The store to whose method [reduce](ReducedStore.reduce)
-  /// the [reducer] is passed when the method [call] is called.
+  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// the [event] is passed when the method [call] is called.
   final ReducedStore<S> store;
 
-  /// The reducer that is passed as a parameter to the [reduce](ReducedStore.reduce) method
+  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
-  final Reducer2<S, V1, V2> reducer;
+  final Event2<S, V1, V2> event;
 
-  /// Executes the [reduce](ReducedStore.reduce) method of the [store]
-  ///  with the [reducer] as parameter.
+  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  ///  with the [event] as parameter.
   @override
-  call(value1, value2) =>
-      store.reduce(Reducer2Adapter(reducer, value1, value2));
+  call(value1, value2) => store.dispatch(Event2Adapter(event, value1, value2));
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, reducer);
+  get hashCode => Object.hash(store, event);
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable2Adapter &&
-      reducer == other.reducer &&
-      store == other.store;
+      other is Callable2Adapter && event == other.event && store == other.store;
 }
 
-/// An implementation of a callback as a [ReducedStore.reduce](ReducedStore.reduce) call with a [Reducer3].
+/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event3].
 ///
-/// Or in other words, a [Reducer3] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event3] bonded to a [ReducedStore] useable as callback.
 ///
 /// The type parameter `S` is the type of the state of the [ReducedStore].
-/// The type parameter `V1` is the type of the 1st value of the [Reducer3].
-/// The type parameter `V2` is the type of the 2nd value of the [Reducer3].
-/// The type parameter `V3` is the type of the 3rd value of the [Reducer3].
+/// The type parameter `V1` is the type of the 1st value of the [Event3].
+/// The type parameter `V2` is the type of the 2nd value of the [Event3].
+/// The type parameter `V3` is the type of the 3rd value of the [Event3].
 class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
-  const Callable3Adapter(this.store, this.reducer);
+  const Callable3Adapter(this.store, this.event);
 
-  /// The store to whose method [reduce](ReducedStore.reduce)
-  /// the [reducer] is passed when the method [call] is called.
+  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// the [event] is passed when the method [call] is called.
   final ReducedStore<S> store;
 
-  /// The reducer that is passed as a parameter to the [reduce](ReducedStore.reduce) method
+  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
-  final Reducer3<S, V1, V2, V3> reducer;
+  final Event3<S, V1, V2, V3> event;
 
-  /// Executes the [reduce](ReducedStore.reduce) method of the [store]
-  ///  with the [reducer] as parameter.
+  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  ///  with the [event] as parameter.
   @override
   call(value1, value2, value3) =>
-      store.reduce(Reducer3Adapter(reducer, value1, value2, value3));
+      store.dispatch(Event3Adapter(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, reducer);
+  get hashCode => Object.hash(store, event);
 
   /// For this class to have value semantics, both constructor parameters
-  /// [store] and [reducer] should have value semantics.
+  /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable3Adapter &&
-      reducer == other.reducer &&
-      store == other.store;
+      other is Callable3Adapter && event == other.event && store == other.store;
 }

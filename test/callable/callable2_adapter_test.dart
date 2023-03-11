@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/src/callable.dart';
-import 'package:reduced/src/reducer.dart';
+import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
-class MockReducer2 extends Reducer2<String, String, String> {
+class MockReducer2 extends Event2<String, String, String> {
   MockReducer2();
 
   @override
@@ -17,7 +17,7 @@ class MockReducedStore extends ReducedStore<String> {
   String state;
 
   @override
-  reduce(reducer) => state = reducer(state);
+  dispatch(reducer) => state = reducer(state);
 }
 
 void main() {

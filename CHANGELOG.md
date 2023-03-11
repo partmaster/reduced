@@ -16,3 +16,7 @@
 ## 0.2.2
 
 * replace <br/> with backslash in README.md
+
+## 0.3.0
+
+* rename 'reduce' to 'dispatch' and 'reducer' to 'event'

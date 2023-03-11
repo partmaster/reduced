@@ -41,32 +41,32 @@ abstract class ReducedStore {
 ```dart
 abstract class ReducedStore {
     ...
-    void reduce(Reducer<S> reducer);
+  void dispatch(Event<S> event);
 }
 ```
 
-Instead of writing the state value directly, the API provides a ```reduce``` method that accepts a so-called ```reducer``` as a parameter. 
-In the ```reduce``` method the ```reducer``` is executed with the current state value as a parameter and the return value of the ```reducer``` is stored as the new state value.
+Instead of writing the state value directly, the API provides a ```dispatch``` method that accepts a so-called ```event``` as a parameter. 
+In the ```dispatch``` method the ```event``` is executed with the current state value as a parameter and the return value of the ```event``` is stored as the new state value.
 
-*Samples of ```ReducedStore.reduce``` use*
+*Samples of ```ReducedStore.dispatch``` use*
 
 ```reduce(reducer) => add(reducer);``` \
 [*reduced_bloc/lib/src/bloc_reducible.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_reducible.dart#L15)
 
-```reduce(reducer) => state = reducer(state);``` \
+```dispatch(event) => state = event(state);``` \
 [*reduced_riverpod/lib/src/riverpod_reducible.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/cd2ffa2d70ac459440bfd888cd9f3c17423cb462/lib/src/riverpod_reducible.dart#L15)
 
 ```dart
-abstract class Reducer<S> {
+abstract class Event<S> {
     S call(S state);
 }
 ```
 
-All Reducer implementations must be derived from the ```Reducer``` base class.
+All Event implementations must be derived from the ```Event``` base class.
 
-*Samples of ```Reducer``` use*
+*Samples of ```Event``` use*
 
-```class Incrementer extends Reducer<int>``` \
+```class Incrementer extends Event<int>``` \
 [*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/counter_app/lib/logic.dart#L6)
 
 
@@ -108,36 +108,36 @@ A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from t
 ```required ReducedWidgetBuilder<P> builder,``` \
 [*reduced_bloc/lib/src/bloc_wrapper.dart#L22*](https://github.com/partmaster/reduced_bloc/blob/1a26bb2e06fb67866fbb325e12bc8c912bcc4a18/lib/src/bloc_wrapper.dart#L22)
 
-#### 2.3 Reducers with additional parameters
+#### 2.3 Events with additional parameters
 
 ```dart
-abstract class Reducer1<S, V> {
+abstract class Event1<S, V> {
   S call(S state, V value);
 }
 ```
 
 ```dart
-abstract class Reducer2<S, V1, V2> {
+abstract class Event2<S, V1, V2> {
   S call(S state, V1 value1, V2 value2);
 }
 ```
 
 ```dart
-abstract class Reducer3<S, V1, V2, V3> ...
+abstract class Event3<S, V1, V2, V3> ...
 ```
 
-*Sample of ```Reducer1``` use*
+*Sample of ```Event1``` use*
 
-```class AddItemReducer extends Reducer1<AppState, int>``` \
-[*reducedexample/shopper_app/lib/models/reducer.dart#L9*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L9)
+```class AddItemEvent extends Event1<AppState, int>``` \
+[*reducedexample/shopper_app/lib/models/event.dart#L9*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/event.dart#L9)
 
-#### 2.4 Adapter implementations for Reducers with parameters
+#### 2.4 Adapter implementations for Events with parameters
 
 ```dart
-class Reducer1Adapter<S, V> extends Reducer<S> {
-  Reducer1Adapter(this.adaptee, this.value);
+class Event1Adapter<S, V> extends Event<S> {
+  Event1Adapter(this.adaptee, this.value);
 
-  final Reducer1<S, V> adaptee;
+  final Event1<S, V> adaptee;
   final V value;
 
   @override call(state) => adaptee.call(state, value);
@@ -148,17 +148,17 @@ class Reducer1Adapter<S, V> extends Reducer<S> {
 ```
 
 ```dart
-class Reducer2Adapter<S, V1, V2> extends Reducer<S> ...
+class Event2Adapter<S, V1, V2> extends Event<S> ...
 ```
 
 ```dart
-class Reducer3Adapter<S, V1, V2, V3> extends Reducer<S> ...
+class Event3Adapter<S, V1, V2, V3> extends Event<S> ...
 ```
 
-*Sample of ```Reducer1Adapter``` use*
+*Sample of ```Event1Adapter``` use*
 
-```Reducer1Adapter(RemoveItemReducer(), value),``` \
-[*reduced/example/shopper_app/lib/models/reducer.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L37)
+```Event1Adapter(RemoveItemEvent(), value),``` \
+[*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/ee8999c75b2acb3f223074a0207cac67e06f6e22/example/shopper_app/lib/models/reducer.dart#L37)
 
 ### 3. Callbacks with value semantics 
 
@@ -214,7 +214,7 @@ class CallableAdapter<S> extends Callable<void> {
   const CallableAdapter(this.store, this.reducer);
 
   final ReducedStore<S> store;
-  final Reducer<S> reducer;
+  final Event<S> reducer;
 
   @override call() => store.reduce(reducer);
 
@@ -281,7 +281,7 @@ import 'package:reduced/reduced.dart';
 ```
 
 ```dart
-class Incrementer extends Reducer<int> {
+class Incrementer extends Event<int> {
   @override
   int call(int state) => state + 1;
 }

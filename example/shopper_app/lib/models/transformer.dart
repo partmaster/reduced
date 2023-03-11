@@ -6,7 +6,7 @@ import 'package:reduced/reduced.dart';
 
 import 'props.dart';
 import 'state.dart';
-import 'reducer.dart';
+import 'events.dart';
 
 class CatalogItemPropsTransformer {
   static CatalogItemProps transform(ReducedStore<AppState> store, int id) {
@@ -15,7 +15,7 @@ class CatalogItemPropsTransformer {
         name: item.name,
         color: item.color,
         onPressed:
-            store.state.itemIds.contains(id) ? null : store.addItemReducer(id));
+            store.state.itemIds.contains(id) ? null : store.itemAdded(id));
   }
 }
 
@@ -28,7 +28,7 @@ class CartPropsTransformer {
           .map((e) => state.getById(e))
           .map((e) => CartItemProps(
                 name: e.name,
-                onPressed: store.removeItemReducer(e.id),
+                onPressed: store.itemRemoved(e.id),
               ))
           .toList(),
     );
