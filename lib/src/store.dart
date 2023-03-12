@@ -29,6 +29,9 @@ abstract class ReducedStore<S> {
   /// and the return value is taken as the new state of the state management instance.
   /// The `event.call` must be executed synchronously.
   void dispatch(Event<S> event);
+
+  @override
+  toString() => '$runtimeType}';
 }
 
 /// A ReducedStoreProxy is an implementation of ReducedStore as a proxy.
