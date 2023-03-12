@@ -77,4 +77,7 @@ class ReducedStoreProxy<S> extends ReducedStore<S> {
   @override
   operator ==(other) =>
       other is ReducedStoreProxy<S> && identity == other.identity;
+
+  @override
+  toString() => '${identity.runtimeType}';
 }

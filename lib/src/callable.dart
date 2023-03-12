@@ -139,9 +139,7 @@ class CallableAdapter<S> extends Callable<void> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is CallableAdapter &&
-      event == other.event &&
-      store == other.store;
+      other is CallableAdapter && event == other.event && store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -178,9 +176,7 @@ class Callable1Adapter<S, V> extends Callable1<void, V> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable1Adapter &&
-      event == other.event &&
-      store == other.store;
+      other is Callable1Adapter && event == other.event && store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -207,8 +203,7 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
   /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2) =>
-      store.dispatch(Event2Adapter(event, value1, value2));
+  call(value1, value2) => store.dispatch(Event2Adapter(event, value1, value2));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -219,9 +214,7 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable2Adapter &&
-      event == other.event &&
-      store == other.store;
+      other is Callable2Adapter && event == other.event && store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -235,8 +228,7 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Event3].
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
-class Callable3Adapter<S, V1, V2, V3>
-    extends Callable3<void, V1, V2, V3> {
+class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   const Callable3Adapter(this.store, this.event);
 
   /// The store to whose method [dispatch](ReducedStore.dispatch)
@@ -262,9 +254,7 @@ class Callable3Adapter<S, V1, V2, V3>
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable3Adapter &&
-      event == other.event &&
-      store == other.store;
+      other is Callable3Adapter && event == other.event && store == other.store;
 
   @override
   toString() => '$event@$store}';
