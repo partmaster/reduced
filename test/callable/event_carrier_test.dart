@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart' hide EventDispatcher;
+import 'package:flutter_test/flutter_test.dart' hide EventCarrier;
 
 import 'package:reduced/src/callable.dart';
 import 'package:reduced/src/event.dart';
@@ -24,16 +24,16 @@ class MockStore extends Store<Object> {
 }
 
 void main() {
-  test('EventDispatcher init test', () {
-    final objectUnterTest = EventDispatcher(
+  test('EventCarrier init test', () {
+    final objectUnterTest = EventCarrier(
       MockStore(0),
       MockEvent(1),
     );
     expect(objectUnterTest.store.state, 0);
   });
 
-  test('EventDispatcher call test', () {
-    final objectUnterTest = EventDispatcher(
+  test('EventCarrier call test', () {
+    final objectUnterTest = EventCarrier(
       MockStore(0),
       MockEvent(1),
     );
@@ -41,24 +41,24 @@ void main() {
     expect(objectUnterTest.store.state, 1);
   });
 
-  test('EventDispatcher hashCode test', () {
+  test('EventCarrier hashCode test', () {
     final store1 = MockStore(1);
     final reducer1 = MockEvent(1);
     final store2 = MockStore(2);
     final reducer2 = MockEvent(2);
-    final objectUnterTest11 = EventDispatcher(
+    final objectUnterTest11 = EventCarrier(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = EventDispatcher(
+    final objectUnterTest12 = EventCarrier(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = EventDispatcher(
+    final objectUnterTest21 = EventCarrier(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = EventDispatcher(
+    final objectUnterTest22 = EventCarrier(
       store1,
       reducer1,
     );
@@ -70,24 +70,24 @@ void main() {
     expect(objectUnterTest12.hashCode,
         isNot(objectUnterTest21.hashCode));
   });
-  test('EventDispatcher operator== test', () {
+  test('EventCarrier operator== test', () {
     final store1 = MockStore(1);
     final reducer1 = MockEvent(1);
     final store2 = MockStore(2);
     final reducer2 = MockEvent(2);
-    final objectUnterTest11 = EventDispatcher(
+    final objectUnterTest11 = EventCarrier(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = EventDispatcher(
+    final objectUnterTest12 = EventCarrier(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = EventDispatcher(
+    final objectUnterTest21 = EventCarrier(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = EventDispatcher(
+    final objectUnterTest22 = EventCarrier(
       store1,
       reducer1,
     );

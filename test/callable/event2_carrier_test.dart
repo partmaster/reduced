@@ -3,11 +3,11 @@ import 'package:reduced/src/callable.dart';
 import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
-class MockEvent1 extends Event1<String, String> {
-  MockEvent1();
+class MockEvent2 extends Event2<String, String, String> {
+  MockEvent2();
 
   @override
-  call(state, value) => '$state $value';
+  call(state, value1, value2) => '$state $value1 $value2';
 }
 
 class MockStore extends Store<String> {
@@ -17,45 +17,45 @@ class MockStore extends Store<String> {
   String state;
 
   @override
-  process(reducer) => state = reducer(state);
+  process(event) => state = event(state);
 }
 
 void main() {
-  test('Event1Dispatcher init test', () {
-    final objectUnterTest = Event1Dispatcher(
+  test('Event2Carrier init test', () {
+    final objectUnterTest = Event2Carrier(
       MockStore('0'),
-      MockEvent1(),
+      MockEvent2(),
     );
     expect(objectUnterTest.store.state, '0');
   });
 
-  test('Event1Dispatcher call test', () {
-    final objectUnterTest = Event1Dispatcher(
+  test('Event2Carrier call test', () {
+    final objectUnterTest = Event2Carrier(
       MockStore('0'),
-      MockEvent1(),
+      MockEvent2(),
     );
-    objectUnterTest.call('1');
-    expect(objectUnterTest.store.state, '0 1');
+    objectUnterTest.call('1', '2');
+    expect(objectUnterTest.store.state, '0 1 2');
   });
 
-  test('Event1Dispatcher hashCode test', () {
+  test('Event2Carrier hashCode test', () {
     final store1 = MockStore('1');
-    final reducer1 = MockEvent1();
+    final reducer1 = MockEvent2();
     final store2 = MockStore('2');
-    final reducer2 = MockEvent1();
-    final objectUnterTest11 = Event1Dispatcher(
+    final reducer2 = MockEvent2();
+    final objectUnterTest11 = Event2Carrier(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Event1Dispatcher(
+    final objectUnterTest12 = Event2Carrier(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Event1Dispatcher(
+    final objectUnterTest21 = Event2Carrier(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Event1Dispatcher(
+    final objectUnterTest22 = Event2Carrier(
       store1,
       reducer1,
     );
@@ -67,24 +67,24 @@ void main() {
     expect(objectUnterTest12.hashCode,
         isNot(objectUnterTest21.hashCode));
   });
-  test('Event1Dispatcher operator== test', () {
+  test('Event2Carrier operator== test', () {
     final store1 = MockStore('1');
-    final reducer1 = MockEvent1();
+    final reducer1 = MockEvent2();
     final store2 = MockStore('2');
-    final reducer2 = MockEvent1();
-    final objectUnterTest11 = Event1Dispatcher(
+    final reducer2 = MockEvent2();
+    final objectUnterTest11 = Event2Carrier(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Event1Dispatcher(
+    final objectUnterTest12 = Event2Carrier(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Event1Dispatcher(
+    final objectUnterTest21 = Event2Carrier(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Event1Dispatcher(
+    final objectUnterTest22 = Event2Carrier(
       store1,
       reducer1,
     );

@@ -109,23 +109,23 @@ abstract class Callable3<R, V1, V2, V3> {
   toString() => '$runtimeType';
 }
 
-/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event].
+/// An implementation of a callback as a [Store.process](Store.process) call with a [Event].
 ///
-/// Or in other words, a [Event] bonded to a [Store] useable as callback.
+/// Or in other words, the callback carries the [Event] to the [Store].
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Store].
-class EventDispatcher<S> extends Callable<void> {
-  const EventDispatcher(this.store, this.event);
+class EventCarrier<S> extends Callable<void> {
+  const EventCarrier(this.store, this.event);
 
-  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
   final Store<S> store;
 
-  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
+  /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
   final Event<S> event;
 
-  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  /// Executes the [process](Store.process) method of the [store]
   /// with the [event] as parameter.
   @override
   call() => store.process(event);
@@ -139,7 +139,7 @@ class EventDispatcher<S> extends Callable<void> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is EventDispatcher &&
+      other is EventCarrier &&
       event == other.event &&
       store == other.store;
 
@@ -147,24 +147,24 @@ class EventDispatcher<S> extends Callable<void> {
   toString() => '$event@$store}';
 }
 
-/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event1].
+/// An implementation of a callback as a [Store.process](Store.process) call with a [Event1].
 ///
-/// Or in other words, a [Event] bonded to a [Store] useable as callback.
+/// Or in other words, the callback carries the [Event1] to the [Store].
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V` is the type of the value of the [Event1].
-class Event1Dispatcher<S, V> extends Callable1<void, V> {
-  const Event1Dispatcher(this.store, this.event);
+class Event1Carrier<S, V> extends Callable1<void, V> {
+  const Event1Carrier(this.store, this.event);
 
-  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
   final Store<S> store;
 
-  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
+  /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
   final Event1<S, V> event;
 
-  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
   call(value) => store.process(Event1Adapter(event, value));
@@ -178,7 +178,7 @@ class Event1Dispatcher<S, V> extends Callable1<void, V> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event1Dispatcher &&
+      other is Event1Carrier &&
       event == other.event &&
       store == other.store;
 
@@ -186,25 +186,25 @@ class Event1Dispatcher<S, V> extends Callable1<void, V> {
   toString() => '$event@$store}';
 }
 
-/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event2].
+/// An implementation of a callback as a [Store.process](Store.process) call with a [Event2].
 ///
-/// Or in other words, a [Event2] bonded to a [Store] useable as callback.
+/// Or in other words, the callback carries the [Event2] to the [Store].
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V1` is the type of the 1st value of the [Event2].
 /// The type parameter `V2` is the type of the 2nd value of the [Event2].
-class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> {
-  const Event2Dispatcher(this.store, this.event);
+class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
+  const Event2Carrier(this.store, this.event);
 
-  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
   final Store<S> store;
 
-  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
+  /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
   final Event2<S, V1, V2> event;
 
-  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
   call(value1, value2) =>
@@ -219,7 +219,7 @@ class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event2Dispatcher &&
+      other is Event2Carrier &&
       event == other.event &&
       store == other.store;
 
@@ -227,27 +227,27 @@ class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> {
   toString() => '$event@$store}';
 }
 
-/// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event3].
+/// An implementation of a callback as a [Store.process](Store.process) call with a [Event3].
 ///
-/// Or in other words, a [Event3] bonded to a [Store] useable as callback.
+/// Or in other words, the callback carries the [Event3] to the [Store].
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V1` is the type of the 1st value of the [Event3].
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
-class Event3Dispatcher<S, V1, V2, V3>
+class Event3Carrier<S, V1, V2, V3>
     extends Callable3<void, V1, V2, V3> {
-  const Event3Dispatcher(this.store, this.event);
+  const Event3Carrier(this.store, this.event);
 
-  /// The store to whose method [dispatch](ReducedStore.dispatch)
+  /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
   final Store<S> store;
 
-  /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
+  /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
   final Event3<S, V1, V2, V3> event;
 
-  /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
+  /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
   call(value1, value2, value3) =>
@@ -262,7 +262,7 @@ class Event3Dispatcher<S, V1, V2, V3>
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event3Dispatcher &&
+      other is Event3Carrier &&
       event == other.event &&
       store == other.store;
 
