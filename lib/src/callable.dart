@@ -111,15 +111,15 @@ abstract class Callable3<R, V1, V2, V3> {
 
 /// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event].
 ///
-/// Or in other words, a [Event] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event] bonded to a [Store] useable as callback.
 /// Can be assigned to Widget properties of type [VoidCallback].
-/// The type parameter `S` is the type of the state of the [ReducedStore].
-class CallableAdapter<S> extends Callable<void> {
-  const CallableAdapter(this.store, this.event);
+/// The type parameter `S` is the type of the state of the [Store].
+class EventDispatcher<S> extends Callable<void> {
+  const EventDispatcher(this.store, this.event);
 
   /// The store to whose method [dispatch](ReducedStore.dispatch)
   /// the [event] is passed when the method [call] is called.
-  final ReducedStore<S> store;
+  final Store<S> store;
 
   /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
@@ -128,7 +128,7 @@ class CallableAdapter<S> extends Callable<void> {
   /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
   /// with the [event] as parameter.
   @override
-  call() => store.dispatch(event);
+  call() => store.process(event);
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -139,7 +139,9 @@ class CallableAdapter<S> extends Callable<void> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is CallableAdapter && event == other.event && store == other.store;
+      other is EventDispatcher &&
+      event == other.event &&
+      store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -147,16 +149,16 @@ class CallableAdapter<S> extends Callable<void> {
 
 /// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event1].
 ///
-/// Or in other words, a [Event] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event] bonded to a [Store] useable as callback.
 ///
-/// The type parameter `S` is the type of the state of the [ReducedStore].
+/// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V` is the type of the value of the [Event1].
-class Callable1Adapter<S, V> extends Callable1<void, V> {
-  const Callable1Adapter(this.store, this.event);
+class Event1Dispatcher<S, V> extends Callable1<void, V> {
+  const Event1Dispatcher(this.store, this.event);
 
   /// The store to whose method [dispatch](ReducedStore.dispatch)
   /// the [event] is passed when the method [call] is called.
-  final ReducedStore<S> store;
+  final Store<S> store;
 
   /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
@@ -165,7 +167,7 @@ class Callable1Adapter<S, V> extends Callable1<void, V> {
   /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value) => store.dispatch(Event1Adapter(event, value));
+  call(value) => store.process(Event1Adapter(event, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -176,7 +178,9 @@ class Callable1Adapter<S, V> extends Callable1<void, V> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable1Adapter && event == other.event && store == other.store;
+      other is Event1Dispatcher &&
+      event == other.event &&
+      store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -184,17 +188,17 @@ class Callable1Adapter<S, V> extends Callable1<void, V> {
 
 /// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event2].
 ///
-/// Or in other words, a [Event2] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event2] bonded to a [Store] useable as callback.
 ///
-/// The type parameter `S` is the type of the state of the [ReducedStore].
+/// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V1` is the type of the 1st value of the [Event2].
 /// The type parameter `V2` is the type of the 2nd value of the [Event2].
-class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
-  const Callable2Adapter(this.store, this.event);
+class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> {
+  const Event2Dispatcher(this.store, this.event);
 
   /// The store to whose method [dispatch](ReducedStore.dispatch)
   /// the [event] is passed when the method [call] is called.
-  final ReducedStore<S> store;
+  final Store<S> store;
 
   /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
@@ -203,7 +207,8 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
   /// Executes the [dispatch](ReducedStore.dispatch) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2) => store.dispatch(Event2Adapter(event, value1, value2));
+  call(value1, value2) =>
+      store.process(Event2Adapter(event, value1, value2));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -214,7 +219,9 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable2Adapter && event == other.event && store == other.store;
+      other is Event2Dispatcher &&
+      event == other.event &&
+      store == other.store;
 
   @override
   toString() => '$event@$store}';
@@ -222,18 +229,19 @@ class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> {
 
 /// An implementation of a callback as a [ReducedStore.dispatch](ReducedStore.dispatch) call with a [Event3].
 ///
-/// Or in other words, a [Event3] bonded to a [ReducedStore] useable as callback.
+/// Or in other words, a [Event3] bonded to a [Store] useable as callback.
 ///
-/// The type parameter `S` is the type of the state of the [ReducedStore].
+/// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V1` is the type of the 1st value of the [Event3].
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
-class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
-  const Callable3Adapter(this.store, this.event);
+class Event3Dispatcher<S, V1, V2, V3>
+    extends Callable3<void, V1, V2, V3> {
+  const Event3Dispatcher(this.store, this.event);
 
   /// The store to whose method [dispatch](ReducedStore.dispatch)
   /// the [event] is passed when the method [call] is called.
-  final ReducedStore<S> store;
+  final Store<S> store;
 
   /// The reducer that is passed as a parameter to the [dispatch](ReducedStore.dispatch) method
   /// of the [store] when the [call] method is called.
@@ -243,7 +251,7 @@ class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   ///  with the [event] as parameter.
   @override
   call(value1, value2, value3) =>
-      store.dispatch(Event3Adapter(event, value1, value2, value3));
+      store.process(Event3Adapter(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -254,7 +262,9 @@ class Callable3Adapter<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Callable3Adapter && event == other.event && store == other.store;
+      other is Event3Dispatcher &&
+      event == other.event &&
+      store == other.store;
 
   @override
   toString() => '$event@$store}';

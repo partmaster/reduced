@@ -1,21 +1,15 @@
 // store.dart
 
-import 'package:flutter/foundation.dart' show ValueGetter;
+import 'package:flutter/foundation.dart' show UniqueKey, ValueGetter;
 
 import 'event.dart';
+import 'functions.dart';
 
-/// A function that accepts a parameter of type [Event].
-///
-/// State management instances can provide this method
-/// so that the state can be changed from outside.
-/// The type parameter `S` is the type of the state of the state management instance.
-typedef Dispatcher<S> = void Function(Event<S>);
-
-/// An ReducedStore is an abstraction for a state management instance.
+/// A Store is an abstraction for a state management instance.
 ///
 /// The type parameter `S` is the type of the state of the state management instance.
-abstract class ReducedStore<S> {
-  const ReducedStore();
+abstract class Store<S> {
+  const Store();
 
   /// Reads the current state of the state management instance.
   ///
@@ -28,22 +22,22 @@ abstract class ReducedStore<S> {
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The `event.call` must be executed synchronously.
-  void dispatch(Event<S> event);
+  void process(Event<S> event);
 
   @override
   toString() => '$runtimeType}';
 }
 
-/// A ReducedStoreProxy is an implementation of ReducedStore as a proxy.
+/// A StoreProxy is an implementation of interface Store as a proxy.
 ///
-/// The type parameter `S` is the type of the state of the ReducedStore.
-class ReducedStoreProxy<S> extends ReducedStore<S> {
-  const ReducedStoreProxy(
+/// The type parameter `S` is the type of the state of the Store.
+class StoreProxy<S> extends Store<S> {
+  const StoreProxy(
     ValueGetter<S> state,
-    Dispatcher<S> dispatcher,
-    this.identity,
-  )   : _state = state,
-        _dispatcher = dispatcher;
+    this.processor,
+    this.identity, [
+    this.listener,
+  ]) : _state = state;
 
   /// Reads the current state of the state management instance.
   ///
@@ -56,18 +50,24 @@ class ReducedStoreProxy<S> extends ReducedStore<S> {
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The `event.call` must be executed synchronously.
-  final Dispatcher<S> _dispatcher;
+  final EventProcessor<S> processor;
 
   /// Controls the value semantics of this class.
   ///
   /// This class delegates its [hashCode] and [operator==] methods to the `identity` object.
   final Object identity;
 
+  /// Is called each time after an event is processed and the new state is stored.
+  final EventListener<S>? listener;
+
   @override
   get state => _state();
 
   @override
-  dispatch(event) => _dispatcher(event);
+  process(event) {
+    processor(event);
+    listener?.call(this, event, UniqueKey());
+  }
 
   /// This class delegates [hashCode] to the [identity] object.
   @override
@@ -76,7 +76,7 @@ class ReducedStoreProxy<S> extends ReducedStore<S> {
   /// This class delegates [operator==] to the [identity] object.
   @override
   operator ==(other) =>
-      other is ReducedStoreProxy<S> && identity == other.identity;
+      other is StoreProxy<S> && identity == other.identity;
 
   @override
   toString() => '${identity.runtimeType}';

@@ -22,13 +22,13 @@ The 'reduced' API covers the following features of a state management framework:
 ### 1. Read a current state value.
 
 ```dart
-abstract class ReducedStore {
+abstract class Store {
     S get state;
     ...
 }
 ```
 
-*Samples of ```ReducedStore.get state``` use*
+*Samples of ```Store.get state``` use*
 
 ```get state => super.state;``` \
 [*reduced_riverpod/lib/src/riverpod_store.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L12)
@@ -39,21 +39,21 @@ abstract class ReducedStore {
 ### 2. Update a current state value.
 
 ```dart
-abstract class ReducedStore {
+abstract class Store {
     ...
-  void dispatch(Event<S> event);
+  void process(Event<S> event);
 }
 ```
 
-Instead of writing the state value directly, the API provides a ```dispatch``` method that accepts a so-called ```event``` as a parameter. 
-In the ```dispatch``` method the ```event``` is executed with the current state value as a parameter and the return value of the ```event``` is stored as the new state value.
+Instead of writing the state value directly, the API provides a ```process``` method that accepts a called ```event``` as a parameter. 
+In the ```process``` method the ```event``` is executed with the current state value as a parameter and the return value of the ```event``` is stored as the new state value.
 
-*Samples of ```ReducedStore.dispatch``` use*
+*Samples of ```Store.process``` use*
 
-```dispatch(event) => add(event);``` \
+```process(event) => add(event);``` \
 [*reduced_bloc/lib/src/bloc_store.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/67d937571a4b231e1d26149681614f1590598d75/lib/src/bloc_store.dart#L15)
 
-```dispatch(event) => state = event(state);``` \
+```process(event) => state = event(state);``` \
 [*reduced_riverpod/lib/src/riverpod_store.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L15)
 
 ```dart
@@ -66,46 +66,44 @@ All Event implementations must be derived from the ```Event``` base class.
 
 *Samples of ```Event``` use*
 
-```class CounterIncremented extends Reducer<int>``` \
+```class CounterIncremented extends Event<int>``` \
 [*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/counter_app/lib/logic.dart#L6)
 
 
-#### 2.1 ReducedTransformer function typedef
+#### 2.1 PropsBuilder function typedef
 
 ```dart
-typedef ReducedTransformer<S, P> = P Function(
-  ReducedStore<S> store,
-);
+typedef PropsBuilder<S, P> = P Function(Store<S>);
 ```
 
-A ```ReducedTransformer``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
-With a ```ReducedTransformer``` function usually a ```props``` parameter for a ```ReducedWidgetBuilder``` function is created. 
+A ```PropsBuilder``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
+With a ```PropsBuilder``` function usually a ```props``` parameter for a ```PropsWidgetBuilder``` function is created. 
 
-*Samples of ```ReducedTransformer``` use*
+*Samples of ```PropsBuilder``` use*
 
-```final ReducedTransformer<S, P1> transformer1;``` \
+```final PropsBuilder<S, P1> propsBuilder1;``` \
 [*reduced_mobx/lib/src/mobx_store.dart#L45*](https://github.com/partmaster/reduced_mobx/blob/f9fb41e999f3659c2d804146bdf28cf81d5f098f/lib/src/mobx_store.dart#L45)
 
-```required ReducedTransformer<S, P> transformer,``` \
+```required PropsBuilder<S, P> propsBuilder,``` \
 [*reduced_bloc/lib/src/bloc_widgets.dart#L33*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L33)
 
 
-#### 2.2 ReducedWidgetBuilder function typedef
+#### 2.2 PropsWidgetBuilder function typedef
 
 ```dart
-typedef ReducedWidgetBuilder<P> = Widget Function({
+typedef PropsWidgetBuilder<P> = Widget Function({
   required P props,
 });
 ```
 
-A ```ReducedWidgetBuilder``` is a ```Function``` that builds a new widget from the properties of the passed ```props``` parameter. That is, the ```props``` parameter must contain all the properties necessary for building the widget. 
+A ```PropsWidgetBuilder``` is a ```Function``` that builds a new widget from the properties of the passed ```props``` parameter. That is, the ```props``` parameter must contain all the properties necessary for building the widget. 
 
-*Samples of ```ReducedWidgetBuilder``` use*
+*Samples of ```PropsWidgetBuilder``` use*
 
-```final ReducedWidgetBuilder<MyHomePageProps> builder;``` \
+```final PropsWidgetBuilder<MyHomePageProps> builder;``` \
 [*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
 
-```required ReducedWidgetBuilder<P> builder,``` \
+```required PropsWidgetBuilder<P> builder,``` \
 [*reduced_bloc/lib/src/bloc_widgets.dart#L34*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L34)
 
 #### 2.3 Events with additional parameters
@@ -210,10 +208,10 @@ TextFormField(
 #### 3.1 Adapter implementations of Callable(s)
 
 ```dart
-class CallableAdapter<S> extends Callable<void> {
-  const CallableAdapter(this.store, this.reducer);
+class EventDispatcher<S> extends Callable<void> {
+  const EventDispatcher(this.store, this.reducer);
 
-  final ReducedStore<S> store;
+  final Store<S> store;
   final Event<S> reducer;
 
   @override call() => store.reduce(reducer);
@@ -224,21 +222,21 @@ class CallableAdapter<S> extends Callable<void> {
 ```
 
 ```dart
-class Callable1Adapter<S, V> extends Callable1<void, V> ...
+class Event1Dispatcher<S, V> extends Callable1<void, V> ...
 ```
 
 ```dart
-class Callable2Adapter<S, V1, V2> extends Callable2<void, V1, V2> ...
+class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> ...
 ```
 
 ```dart
-class Callable3Adapter<S, V1, V2, V3> 
+class Event3Dispatcher<S, V1, V2, V3> 
   extends Callable3<void, V1, V2, V3> ...
 ```
 
-*Samples of ```CallableAdapter``` use*
+*Samples of ```EventDispatcher``` use*
 
-```onPressed: CallableAdapter(store, CounterIncremented()),```
+```onPressed: EventDispatcher(store, CounterIncremented()),```
 [*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/counter_app/lib/logic.dart#L20)
 
 ## Getting started
@@ -247,11 +245,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 0.3.0
+  reduced: 0.4.0
   reduced_bloc: 
     git: 
       url: https://github.com/partmaster/reduced_bloc.git
-      ref: v0.3.1
+      ref: v0.4.0
 ```
 
 Import package 'reduced' to implement the logic.
@@ -294,9 +292,9 @@ class Props {
 ```
 
 ```dart
-Props transformProps(ReducedStore<int> store) => Props(
+Props transformProps(Store<int> store) => Props(
       counterText: '${store.state}',
-      onPressed: CallableAdapter(store, CounterIncremented()),
+      onPressed: EventDispatcher(store, CounterIncremented()),
     );
 ```
 
@@ -364,11 +362,11 @@ class ReducedProvider<S> extends Statelesswidget {
 ```dart
 class ReducedConsumer<S, P> extends StatelessWidget {
   ReducedConsumer({
-    required this.transformer,
+    required this.propsBuilder,
     required this.builder,
   }) ...
-  final ReducedTransformer<S, P> transformer,
-  final ReducedWidgetBuilder<P> builder,
+  final PropsBuilder<S, P> propsBuilder,
+  final PropsWidgetBuilder<P> builder,
   ...
 }
 ```
@@ -409,7 +407,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
             builder: (context) => const ReducedConsumer(
-              transformer: transformProps,
+              propsBuilder: transformProps,
               builder: MyHomePage.new,
             ),
           ),
