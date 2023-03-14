@@ -31,10 +31,3 @@ typedef EventListener<S> = void Function(
   Event<S> event,
   UniqueKey key,
 );
-
-/// A function that processes a parameter of type [Event].
-///
-/// State management instances can provide this method
-/// so that the state can be changed from outside.
-/// The type parameter `S` is the type of the state of the state management instance.
-typedef EventProcessor<S> = void Function(Event<S>);
