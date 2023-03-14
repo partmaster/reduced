@@ -10,7 +10,10 @@ import 'store.dart';
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `P` is the return type of the function.
-typedef StateToPropsMapper<S, P> = P Function(Store<S>);
+typedef StateToPropsMapper<S, P> = P Function(
+  S state,
+  EventProcessor<S> processor,
+);
 
 // A function that builds a Widget from a props parameter.
 ///
