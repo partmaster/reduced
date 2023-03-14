@@ -155,11 +155,11 @@ class EventCarrier<S> extends Callable<void> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V` is the type of the value of the [Event1].
 class Event1Carrier<S, V> extends Callable1<void, V> {
-  const Event1Carrier(this.store, this.event);
+  const Event1Carrier(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
-  final Store<S> store;
+  final EventProcessor<S> processor;
 
   /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
@@ -168,21 +168,23 @@ class Event1Carrier<S, V> extends Callable1<void, V> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value) => store.process(Event1Adapter(event, value));
+  call(value) => processor.process(Event1Adapter(event, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, event);
+  get hashCode => Object.hash(processor, event);
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event1Carrier && event == other.event && store == other.store;
+      other is Event1Carrier &&
+      event == other.event &&
+      processor == other.processor;
 
   @override
-  toString() => '$event@$store}';
+  toString() => '$event@$processor}';
 }
 
 /// An implementation of a callback as a [Store.process](Store.process) call with a [Event2].
@@ -193,11 +195,11 @@ class Event1Carrier<S, V> extends Callable1<void, V> {
 /// The type parameter `V1` is the type of the 1st value of the [Event2].
 /// The type parameter `V2` is the type of the 2nd value of the [Event2].
 class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
-  const Event2Carrier(this.store, this.event);
+  const Event2Carrier(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
-  final Store<S> store;
+  final EventProcessor<S> processor;
 
   /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
@@ -206,21 +208,24 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2) => store.process(Event2Adapter(event, value1, value2));
+  call(value1, value2) =>
+      processor.process(Event2Adapter(event, value1, value2));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, event);
+  get hashCode => Object.hash(processor, event);
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event2Carrier && event == other.event && store == other.store;
+      other is Event2Carrier &&
+      event == other.event &&
+      processor == other.processor;
 
   @override
-  toString() => '$event@$store}';
+  toString() => '$event@$processor}';
 }
 
 /// An implementation of a callback as a [Store.process](Store.process) call with a [Event3].
@@ -232,11 +237,11 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
 class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
-  const Event3Carrier(this.store, this.event);
+  const Event3Carrier(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
-  final Store<S> store;
+  final EventProcessor<S> processor;
 
   /// The reducer that is passed as a parameter to the [process](Store.process) method
   /// of the [store] when the [call] method is called.
@@ -246,19 +251,21 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   ///  with the [event] as parameter.
   @override
   call(value1, value2, value3) =>
-      store.process(Event3Adapter(event, value1, value2, value3));
+      processor.process(Event3Adapter(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
-  get hashCode => Object.hash(store, event);
+  get hashCode => Object.hash(processor, event);
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event3Carrier && event == other.event && store == other.store;
+      other is Event3Carrier &&
+      event == other.event &&
+      processor == other.processor;
 
   @override
-  toString() => '$event@$store}';
+  toString() => '$event@$processor}';
 }

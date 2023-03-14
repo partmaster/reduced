@@ -21,21 +21,14 @@ class MockStore extends Store<String> {
 }
 
 void main() {
-  test('Event2Carrier init test', () {
-    final objectUnterTest = Event2Carrier(
-      MockStore('0'),
-      MockEvent2(),
-    );
-    expect(objectUnterTest.store.state, '0');
-  });
-
   test('Event2Carrier call test', () {
+    final store = MockStore('0');
     final objectUnterTest = Event2Carrier(
-      MockStore('0'),
+      store,
       MockEvent2(),
     );
     objectUnterTest.call('1', '2');
-    expect(objectUnterTest.store.state, '0 1 2');
+    expect(store.state, '0 1 2');
   });
 
   test('Event2Carrier hashCode test', () {
