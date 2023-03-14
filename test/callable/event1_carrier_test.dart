@@ -60,12 +60,9 @@ void main() {
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode,
-        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
   });
   test('Event1Carrier operator== test', () {
     final store1 = MockStore('1');

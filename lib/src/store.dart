@@ -75,8 +75,7 @@ class StoreProxy<S> extends Store<S> {
 
   /// This class delegates [operator==] to the [identity] object.
   @override
-  operator ==(other) =>
-      other is StoreProxy<S> && identity == other.identity;
+  operator ==(other) => other is StoreProxy<S> && identity == other.identity;
 
   @override
   toString() => '${identity.runtimeType}';

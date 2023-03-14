@@ -7,8 +7,7 @@ class MockEvent3 extends Event3<String, String, String, String> {
   MockEvent3();
 
   @override
-  call(state, value1, value2, value3) =>
-      '$state $value1 $value2 $value3';
+  call(state, value1, value2, value3) => '$state $value1 $value2 $value3';
 }
 
 class MockStore extends Store<String> {
@@ -61,12 +60,9 @@ void main() {
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode,
-        isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode,
-        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
   });
   test('Event3Carrier operator== test', () {
     final store1 = MockStore('1');

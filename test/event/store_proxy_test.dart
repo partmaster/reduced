@@ -24,8 +24,7 @@ class MockStore extends Store<Object> {
 void main() {
   test('StoreProxy init test', () {
     final store = MockStore('0');
-    final objectUnderTest =
-        StoreProxy(() => store.state, store.process, store);
+    final objectUnderTest = StoreProxy(() => store.state, store.process, store);
     expect(objectUnderTest.state, '0');
   });
   test('StoreProxy reduce test', () {
@@ -38,8 +37,7 @@ void main() {
   });
   test('StoreProxy hashCode test', () {
     final store = MockStore('0');
-    final objectUnderTest =
-        StoreProxy(() => store.state, store.process, store);
+    final objectUnderTest = StoreProxy(() => store.state, store.process, store);
     expect(objectUnderTest.hashCode, store.hashCode);
   });
   test('StoreProxy operator== test', () {

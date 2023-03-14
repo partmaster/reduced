@@ -20,12 +20,9 @@ void main() {
     final objectUnderTest21 = Event1Adapter(reducer2, '1');
     final objectUnderTest22 = Event1Adapter(reducer1, '1');
     expect(objectUnderTest11.hashCode, objectUnderTest22.hashCode);
-    expect(objectUnderTest11.hashCode,
-        isNot(objectUnderTest12.hashCode));
-    expect(objectUnderTest11.hashCode,
-        isNot(objectUnderTest21.hashCode));
-    expect(objectUnderTest12.hashCode,
-        isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest11.hashCode, isNot(objectUnderTest12.hashCode));
+    expect(objectUnderTest11.hashCode, isNot(objectUnderTest21.hashCode));
+    expect(objectUnderTest12.hashCode, isNot(objectUnderTest21.hashCode));
   });
   test('Event1Adapter operator== test', () {
     final reducer1 = MockEvent1();
