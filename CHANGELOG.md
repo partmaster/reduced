@@ -24,3 +24,16 @@
 ## 0.3.2
 
 * use reduced_setstate, reduced_bloc and reduced_provider v0.3.2 from git in examples
+
+## 0.4.0
+
+* rename 'dispatch' to 'process'
+* rename 'ReducedStore' to 'Store'
+* rename 'ReducedStoreProxy' to 'StoreProxy'
+* rename 'CallableAdapter' to 'EventCarrier'
+* rename 'EventAdapter' to 'ParameterizedEvent'
+* rename 'ReducedWidgetBuilder' to 'WidgetFromPropsBuilder'
+* rename 'ReducedTransformer' to 'StateToPropsMapper'
+* extract 'process' method to its own interface 'EventProcessor'
+* add 'EventListener'
+* use two parameters 'state' and 'processor' instead of one 'store' parameter
