@@ -168,7 +168,7 @@ class Event1Carrier<S, V> extends Callable1<void, V> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value) => processor.process(Event1Adapter(event, value));
+  call(value) => processor.process(Parametrized1Event(event, value));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -209,7 +209,7 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
   ///  with the [event] as parameter.
   @override
   call(value1, value2) =>
-      processor.process(Event2Adapter(event, value1, value2));
+      processor.process(Parametrized2Event(event, value1, value2));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -251,7 +251,7 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   ///  with the [event] as parameter.
   @override
   call(value1, value2, value3) =>
-      processor.process(Event3Adapter(event, value1, value2, value3));
+      processor.process(Parametrized3Event(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.

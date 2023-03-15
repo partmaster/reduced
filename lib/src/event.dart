@@ -76,12 +76,12 @@ abstract class Event3<S, V1, V2, V3> {
   toString() => '$runtimeType';
 }
 
-/// Adapts a Event1 as Event.
+/// Parametrizes an Event with 1 fixed value.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V` is the type of the value.
-class Event1Adapter<S, V> extends Event<S> {
-  const Event1Adapter(this.adapted, this.value);
+class Parametrized1Event<S, V> extends Event<S> {
+  const Parametrized1Event(this.adapted, this.value);
 
   final Event1<S, V> adapted;
 
@@ -96,7 +96,7 @@ class Event1Adapter<S, V> extends Event<S> {
 
   @override
   operator ==(other) =>
-      other is Event1Adapter &&
+      other is Parametrized1Event &&
       adapted == other.adapted &&
       value == other.value;
 
@@ -104,13 +104,13 @@ class Event1Adapter<S, V> extends Event<S> {
   toString() => '${adapted.runtimeType}($value)';
 }
 
-/// Adapts a Event2 as Event.
+/// Parametrizes an Event with 2 fixed values.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V1` is the type of the 1st value.
 /// The type parameter `V2` is the type of the 2nd value.
-class Event2Adapter<S, V1, V2> extends Event<S> {
-  const Event2Adapter(this.adapted, this.value1, this.value2);
+class Parametrized2Event<S, V1, V2> extends Event<S> {
+  const Parametrized2Event(this.adapted, this.value1, this.value2);
 
   final Event2<S, V1, V2> adapted;
 
@@ -128,7 +128,7 @@ class Event2Adapter<S, V1, V2> extends Event<S> {
 
   @override
   operator ==(other) =>
-      other is Event2Adapter &&
+      other is Parametrized2Event &&
       adapted == other.adapted &&
       value1 == other.value1 &&
       value2 == other.value2;
@@ -137,14 +137,14 @@ class Event2Adapter<S, V1, V2> extends Event<S> {
   toString() => '${adapted.runtimeType}($value1, $value2)';
 }
 
-/// Adapts a Event3 as Event.
+/// Parametrizes an Event with 3 fixed values.
 ///
 /// The type parameter `S` is the type of the state.
 /// The type parameter `V1` is the type of the 1st value.
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
-class Event3Adapter<S, V1, V2, V3> extends Event<S> {
-  Event3Adapter(this.adapted, this.value1, this.value2, this.value3);
+class Parametrized3Event<S, V1, V2, V3> extends Event<S> {
+  Parametrized3Event(this.adapted, this.value1, this.value2, this.value3);
 
   final Event3<S, V1, V2, V3> adapted;
 
@@ -165,7 +165,7 @@ class Event3Adapter<S, V1, V2, V3> extends Event<S> {
 
   @override
   operator ==(other) =>
-      other is Event3Adapter &&
+      other is Parametrized3Event &&
       adapted == other.adapted &&
       value1 == other.value1 &&
       value2 == other.value2 &&
