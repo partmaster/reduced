@@ -59,7 +59,7 @@ class StoreProxy<S> extends Store<S> {
   /// with the current state of the state management instance
   /// and the return value is taken as the new state of the state management instance.
   /// The `event.call` must be executed synchronously.
-  final EventProcessor<S> processor;
+  final EventAcceptor<S> processor;
 
   /// Controls the value semantics of this class.
   ///
@@ -74,7 +74,7 @@ class StoreProxy<S> extends Store<S> {
 
   @override
   process(event) {
-    processor.process(event);
+    processor(event);
     listener?.call(this, event, UniqueKey());
   }
 
@@ -84,7 +84,8 @@ class StoreProxy<S> extends Store<S> {
 
   /// This class delegates [operator==] to the [identity] object.
   @override
-  operator ==(other) => other is StoreProxy<S> && identity == other.identity;
+  operator ==(other) =>
+      other is StoreProxy<S> && identity == other.identity;
 
   @override
   toString() => '${identity.runtimeType}';

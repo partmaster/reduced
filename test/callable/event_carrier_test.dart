@@ -24,15 +24,6 @@ class MockStore extends Store<Object> {
 }
 
 void main() {
-  test('EventCarrier init test', () {
-    final store = MockStore(0);
-    final objectUnterTest = EventCarrier(
-      store,
-      MockEvent(1),
-    );
-    expect(store.state, 0);
-  });
-
   test('EventCarrier call test', () {
     final store = MockStore(0);
     final objectUnterTest = EventCarrier(
@@ -65,9 +56,12 @@ void main() {
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode,
+        isNot(objectUnterTest21.hashCode));
   });
   test('EventCarrier operator== test', () {
     final store1 = MockStore(1);

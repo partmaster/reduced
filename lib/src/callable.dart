@@ -1,7 +1,6 @@
 // callable.dart
 
 import 'event.dart';
-import 'functions.dart';
 import 'store.dart';
 
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
@@ -236,7 +235,8 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Event3].
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
-class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
+class Event3Carrier<S, V1, V2, V3>
+    extends Callable3<void, V1, V2, V3> {
   const Event3Carrier(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
@@ -250,8 +250,8 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2, value3) =>
-      processor.process(Parametrized3Event(event, value1, value2, value3));
+  call(value1, value2, value3) => processor
+      .process(Parametrized3Event(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.

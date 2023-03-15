@@ -31,3 +31,8 @@ typedef EventListener<S> = void Function(
   Event<S> event,
   UniqueKey key,
 );
+
+/// A function that accepts an Event as parameter.
+///
+/// The type parameter `P` is the type of the Event.
+typedef EventAcceptor<S> = void Function(Event<S> event);
