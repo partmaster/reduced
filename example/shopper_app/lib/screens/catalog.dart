@@ -8,7 +8,7 @@ import 'package:reduced/reduced.dart';
 import 'package:reduced_provider/reduced_provider.dart';
 
 import '../models/props.dart';
-import '../models/transformer.dart';
+import '../models/mappers.dart';
 
 import '../models/state.dart';
 
@@ -40,8 +40,11 @@ class _AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ReducedConsumer(
-        transformer: (ReducedStore<AppState> store) =>
-            CatalogItemPropsTransformer.transform(store, id),
+        mapper: (
+          AppState state,
+          EventProcessor<AppState> processor,
+        ) =>
+            CatalogItemPropsMapper(state, processor, id),
         builder: builder,
       );
 
@@ -83,8 +86,11 @@ class _MyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ReducedConsumer(
-        transformer: (ReducedStore<AppState> store) =>
-            CatalogItemPropsTransformer.transform(store, id),
+        mapper: (
+          AppState state,
+          EventProcessor<AppState> processor,
+        ) =>
+            CatalogItemPropsMapper(state, processor, id),
         builder: builder,
       );
 

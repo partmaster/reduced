@@ -4,7 +4,7 @@
 
 import 'package:flutter/widgets.dart' show Color;
 import 'package:collection/collection.dart' show DeepCollectionEquality;
-import 'package:reduced/reduced.dart' show VoidCallable;
+import 'package:reduced/callbacks.dart' show VoidCallable;
 
 class CatalogItemProps {
   CatalogItemProps({

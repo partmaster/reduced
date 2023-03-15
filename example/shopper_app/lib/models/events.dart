@@ -15,10 +15,10 @@ class ItemAdded extends Event1<AppState, int> {
       state.copyWith(itemIds: [...state.itemIds, value]);
 }
 
-extension ItemAdedOnReducedStore on ReducedStore<AppState> {
-  CallableAdapter<AppState> itemAdded(int value) => CallableAdapter(
+extension ItemAdedOnEventProcessor on EventProcessor<AppState> {
+  EventCarrier<AppState> itemAdded(int value) => EventCarrier(
         this,
-        Event1Adapter(ItemAdded(), value),
+        Parametrized1Event(ItemAdded(), value),
       );
 }
 
@@ -31,9 +31,9 @@ class ItemRemoved extends Event1<AppState, int> {
       state.copyWith(itemIds: [...state.itemIds]..remove(value));
 }
 
-extension ItemRemovedOnReducedStore on ReducedStore<AppState> {
-  CallableAdapter<AppState> itemRemoved(int value) => CallableAdapter(
+extension ItemRemovedOnEventProcessor on EventProcessor<AppState> {
+  EventCarrier<AppState> itemRemoved(int value) => EventCarrier(
         this,
-        Event1Adapter(ItemRemoved(), value),
+        Parametrized1Event(ItemRemoved(), value),
       );
 }

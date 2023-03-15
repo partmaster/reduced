@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:reduced_provider/reduced_provider.dart';
 
 import '../models/props.dart';
-import '../models/transformer.dart';
+import '../models/mappers.dart';
 
 class MyCart extends StatelessWidget {
   const MyCart({super.key});
@@ -62,14 +62,14 @@ class _CartList extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => ReducedConsumer(
-      transformer: CartPropsTransformer.transform, builder: builder);
+  Widget build(BuildContext context) =>
+      ReducedConsumer(mapper: CartPropsTransformer.new, builder: builder);
 }
 
 class _CartTotal extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => ReducedConsumer(
-      transformer: CartPropsTransformer.transform, builder: builder);
+  Widget build(BuildContext context) =>
+      ReducedConsumer(mapper: CartPropsTransformer.new, builder: builder);
 
   Widget builder({Key? key, required CartProps props}) =>
       Builder(builder: (context) {

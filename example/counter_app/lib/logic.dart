@@ -1,6 +1,7 @@
 // logic.dart
 
 import 'package:flutter/material.dart';
+import 'package:reduced/callbacks.dart';
 import 'package:reduced/reduced.dart';
 
 class CounterIncremented extends Event<int> {
@@ -15,10 +16,13 @@ class Props {
   final VoidCallable onPressed;
 }
 
-Props transformProps(ReducedStore<int> store) => Props(
-      counterText: '${store.state}',
-      onPressed: CallableAdapter(store, CounterIncremented()),
-    );
+class PropsMapper extends Props {
+  PropsMapper(int state, EventProcessor<int> processor)
+      : super(
+          counterText: '$state',
+          onPressed: EventCarrier(processor, CounterIncremented()),
+        );
+}
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.props});

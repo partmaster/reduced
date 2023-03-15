@@ -277,6 +277,7 @@ Implementation of the counter demo app logic with the 'reduced' API without furt
 // logic.dart
 
 import 'package:flutter/material.dart';
+import 'package:reduced/callbacks.dart';
 import 'package:reduced/reduced.dart';
 ```
 
@@ -289,18 +290,21 @@ class CounterIncremented extends Event<int> {
 
 ```dart
 class Props {
-  Props({required this.counterText, required this.onPressed});
+  const Props({required this.counterText, required this.onPressed});
 
   final String counterText;
-  final Callable<void> onPressed;
+  final VoidCallable onPressed;
 }
 ```
 
 ```dart
-Props transformProps(Store<int> store) => Props(
-      counterText: '${store.state}',
-      onPressed: EventCarrier(store, CounterIncremented()),
-    );
+class PropsMapper extends Props {
+  PropsMapper(int state, EventProcessor<int> processor)
+      : super(
+          counterText: '$state',
+          onPressed: EventCarrier(processor, CounterIncremented()),
+        );
+}
 ```
 
 ```dart
@@ -312,7 +316,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('reduced_fluttercommand example'),
+          title: const Text('reduced_bloc example'),
         ),
         body: Center(
           child: Column(
@@ -356,6 +360,7 @@ class ReducedProvider<S> extends Statelesswidget {
     required this.initialState,
     required this.child,
   }) ...
+
   final S initialState, 
   final Widget child,
   ...
@@ -366,12 +371,14 @@ class ReducedProvider<S> extends Statelesswidget {
 
 ```dart
 class ReducedConsumer<S, P> extends StatelessWidget {
-  ReducedConsumer({
-    required this.propsBuilder,
+  const ReducedConsumer({
+    super.key,
+    required this.mapper,
     required this.builder,
   }) ...
-  final PropsBuilder<S, P> propsBuilder,
-  final PropsWidgetBuilder<P> builder,
+
+  final StateToPropsMapper<S, P> mapper;
+  final WidgetFromPropsBuilder<P> builder;
   ...
 }
 ```
@@ -383,6 +390,7 @@ class ReducedScope extends StatelessWidget {
   ReducedScope({
     required this.child,
   }) ...
+  
   final Widget child,
   ...
 }
@@ -412,7 +420,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
             builder: (context) => const ReducedConsumer(
-              propsBuilder: transformProps,
+              mapper: PropsMapper.new,
               builder: MyHomePage.new,
             ),
           ),
