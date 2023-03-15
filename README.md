@@ -70,40 +70,44 @@ All Event implementations must be derived from the ```Event``` base class.
 [*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/counter_app/lib/logic.dart#L6)
 
 
-#### 2.1 PropsBuilder function typedef
+#### 2.1 StateToPropsMapper function typedef
 
 ```dart
-typedef PropsBuilder<S, P> = P Function(Store<S>);
+typedef StateToPropsMapper<S, P> = P Function(
+  S state,
+  EventProcessor<S> processor,
+);
 ```
 
-A ```PropsBuilder``` is a ```Function``` that uses the read and update methods of the ```store``` parameter to transform the current state value into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
-With a ```PropsBuilder``` function usually a ```props``` parameter for a ```PropsWidgetBuilder``` function is created. 
+A ```StateToPropsMapper``` is a ```Function``` that uses the ```state``` and the ```procesor``` parameters to map the current state of a store into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
+With a ```StateToPropsMapper``` function usually a ```props``` parameter for a ```WidgetFromPropsBuilder``` function is created. 
 
 *Samples of ```PropsBuilder``` use*
 
-```final PropsBuilder<S, P1> propsBuilder1;``` \
+```final StateToPropsMapper<S, P1> propsBuilder1;``` \
 [*reduced_mobx/lib/src/mobx_store.dart#L45*](https://github.com/partmaster/reduced_mobx/blob/f9fb41e999f3659c2d804146bdf28cf81d5f098f/lib/src/mobx_store.dart#L45)
 
-```required PropsBuilder<S, P> propsBuilder,``` \
+```required StateToPropsMapper<S, P> propsBuilder,``` \
 [*reduced_bloc/lib/src/bloc_widgets.dart#L33*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L33)
 
 
-#### 2.2 PropsWidgetBuilder function typedef
+#### 2.2 WidgetFromPropsBuilder function typedef
 
 ```dart
-typedef PropsWidgetBuilder<P> = Widget Function({
+typedef WidgetFromPropsBuilder<P> = Widget Function({
+  Key? key,
   required P props,
 });
 ```
 
-A ```PropsWidgetBuilder``` is a ```Function``` that builds a new widget from the properties of the passed ```props``` parameter. That is, the ```props``` parameter must contain all the properties necessary for building the widget. 
+A ```WidgetFromPropsBuilder``` is a ```Function``` that builds a new widget from the properties of the passed ```props``` parameter. That is, the ```props``` parameter must contain all the properties necessary for building the widget. 
 
-*Samples of ```PropsWidgetBuilder``` use*
+*Samples of ```WidgetFromPropsBuilder``` use*
 
-```final PropsWidgetBuilder<MyHomePageProps> builder;``` \
+```final WidgetFromPropsBuilder<MyHomePageProps> builder;``` \
 [*reduced/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/example/counter_app_with_selective_rebuild/lib/consumer.dart#L16)
 
-```required PropsWidgetBuilder<P> builder,``` \
+```required WidgetFromPropsBuilder<P> builder,``` \
 [*reduced_bloc/lib/src/bloc_widgets.dart#L34*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L34)
 
 #### 2.3 Events with additional parameters
@@ -132,8 +136,8 @@ abstract class Event3<S, V1, V2, V3> ...
 #### 2.4 Adapter implementations for Events with parameters
 
 ```dart
-class Event1Adapter<S, V> extends Event<S> {
-  Event1Adapter(this.adaptee, this.value);
+class Parametrized1Event<S, V> extends Event<S> {
+  Parametrized1Event(this.adaptee, this.value);
 
   final Event1<S, V> adaptee;
   final V value;
@@ -146,16 +150,16 @@ class Event1Adapter<S, V> extends Event<S> {
 ```
 
 ```dart
-class Event2Adapter<S, V1, V2> extends Event<S> ...
+class Parametrized2Event<S, V1, V2> extends Event<S> ...
 ```
 
 ```dart
-class Event3Adapter<S, V1, V2, V3> extends Event<S> ...
+class Parametrized3Event<S, V1, V2, V3> extends Event<S> ...
 ```
 
-*Sample of ```Event1Adapter``` use*
+*Sample of ```Parametrized1Event``` use*
 
-```Event1Adapter(ItemRemoved(), value),``` \
+```Parametrized1Event(ItemRemoved(), value),``` \
 [*reduced/example/shopper_app/lib/models/event.dart#L37*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/shopper_app/lib/models/events.dart#L37)
 
 ### 3. Callbacks with value semantics 
@@ -205,38 +209,39 @@ TextFormField(
 );
 ```
 
-#### 3.1 Adapter implementations of Callable(s)
+#### 3.1 EventCariar - Adapter implementations of Callable(s)
+
+An EventCarrier carries an event to an EventProcessor and let the processor process the event.
 
 ```dart
-class EventDispatcher<S> extends Callable<void> {
-  const EventDispatcher(this.store, this.reducer);
+class EventCarrier<S> extends Callable<void> {
+  const EventCarrier(this.processor, this.event);
 
-  final Store<S> store;
-  final Event<S> reducer;
+  final EventProcessor<S> processor;
+  final Event<S> event;
 
-  @override call() => store.reduce(reducer);
-
+  @override call() => processor.process(event);
   @override get hashCode => ...
   @override operator ==(other) => ...
 }
 ```
 
 ```dart
-class Event1Dispatcher<S, V> extends Callable1<void, V> ...
+class Event1Carrier<S, V> extends Callable1<void, V> ...
 ```
 
 ```dart
-class Event2Dispatcher<S, V1, V2> extends Callable2<void, V1, V2> ...
+class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> ...
 ```
 
 ```dart
-class Event3Dispatcher<S, V1, V2, V3> 
+class Event3Carrier<S, V1, V2, V3> 
   extends Callable3<void, V1, V2, V3> ...
 ```
 
-*Samples of ```EventDispatcher``` use*
+*Samples of ```EventCarrier``` use*
 
-```onPressed: EventDispatcher(store, CounterIncremented()),```
+```onPressed: EventCarrier(store, CounterIncremented()),```
 [*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/counter_app/lib/logic.dart#L20)
 
 ## Getting started
@@ -294,7 +299,7 @@ class Props {
 ```dart
 Props transformProps(Store<int> store) => Props(
       counterText: '${store.state}',
-      onPressed: EventDispatcher(store, CounterIncremented()),
+      onPressed: EventCarrier(store, CounterIncremented()),
     );
 ```
 
