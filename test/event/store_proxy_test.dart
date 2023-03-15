@@ -44,8 +44,7 @@ void main() {
   });
   test('StoreProxy hashCode test', () {
     final store = MockStore('0');
-    final objectUnderTest =
-        StoreProxy(() => store.state, store.process, store);
+    final objectUnderTest = StoreProxy(() => store.state, store.process, store);
     expect(objectUnderTest.hashCode, store.hashCode);
   });
   test('StoreProxy operator== test', () {
