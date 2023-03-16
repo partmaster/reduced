@@ -38,7 +38,7 @@
 * add 'EventListener'
 * use two parameters 'state' and 'processor' instead of one 'store' parameter
 
-## 0.4.1
+## 0.4.2
 
 * split parametrized.dart from event.dart
 * split carrier.dart from callable.dart

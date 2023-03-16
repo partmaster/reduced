@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/src/event.dart';
+import 'package:reduced/src/internal.dart';
 import 'package:reduced/src/store.dart';
 
 class MockReducer extends Event<Object> {
