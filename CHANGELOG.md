@@ -38,8 +38,8 @@
 * add 'EventListener'
 * use two parameters 'state' and 'processor' instead of one 'store' parameter
 
-## 0.4.2
+## 0.4.1
 
 * split parametrized.dart from event.dart
 * split carrier.dart from callable.dart
-* add internal.dart for artifacts for 'reduced' implementations
+* split proxy.dart from store.dart
