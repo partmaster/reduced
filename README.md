@@ -6,7 +6,7 @@
 
 # reduced
 
-Minimal API for the basic features of state management frameworks:
+Unified facade for the basic features of state management frameworks:
 
 1. Read a current state value.
 2. Update a current state value.
@@ -17,7 +17,7 @@ The former is provided by this package. The latter is provided by other packages
 
 ## Features
 
-The 'reduced' API covers the following features of a state management framework:
+The 'reduced' facade covers the following features of a state management framework:
 
 ### 1. Read a current state value.
 
@@ -31,10 +31,10 @@ abstract class Store {
 *Samples of ```Store.get state``` use*
 
 ```get state => super.state;``` \
-[*reduced_riverpod/lib/src/riverpod_store.dart#L12*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L12)
+[*reduced_riverpod/lib/src/riverpod_store.dart#L11*](https://github.com/partmaster/reduced_riverpod/blob/80127c6364dad60207c0904bd4c8d1525280c168/lib/src/riverpod_store.dart#L11)
 
 ```get state => _state;``` \
-[*reduced_getx/lib/src/getx_store.dart#L13*](https://github.com/partmaster/reduced_getx/blob/d9087ca57ba25e91af8fac0053335fd3228decb3/lib/src/getx_store.dart#L13)
+[*reduced_getx/lib/src/getx_store.dart#L14*](https://github.com/partmaster/reduced_getx/blob/3df03742215f599f96932e92a51ff5fde56ce1dd/lib/src/getx_store.dart#L14)
 
 ### 2. Update a current state value.
 
@@ -45,16 +45,16 @@ abstract class Store {
 }
 ```
 
-Instead of writing the state value directly, the API provides a ```process``` method that accepts a called ```event``` as a parameter. 
+Instead of writing the state value directly, the facade provides a ```process``` method that accepts a called ```event``` as a parameter. 
 In the ```process``` method the ```event``` is executed with the current state value as a parameter and the return value of the ```event``` is stored as the new state value.
 
 *Samples of ```Store.process``` use*
 
 ```process(event) => add(event);``` \
-[*reduced_bloc/lib/src/bloc_store.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/67d937571a4b231e1d26149681614f1590598d75/lib/src/bloc_store.dart#L15)
+[*reduced_bloc/lib/src/bloc_store.dart#L15*](https://github.com/partmaster/reduced_bloc/blob/04049ab2061503ad4ce93a0f41266a8892696063/lib/src/bloc_store.dart#L15)
 
 ```process(event) => state = event(state);``` \
-[*reduced_riverpod/lib/src/riverpod_store.dart#L15*](https://github.com/partmaster/reduced_riverpod/blob/564f5c8042c5ae7462fe4bc7a085e7a031275eff/lib/src/riverpod_store.dart#L15)
+[*reduced_riverpod/lib/src/riverpod_store.dart#L14*](https://github.com/partmaster/reduced_riverpod/blob/80127c6364dad60207c0904bd4c8d1525280c168/lib/src/riverpod_store.dart#L14)
 
 ```dart
 abstract class Event<S> {
@@ -67,7 +67,7 @@ All Event implementations must be derived from the ```Event``` base class.
 *Samples of ```Event``` use*
 
 ```class CounterIncremented extends Event<int>``` \
-[*reduced/example/counter_app/lib/logic.dart#L6*](https://github.com/partmaster/reduced/blob/03a5357d0566e0537811a5515080aa8cbdee4ff4/example/counter_app/lib/logic.dart#L6)
+[*reduced/example/counter_app/lib/logic.dart#L7*](https://github.com/partmaster/reduced/blob/d010e40e9d5498148ad00a86f003d2d672b92c70/example/counter_app/lib/logic.dart#L7)
 
 
 #### 2.1 StateToPropsMapper function typedef
@@ -82,7 +82,7 @@ typedef StateToPropsMapper<S, P> = P Function(
 A ```StateToPropsMapper``` is a ```Function``` that uses the ```state``` and the ```procesor``` parameters to map the current state of a store into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
 With a ```StateToPropsMapper``` function usually a ```props``` parameter for a ```WidgetFromPropsBuilder``` function is created. 
 
-*Samples of ```PropsBuilder``` use*
+*Samples of ```StateToPropsMapper``` use*
 
 ```final StateToPropsMapper<S, P1> propsBuilder1;``` \
 [*reduced_mobx/lib/src/mobx_store.dart#L45*](https://github.com/partmaster/reduced_mobx/blob/f9fb41e999f3659c2d804146bdf28cf81d5f098f/lib/src/mobx_store.dart#L45)
@@ -209,7 +209,7 @@ TextFormField(
 );
 ```
 
-#### 3.1 EventCariar - Adapter implementations of Callable(s)
+#### 3.1 EventCarrier - Adapter implementations of Callable(s)
 
 An EventCarrier carries an event to an EventProcessor and let the processor process the event.
 
@@ -246,7 +246,7 @@ class Event3Carrier<S, V1, V2, V3>
 
 ## Getting started
 
-In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_bloc'.
+In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' facade for a state management framework, e.g. 'reduced_bloc'.
 
 ```
 dependencies:
@@ -263,7 +263,7 @@ Import package 'reduced' to implement the logic.
 import 'package:reduced/reduced.dart';
 ```
 
-Import choosen implementation package for the 'reduced' API to use the logic, e.g.
+Import choosen implementation package for the 'reduced' facade to use the logic, e.g.
 
 ```dart
 import 'package:reduced_bloc/reduced_bloc.dart';
@@ -271,7 +271,7 @@ import 'package:reduced_bloc/reduced_bloc.dart';
 
 ## Usage (Part 1)
 
-Implementation of the counter demo app logic with the 'reduced' API without further dependencies on state management packages.
+Implementation of the counter demo app logic with the 'reduced' facade without further dependencies on state management packages.
 
 ```dart
 // logic.dart
@@ -346,7 +346,7 @@ In addition to the basic features, state management frameworks also offer these 
 2. Trigger a rebuild on widgets selectively after a state change.
 3. Set up a new scope for state management.
 
-A neutral API has also been developed for this features in the form of the ```registerState``` function and the ```ReducedProvider```, ```ReducedConsumer``` and ```ReducedScope``` widget classes. Since the features differ for the concrete frameworks, the signatures of the function and the widget constructors are also different, so these function and classes were not included in the 'reduced' API, but are part of the additional API of the implementations of the 'reduced' API.
+A neutral facade has also been developed for this features in the form of the ```registerState``` function and the ```ReducedProvider```, ```ReducedConsumer``` and ```ReducedScope``` widget classes. Since the features differ for the concrete frameworks, the signatures of the function and the widget constructors are also different, so these function and classes were not included in the 'reduced' facade, but are part of the additional API of the implementations of the 'reduced' facade.
 
 ### 1. Register a state for management.
 

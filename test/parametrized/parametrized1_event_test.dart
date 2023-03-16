@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/src/event.dart';
+import 'package:reduced/src/parametrized.dart';
 
 class MockEvent1 extends Event1<String, String> {
   @override
@@ -7,12 +8,12 @@ class MockEvent1 extends Event1<String, String> {
 }
 
 void main() {
-  test('Event1Adapter call test', () {
+  test('Parametrized1Event call test', () {
     final event = MockEvent1();
     final objectUnderTest = Parametrized1Event(event, '1');
     expect(objectUnderTest.call('0'), '0 1');
   });
-  test('Event1Adapter hashCode test', () {
+  test('Parametrized1Event hashCode test', () {
     final event1 = MockEvent1();
     final event2 = MockEvent1();
     final objectUnderTest11 = Parametrized1Event(event1, '1');
@@ -24,7 +25,7 @@ void main() {
     expect(objectUnderTest11.hashCode, isNot(objectUnderTest21.hashCode));
     expect(objectUnderTest12.hashCode, isNot(objectUnderTest21.hashCode));
   });
-  test('Event1Adapter operator== test', () {
+  test('Parametrized1Event operator== test', () {
     final event1 = MockEvent1();
     final event2 = MockEvent1();
     final objectUnderTest11 = Parametrized1Event(event1, '1');

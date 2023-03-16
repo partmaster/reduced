@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/src/event.dart';
+import 'package:reduced/src/parametrized.dart';
 
 class MockEvent2 extends Event2<String, String, String> {
   @override

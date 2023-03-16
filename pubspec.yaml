@@ -1,6 +1,6 @@
 name: reduced
-description: Uniform API for the basic features of state management frameworks.
-version: 0.4.0
+description: Unified facade for the basic features of state management frameworks.
+version: 0.4.1
 homepage: https://github.com/partmaster/reduced
 repository: https://github.com/partmaster/reduced.git
 

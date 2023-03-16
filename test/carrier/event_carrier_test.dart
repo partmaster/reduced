@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:reduced/src/callable.dart';
+import 'package:reduced/src/carrier.dart';
 import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
