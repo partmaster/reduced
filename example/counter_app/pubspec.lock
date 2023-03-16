@@ -151,20 +151,20 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.4.0-beta.1"
-      resolved-ref: "3bd9c369e1474b786c1a231384386ae6e8491d4e"
+      ref: "v0.4.1-beta.4"
+      resolved-ref: "2e98d7dd6a53ed2ff921e60c5df055962347f55b"
       url: "https://github.com/partmaster/reduced.git"
     source: git
-    version: "0.4.0-beta.1"
+    version: "0.4.1"
   reduced_bloc:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.4.0-beta.1"
-      resolved-ref: "73ac384bc8afee1d48f9edb8f6589da839426ec9"
+      ref: "2361906"
+      resolved-ref: "23619061b1c60bd73ae9886f8cf7c032ed6d0dc6"
       url: "https://github.com/partmaster/reduced_bloc.git"
     source: git
-    version: "0.4.0-beta.1"
+    version: "0.4.1"
   sky_engine:
     dependency: transitive
     description: flutter
