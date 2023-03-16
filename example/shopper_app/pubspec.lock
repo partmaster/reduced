@@ -139,18 +139,17 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.4.1-beta.4"
-      resolved-ref: "2e98d7dd6a53ed2ff921e60c5df055962347f55b"
-      url: "https://github.com/partmaster/reduced.git"
-    source: git
+      name: reduced
+      sha256: af996d673d01fb6c055363770e49e969978a8be445ecdd64b41db6e4c41c1a9a
+      url: "https://pub.dev"
+    source: hosted
     version: "0.4.1"
   reduced_provider:
     dependency: "direct main"
     description:
       path: "."
-      ref: bb451b2
-      resolved-ref: bb451b21a72596c18166092e3d0813f3c636af59
+      ref: "v0.4.1"
+      resolved-ref: "8a4cef79bceac6be9aed472737a2235a68a35fa3"
       url: "https://github.com/partmaster/reduced_provider.git"
     source: git
     version: "0.4.1"
