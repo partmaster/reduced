@@ -46,8 +46,8 @@
 
 ## 0.4.2
 
-* rename callbacks.dart to callback.dart
 * rename functions.dart to function.dart
-* add FutureCreator, StreamCreator
-* add FutureEventCarrier, FutureCreatorEventCarrier
-* add StreamEventCarrier, StreamCreatorEventCarrier
+* add FutureCreator, FutureCreator1
+* add StreamCreator, StreamCreator1
+* add FutureCreatorEventCarrier, FutureCreator1EventCarrier
+* add StreamCreatorEventCarrier, StreamCreator1EventCarrier

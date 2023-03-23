@@ -172,17 +172,17 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
-class FutureEventCarrier<S, R> extends Callable<void> {
+class FutureCreatorEventCarrier<S, R> extends Callable<void> {
   final EventProcessor<S> processor;
   final Event<S>? onStarted;
-  final Future<R> future;
+  final FutureCreator<R> creator;
   final Event1<S, R> onValue;
-  final Event2<S, Object, StackTrace>? onError;
+  final ErrorEvent<S>? onError;
 
-  FutureEventCarrier({
+  FutureCreatorEventCarrier({
     required this.processor,
+    required this.creator,
     this.onStarted,
-    required this.future,
     required this.onValue,
     this.onError,
   });
@@ -192,7 +192,7 @@ class FutureEventCarrier<S, R> extends Callable<void> {
     if (onStarted != null) {
       processor.process(onStarted!);
     }
-    future.then(
+    creator().then(
       (completedValue) => processor.process(
         Parametrized1Event(
           onValue,
@@ -215,17 +215,17 @@ class FutureEventCarrier<S, R> extends Callable<void> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
 /// The type parameter `P` is the type of the parameter that is transfered form the callable to the  future creator.
-class FutureCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
+class FutureCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
   final EventProcessor<S> processor;
+  final FutureCreator1<R, P> creator;
   final Event<S>? onStarted;
-  final FutureCreator<R, P> futureCreator;
   final Event1<S, R> onValue;
   final ErrorEvent<S>? onError;
 
-  FutureCreatorEventCarrier({
+  FutureCreator1EventCarrier({
     required this.processor,
     this.onStarted,
-    required this.futureCreator,
+    required this.creator,
     required this.onValue,
     this.onError,
   });
@@ -235,7 +235,7 @@ class FutureCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
     if (onStarted != null) {
       processor.process(onStarted!);
     }
-    futureCreator(value).then(
+    creator(value).then(
       (futureValue) => processor.process(
         Parametrized1Event(onValue, futureValue),
       ),
@@ -254,18 +254,18 @@ class FutureCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the stream.
-class StreamEventCarrier<S, R> extends Callable<void> {
+class StreamCreatorEventCarrier<S, R> extends Callable<void> {
   final EventProcessor<S> processor;
+  final StreamCreator<R> creator;
   final Event<S>? onStarted;
-  final Stream<R> stream;
   final Event1<S, R> onData;
   final Event<S>? onDone;
   final ErrorEvent<S>? onError;
 
-  StreamEventCarrier({
+  StreamCreatorEventCarrier({
     required this.processor,
     this.onStarted,
-    required this.stream,
+    required this.creator,
     required this.onData,
     this.onDone,
     this.onError,
@@ -276,7 +276,7 @@ class StreamEventCarrier<S, R> extends Callable<void> {
     if (onStarted != null) {
       processor.process(onStarted!);
     }
-    stream.listen(
+    creator().listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
       onDone: onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
@@ -295,18 +295,18 @@ class StreamEventCarrier<S, R> extends Callable<void> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
 /// The type parameter `P` is the type of the parameter that is transfered form the callable to the stream creator.
-class StreamCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
+class StreamCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
   final EventProcessor<S> processor;
+  final StreamCreator1<R, P> creator;
   final Event<S>? onStarted;
-  final StreamCreator<R, P> streamCreator;
   final Event1<S, R> onData;
   final Event<S>? onDone;
   final ErrorEvent<S>? onError;
 
-  StreamCreatorEventCarrier({
+  StreamCreator1EventCarrier({
     required this.processor,
     this.onStarted,
-    required this.streamCreator,
+    required this.creator,
     required this.onData,
     this.onDone,
     this.onError,
@@ -317,7 +317,7 @@ class StreamCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
     if (onStarted != null) {
       processor.process(onStarted!);
     }
-    streamCreator(value).listen(
+    creator(value).listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
       onDone: onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
