@@ -75,3 +75,5 @@ abstract class Event3<S, V1, V2, V3> {
   @override
   toString() => '$runtimeType';
 }
+
+typedef ErrorEvent<S> = Event2<S, Object, StackTrace>;

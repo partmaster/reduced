@@ -1,4 +1,4 @@
-// functions.dart
+// function.dart
 
 import 'package:flutter/foundation.dart' show Key, UniqueKey;
 import 'package:flutter/widgets.dart' show Widget;

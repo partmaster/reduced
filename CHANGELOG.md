@@ -43,3 +43,11 @@
 * split parametrized.dart from event.dart
 * split carrier.dart from callable.dart
 * split proxy.dart from store.dart
+
+## 0.4.2
+
+* rename callbacks.dart to callback.dart
+* rename functions.dart to function.dart
+* add FutureCreator, StreamCreator
+* add FutureEventCarrier, FutureCreatorEventCarrier
+* add StreamEventCarrier, StreamCreatorEventCarrier

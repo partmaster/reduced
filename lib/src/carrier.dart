@@ -1,6 +1,7 @@
 // carrier.dart
 
 import 'callable.dart';
+import 'creator.dart';
 import 'event.dart';
 import 'parametrized.dart';
 import 'store.dart';
@@ -163,4 +164,167 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
 
   @override
   toString() => '$event@$processor}';
+}
+
+/// An implementation of a callback as a [Store.process](Store.process) call of an event when a future completes.
+///
+/// Or in other words, the callback carries the event with the result of the future to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the future.
+class FutureEventCarrier<S, R> extends Callable<void> {
+  final EventProcessor<S> processor;
+  final Event<S>? onStarted;
+  final Future<R> future;
+  final Event1<S, R> onValue;
+  final Event2<S, Object, StackTrace>? onError;
+
+  FutureEventCarrier({
+    required this.processor,
+    this.onStarted,
+    required this.future,
+    required this.onValue,
+    this.onError,
+  });
+
+  @override
+  call() {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    future.then(
+      (completedValue) => processor.process(
+        Parametrized1Event(
+          onValue,
+          completedValue,
+        ),
+      ),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
+}
+
+/// An implementation of a callback as a [Store.process](Store.process) call of an event when a future completes.
+///
+/// Or in other words, the callback carries the event with the result of the future to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the future.
+/// The type parameter `P` is the type of the parameter that is transfered form the callable to the  future creator.
+class FutureCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
+  final EventProcessor<S> processor;
+  final Event<S>? onStarted;
+  final FutureCreator<R, P> futureCreator;
+  final Event1<S, R> onValue;
+  final ErrorEvent<S>? onError;
+
+  FutureCreatorEventCarrier({
+    required this.processor,
+    this.onStarted,
+    required this.futureCreator,
+    required this.onValue,
+    this.onError,
+  });
+
+  @override
+  call(value) {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    futureCreator(value).then(
+      (futureValue) => processor.process(
+        Parametrized1Event(onValue, futureValue),
+      ),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
+}
+
+/// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
+///
+/// Or in other words, the callback carries the events with the emitted data of the stream to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the stream.
+class StreamEventCarrier<S, R> extends Callable<void> {
+  final EventProcessor<S> processor;
+  final Event<S>? onStarted;
+  final Stream<R> stream;
+  final Event1<S, R> onData;
+  final Event<S>? onDone;
+  final ErrorEvent<S>? onError;
+
+  StreamEventCarrier({
+    required this.processor,
+    this.onStarted,
+    required this.stream,
+    required this.onData,
+    this.onDone,
+    this.onError,
+  });
+
+  @override
+  call() {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    stream.listen(
+      (data) => processor.process(Parametrized1Event(onData, data)),
+      onDone: onDone == null ? null : () => processor.process(onDone!),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
+}
+
+/// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
+///
+/// Or in other words, the callback carries the events with the emitted data of the stream to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the future.
+/// The type parameter `P` is the type of the parameter that is transfered form the callable to the stream creator.
+class StreamCreatorEventCarrier<S, R, P> extends Callable1<void, P> {
+  final EventProcessor<S> processor;
+  final Event<S>? onStarted;
+  final StreamCreator<R, P> streamCreator;
+  final Event1<S, R> onData;
+  final Event<S>? onDone;
+  final ErrorEvent<S>? onError;
+
+  StreamCreatorEventCarrier({
+    required this.processor,
+    this.onStarted,
+    required this.streamCreator,
+    required this.onData,
+    this.onDone,
+    this.onError,
+  });
+
+  @override
+  call(P value) {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    streamCreator(value).listen(
+      (data) => processor.process(Parametrized1Event(onData, data)),
+      onDone: onDone == null ? null : () => processor.process(onDone!),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
 }

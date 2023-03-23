@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/callbacks.dart';
+import 'package:reduced/callback.dart';
 
 void main() {
   test('Callable typedefs assignable test', () {

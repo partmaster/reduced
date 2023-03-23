@@ -3,7 +3,7 @@
 import 'package:flutter/foundation.dart' show UniqueKey, ValueGetter;
 
 import 'src/event.dart';
-import 'src/functions.dart';
+import 'src/function.dart';
 import 'src/store.dart';
 
 /// A StoreProxy is an implementation of interface Store as a proxy.
