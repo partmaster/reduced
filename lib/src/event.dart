@@ -1,5 +1,7 @@
 // event.dart
 
+import 'callable.dart';
+
 /// A Event creates from a given state a new state of the same type.
 ///
 /// Because the Event is used as a property in [Callable] implementations for callbacks,
@@ -76,4 +78,46 @@ abstract class Event3<S, V1, V2, V3> {
   toString() => '$runtimeType';
 }
 
+/// Event class for [Future.then] and [Stream.listen] `onError` callback parameter.
 typedef ErrorEvent<S> = Event2<S, Object, StackTrace>;
+
+/// A decorator that adds an callback to an [Event], that is called after the event.
+///
+/// The type parameter S is the type parameter of the decorated event.
+class AfterEventDecorator<S> extends Event<S> {
+  final Event<S> event;
+  final Callable<void> after;
+
+  AfterEventDecorator(this.event, this.after);
+
+  @override
+  S call(S state) {
+    final result = event(state);
+    after();
+    return result;
+  }
+
+  @override
+  String toString() => '$event';
+}
+
+/// A decorator that adds an callback to an [Event1], that is called after the event.
+///
+/// The type parameter S is the 1st type parameter of the decorated event.
+/// The type parameter P is the 2nd type parameter of the decorated event.
+class AfterEvent1Decorator<S, P> extends Event1<S, P> {
+  final Event1<S, P> event;
+  final Callable<void> after;
+
+  AfterEvent1Decorator(this.event, this.after);
+
+  @override
+  S call(S state, P value) {
+    final result = event(state, value);
+    after();
+    return result;
+  }
+
+  @override
+  String toString() => '$event';
+}
