@@ -69,7 +69,11 @@ class DistinctEventListener<S> {
   DistinctEventListener(this.decorated);
 
   void call(
-      S state, EventProcessor<S> processor, Event<S> event, UniqueKey key) {
+    S state,
+    EventProcessor<S> processor,
+    Event<S> event,
+    UniqueKey key,
+  ) {
     if (key != _key) {
       _key = key;
       decorated(state, processor, event, key);
