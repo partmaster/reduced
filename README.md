@@ -241,8 +241,8 @@ class Action3<S, V1, V2, V3>
 
 *Samples of ```Action``` use*
 
-```onPressed: EventCarrier(store, CounterIncremented()),```
-[*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/counter_app/lib/logic.dart#L20)
+```onPressed: Action(processor, CounterIncremented()),```
+[*reduced/example/counter_app/lib/logic.dart#L23*](https://github.com/partmaster/reduced/blob/734d86d7256e145f53e1459544931914aabc6915/example/counter_app/lib/logic.dart#L23)
 
 ## Getting started
 
