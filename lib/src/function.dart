@@ -27,7 +27,8 @@ typedef WidgetFromPropsBuilder<P> = Widget Function({
 ///
 /// A registered listener is called by the Store at the end of each dispatch method execution.
 typedef EventListener<S> = void Function(
-  Store<S> store,
+  S state,
+  EventProcessor<S> processor,
   Event<S> event,
   UniqueKey key,
 );

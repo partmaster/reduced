@@ -36,9 +36,7 @@ class Action<S> extends Callable<void> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Action &&
-      event == other.event &&
-      processor == other.processor;
+      other is Action && event == other.event && processor == other.processor;
 
   @override
   toString() => '$event@$processor}';
@@ -75,9 +73,7 @@ class Action1<S, V> extends Callable1<void, V> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Action1 &&
-      event == other.event &&
-      processor == other.processor;
+      other is Action1 && event == other.event && processor == other.processor;
 
   @override
   toString() => '$event@$processor}';
@@ -116,9 +112,7 @@ class Action2<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Action2 &&
-      event == other.event &&
-      processor == other.processor;
+      other is Action2 && event == other.event && processor == other.processor;
 
   @override
   toString() => '$event@$processor}';
@@ -146,8 +140,8 @@ class Action3<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2, value3) => processor
-      .process(Parametrized3Event(event, value1, value2, value3));
+  call(value1, value2, value3) =>
+      processor.process(Parametrized3Event(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -158,9 +152,7 @@ class Action3<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Action3 &&
-      event == other.event &&
-      processor == other.processor;
+      other is Action3 && event == other.event && processor == other.processor;
 
   @override
   toString() => '$event@$processor}';
@@ -278,8 +270,7 @@ class StreamAction<S, R> extends Callable<void> {
     }
     creator().listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
-      onDone:
-          onDone == null ? null : () => processor.process(onDone!),
+      onDone: onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
           ? null
           : (error, stacktrace) => processor.process(
@@ -320,8 +311,7 @@ class StreamAction1<S, R, P> extends Callable1<void, P> {
     }
     creator(value).listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
-      onDone:
-          onDone == null ? null : () => processor.process(onDone!),
+      onDone: onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
           ? null
           : (error, stacktrace) => processor.process(

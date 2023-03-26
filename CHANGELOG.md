@@ -53,3 +53,4 @@
 * add StreamCreator, StreamCreator1
 * add FutureAction, FutureAction1
 * add StreamAction, StreamAction1
+* split parameter store of EventListener into state and processor

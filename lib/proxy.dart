@@ -44,7 +44,7 @@ class StoreProxy<S> extends Store<S> {
   @override
   process(event) {
     processor(event);
-    listener?.call(this, event, UniqueKey());
+    listener?.call(state, this, event, UniqueKey());
   }
 
   /// This class delegates [hashCode] to the [identity] object.
@@ -68,10 +68,11 @@ class DistinctEventListener<S> {
 
   DistinctEventListener(this.decorated);
 
-  void call(Store<S> store, Event<S> event, UniqueKey key) {
+  void call(
+      S state, EventProcessor<S> processor, Event<S> event, UniqueKey key) {
     if (key != _key) {
       _key = key;
-      decorated(store, event, key);
+      decorated(state, processor, event, key);
     }
   }
 
