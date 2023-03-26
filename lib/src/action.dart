@@ -1,4 +1,4 @@
-// carrier.dart
+// action.dart
 
 import 'callable.dart';
 import 'creator.dart';
@@ -11,8 +11,8 @@ import 'store.dart';
 /// Or in other words, the callback carries the [Event] to the [Store].
 /// Can be assigned to Widget properties of type [VoidCallback].
 /// The type parameter `S` is the type of the state of the [Store].
-class EventCarrier<S> extends Callable<void> {
-  const EventCarrier(this.processor, this.event);
+class Action<S> extends Callable<void> {
+  const Action(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
@@ -36,7 +36,7 @@ class EventCarrier<S> extends Callable<void> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is EventCarrier &&
+      other is Action &&
       event == other.event &&
       processor == other.processor;
 
@@ -50,8 +50,8 @@ class EventCarrier<S> extends Callable<void> {
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V` is the type of the value of the [Event1].
-class Event1Carrier<S, V> extends Callable1<void, V> {
-  const Event1Carrier(this.processor, this.event);
+class Action1<S, V> extends Callable1<void, V> {
+  const Action1(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
@@ -75,7 +75,7 @@ class Event1Carrier<S, V> extends Callable1<void, V> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event1Carrier &&
+      other is Action1 &&
       event == other.event &&
       processor == other.processor;
 
@@ -90,8 +90,8 @@ class Event1Carrier<S, V> extends Callable1<void, V> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `V1` is the type of the 1st value of the [Event2].
 /// The type parameter `V2` is the type of the 2nd value of the [Event2].
-class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
-  const Event2Carrier(this.processor, this.event);
+class Action2<S, V1, V2> extends Callable2<void, V1, V2> {
+  const Action2(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
@@ -116,7 +116,7 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event2Carrier &&
+      other is Action2 &&
       event == other.event &&
       processor == other.processor;
 
@@ -132,8 +132,8 @@ class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> {
 /// The type parameter `V1` is the type of the 1st value of the [Event3].
 /// The type parameter `V2` is the type of the 2nd value of the [Event3].
 /// The type parameter `V3` is the type of the 3rd value of the [Event3].
-class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
-  const Event3Carrier(this.processor, this.event);
+class Action3<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
+  const Action3(this.processor, this.event);
 
   /// The store to whose method [process](Store.process)
   /// the [event] is passed when the method [call] is called.
@@ -146,8 +146,8 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// Executes the [process](Store.process) method of the [store]
   ///  with the [event] as parameter.
   @override
-  call(value1, value2, value3) =>
-      processor.process(Parametrized3Event(event, value1, value2, value3));
+  call(value1, value2, value3) => processor
+      .process(Parametrized3Event(event, value1, value2, value3));
 
   /// For this class to have value semantics, both constructor parameters
   /// [store] and [event] should have value semantics.
@@ -158,7 +158,7 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
   /// [store] and [event] should have value semantics.
   @override
   operator ==(other) =>
-      other is Event3Carrier &&
+      other is Action3 &&
       event == other.event &&
       processor == other.processor;
 
@@ -172,14 +172,14 @@ class Event3Carrier<S, V1, V2, V3> extends Callable3<void, V1, V2, V3> {
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
-class FutureCreatorEventCarrier<S, R> extends Callable<void> {
+class FutureAction<S, R> extends Callable<void> {
   final EventProcessor<S> processor;
   final Event<S>? onStarted;
   final FutureCreator<R> creator;
   final Event1<S, R> onValue;
   final ErrorEvent<S>? onError;
 
-  FutureCreatorEventCarrier({
+  FutureAction({
     required this.processor,
     required this.creator,
     this.onStarted,
@@ -215,14 +215,14 @@ class FutureCreatorEventCarrier<S, R> extends Callable<void> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
 /// The type parameter `P` is the type of the parameter that is transfered form the callable to the  future creator.
-class FutureCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
+class FutureAction1<S, R, P> extends Callable1<void, P> {
   final EventProcessor<S> processor;
   final FutureCreator1<R, P> creator;
   final Event<S>? onStarted;
   final Event1<S, R> onValue;
   final ErrorEvent<S>? onError;
 
-  FutureCreator1EventCarrier({
+  FutureAction1({
     required this.processor,
     this.onStarted,
     required this.creator,
@@ -254,7 +254,7 @@ class FutureCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
 ///
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the stream.
-class StreamCreatorEventCarrier<S, R> extends Callable<void> {
+class StreamAction<S, R> extends Callable<void> {
   final EventProcessor<S> processor;
   final StreamCreator<R> creator;
   final Event<S>? onStarted;
@@ -262,7 +262,7 @@ class StreamCreatorEventCarrier<S, R> extends Callable<void> {
   final Event<S>? onDone;
   final ErrorEvent<S>? onError;
 
-  StreamCreatorEventCarrier({
+  StreamAction({
     required this.processor,
     this.onStarted,
     required this.creator,
@@ -278,7 +278,8 @@ class StreamCreatorEventCarrier<S, R> extends Callable<void> {
     }
     creator().listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
-      onDone: onDone == null ? null : () => processor.process(onDone!),
+      onDone:
+          onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
           ? null
           : (error, stacktrace) => processor.process(
@@ -295,7 +296,7 @@ class StreamCreatorEventCarrier<S, R> extends Callable<void> {
 /// The type parameter `S` is the type of the state of the [Store].
 /// The type parameter `R` is the type of the future.
 /// The type parameter `P` is the type of the parameter that is transfered form the callable to the stream creator.
-class StreamCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
+class StreamAction1<S, R, P> extends Callable1<void, P> {
   final EventProcessor<S> processor;
   final StreamCreator1<R, P> creator;
   final Event<S>? onStarted;
@@ -303,7 +304,7 @@ class StreamCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
   final Event<S>? onDone;
   final ErrorEvent<S>? onError;
 
-  StreamCreator1EventCarrier({
+  StreamAction1({
     required this.processor,
     this.onStarted,
     required this.creator,
@@ -319,7 +320,8 @@ class StreamCreator1EventCarrier<S, R, P> extends Callable1<void, P> {
     }
     creator(value).listen(
       (data) => processor.process(Parametrized1Event(onData, data)),
-      onDone: onDone == null ? null : () => processor.process(onDone!),
+      onDone:
+          onDone == null ? null : () => processor.process(onDone!),
       onError: onError == null
           ? null
           : (error, stacktrace) => processor.process(

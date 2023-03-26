@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/src/carrier.dart';
+import 'package:reduced/src/action.dart';
 import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
@@ -21,9 +21,9 @@ class MockStore extends Store<String> {
 }
 
 void main() {
-  test('Event1Carrier call test', () {
+  test('Action1 call test', () {
     final store = MockStore('0');
-    final objectUnterTest = Event1Carrier(
+    final objectUnterTest = Action1(
       store,
       MockEvent1(),
     );
@@ -31,50 +31,53 @@ void main() {
     expect(store.state, '0 1');
   });
 
-  test('Event1Carrier hashCode test', () {
+  test('Action1 hashCode test', () {
     final store1 = MockStore('1');
     final reducer1 = MockEvent1();
     final store2 = MockStore('2');
     final reducer2 = MockEvent1();
-    final objectUnterTest11 = Event1Carrier(
+    final objectUnterTest11 = Action1(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Event1Carrier(
+    final objectUnterTest12 = Action1(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Event1Carrier(
+    final objectUnterTest21 = Action1(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Event1Carrier(
+    final objectUnterTest22 = Action1(
       store1,
       reducer1,
     );
     expect(objectUnterTest11.hashCode, objectUnterTest22.hashCode);
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest12.hashCode));
-    expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
-    expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest12.hashCode));
+    expect(objectUnterTest11.hashCode,
+        isNot(objectUnterTest21.hashCode));
+    expect(objectUnterTest12.hashCode,
+        isNot(objectUnterTest21.hashCode));
   });
-  test('Event1Carrier operator== test', () {
+  test('Action1 operator== test', () {
     final store1 = MockStore('1');
     final reducer1 = MockEvent1();
     final store2 = MockStore('2');
     final reducer2 = MockEvent1();
-    final objectUnterTest11 = Event1Carrier(
+    final objectUnterTest11 = Action1(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Event1Carrier(
+    final objectUnterTest12 = Action1(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Event1Carrier(
+    final objectUnterTest21 = Action1(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Event1Carrier(
+    final objectUnterTest22 = Action1(
       store1,
       reducer1,
     );

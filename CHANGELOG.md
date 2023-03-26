@@ -46,8 +46,10 @@
 
 ## 0.4.2
 
+* rename EventCarrier to Action
+* rename carrier.dart to action.dart
 * rename functions.dart to function.dart
 * add FutureCreator, FutureCreator1
 * add StreamCreator, StreamCreator1
-* add FutureCreatorEventCarrier, FutureCreator1EventCarrier
-* add StreamCreatorEventCarrier, StreamCreator1EventCarrier
+* add FutureAction, FutureAction1
+* add StreamAction, StreamAction1
