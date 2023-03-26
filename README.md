@@ -209,13 +209,13 @@ TextFormField(
 );
 ```
 
-#### 3.1 EventCarrier - Adapter implementations of Callable(s)
+#### 3.1 Action - Adapter implementations of Callable(s)
 
-An EventCarrier carries an event to an EventProcessor and let the processor process the event.
+An Action carries an event to an EventProcessor and let the processor process the event.
 
 ```dart
-class EventCarrier<S> extends Callable<void> {
-  const EventCarrier(this.processor, this.event);
+class Action<S> extends Callable<void> {
+  const Action(this.processor, this.event);
 
   final EventProcessor<S> processor;
   final Event<S> event;
@@ -227,19 +227,19 @@ class EventCarrier<S> extends Callable<void> {
 ```
 
 ```dart
-class Event1Carrier<S, V> extends Callable1<void, V> ...
+class Action1<S, V> extends Callable1<void, V> ...
 ```
 
 ```dart
-class Event2Carrier<S, V1, V2> extends Callable2<void, V1, V2> ...
+class Action2<S, V1, V2> extends Callable2<void, V1, V2> ...
 ```
 
 ```dart
-class Event3Carrier<S, V1, V2, V3> 
+class Action3<S, V1, V2, V3> 
   extends Callable3<void, V1, V2, V3> ...
 ```
 
-*Samples of ```EventCarrier``` use*
+*Samples of ```Action``` use*
 
 ```onPressed: EventCarrier(store, CounterIncremented()),```
 [*reduced/example/counter_app/lib/logic.dart#L20*](https://github.com/partmaster/reduced/blob/f61fbcbf610a7b99cdc0fbee3f5b902b4df07d2f/example/counter_app/lib/logic.dart#L20)
@@ -250,11 +250,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 0.4.0
+  reduced: 0.5.0
   reduced_bloc: 
     git: 
       url: https://github.com/partmaster/reduced_bloc.git
-      ref: v0.4.0
+      ref: v0.5.0
 ```
 
 Import package 'reduced' to implement the logic.
@@ -276,7 +276,7 @@ Implementation of the counter demo app logic with the 'reduced' facade without f
 ```dart
 // logic.dart
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:reduced/callbacks.dart';
 import 'package:reduced/reduced.dart';
 ```
@@ -302,7 +302,7 @@ class PropsMapper extends Props {
   PropsMapper(int state, EventProcessor<int> processor)
       : super(
           counterText: '$state',
-          onPressed: EventCarrier(processor, CounterIncremented()),
+          onPressed: Action(processor, CounterIncremented()),
         );
 }
 ```
