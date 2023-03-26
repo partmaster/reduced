@@ -44,7 +44,7 @@
 * split carrier.dart from callable.dart
 * split proxy.dart from store.dart
 
-## 0.4.2
+## 0.5.0
 
 * rename EventCarrier to Action
 * rename carrier.dart to action.dart
