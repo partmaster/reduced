@@ -1,6 +1,6 @@
 // logic.dart
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:reduced/callbacks.dart';
 import 'package:reduced/reduced.dart';
 
@@ -20,7 +20,7 @@ class PropsMapper extends Props {
   PropsMapper(int state, EventProcessor<int> processor)
       : super(
           counterText: '$state',
-          onPressed: EventCarrier(processor, CounterIncremented()),
+          onPressed: Action(processor, CounterIncremented()),
         );
 }
 

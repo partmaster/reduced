@@ -150,20 +150,21 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      name: reduced
-      sha256: af996d673d01fb6c055363770e49e969978a8be445ecdd64b41db6e4c41c1a9a
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.1"
+      path: "."
+      ref: "v0.5.0-beta.1"
+      resolved-ref: "608784fdfe0d4008faafe2db13a03836c685c32a"
+      url: "https://github.com/partmaster/reduced.git"
+    source: git
+    version: "0.5.0"
   reduced_bloc:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.4.1"
-      resolved-ref: f33eb283a44361ea150041e54bbe841a71a34b7b
+      ref: "v0.5.0-beta.1"
+      resolved-ref: d312b35fc96f222882ae4cb9d9280b01b6f1d150
       url: "https://github.com/partmaster/reduced_bloc.git"
     source: git
-    version: "0.4.1"
+    version: "0.5.0-beta.1"
   sky_engine:
     dependency: transitive
     description: flutter

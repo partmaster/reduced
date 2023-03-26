@@ -11,7 +11,7 @@ class MyHomePagePropsMapper extends MyHomePageProps {
     MyAppState state,
     EventProcessor<MyAppState> processor,
   ) : super(
-          onPressed: EventCarrier(processor, CounterIncremented.instance),
+          onPressed: Action(processor, CounterIncremented.instance),
           title: state.title,
         );
 }
