@@ -98,6 +98,15 @@ class AfterEventDecorator<S> extends Event<S> {
   }
 
   @override
+  get hashCode => Object.hash(event, after);
+
+  @override
+  operator ==(other) =>
+      other is AfterEventDecorator<S> &&
+      event == other.event &&
+      after == other.after;
+
+  @override
   String toString() => '$event';
 }
 
@@ -117,6 +126,15 @@ class AfterEvent1Decorator<S, P> extends Event1<S, P> {
     after();
     return result;
   }
+
+  @override
+  get hashCode => Object.hash(event, after);
+
+  @override
+  operator ==(other) =>
+      other is AfterEvent1Decorator<S, P> &&
+      event == other.event &&
+      after == other.after;
 
   @override
   String toString() => '$event';

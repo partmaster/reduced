@@ -57,4 +57,4 @@
 
 ## 0.5.1
 
-* add hashCode and operator== to action classes
+* add hashCode and operator== to action classes and event decorators
