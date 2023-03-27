@@ -54,3 +54,7 @@
 * add FutureAction, FutureAction1
 * add StreamAction, StreamAction1
 * split parameter store of EventListener into state and processor
+
+## 0.5.1
+
+* add hashCode and operator== to action classes
