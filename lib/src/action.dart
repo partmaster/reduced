@@ -198,6 +198,24 @@ class FutureAction<S, R> extends Callable<void> {
               ),
     );
   }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onValue,
+        onError,
+      );
+
+  @override
+  operator ==(other) =>
+      other is FutureAction<S, R> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onValue == other.onValue;
 }
 
 /// An implementation of a callback as a [Store.process](Store.process) call of an event when a future completes.
@@ -238,6 +256,24 @@ class FutureAction1<S, R, P> extends Callable1<void, P> {
               ),
     );
   }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onValue,
+        onError,
+      );
+
+  @override
+  operator ==(other) =>
+      other is FutureAction1<S, R, P> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onValue == other.onValue;
 }
 
 /// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
@@ -278,6 +314,26 @@ class StreamAction<S, R> extends Callable<void> {
               ),
     );
   }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onData,
+        onError,
+        onDone,
+      );
+
+  @override
+  operator ==(other) =>
+      other is StreamAction<S, R> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onDone == other.onDone &&
+      onData == other.onData;
 }
 
 /// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
@@ -319,4 +375,24 @@ class StreamAction1<S, R, P> extends Callable1<void, P> {
               ),
     );
   }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onData,
+        onError,
+        onDone,
+      );
+
+  @override
+  operator ==(other) =>
+      other is StreamAction1<S, R, P> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onDone == other.onDone &&
+      onData == other.onData;
 }
