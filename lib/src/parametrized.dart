@@ -70,8 +70,7 @@ class Parametrized2Event<S, V1, V2> extends Event<S> {
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
 class Parametrized3Event<S, V1, V2, V3> extends Event<S> {
-  Parametrized3Event(
-      this.adapted, this.value1, this.value2, this.value3);
+  Parametrized3Event(this.adapted, this.value1, this.value2, this.value3);
 
   final Event3<S, V1, V2, V3> adapted;
 
