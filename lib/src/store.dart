@@ -31,5 +31,5 @@ abstract class Store<S> extends EventProcessor<S> {
   S get state;
 
   @override
-  toString() => '$runtimeType}';
+  toString() => '$runtimeType';
 }

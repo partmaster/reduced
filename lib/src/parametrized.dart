@@ -27,7 +27,7 @@ class Parametrized1Event<S, V> extends Event<S> {
       value == other.value;
 
   @override
-  toString() => '${adapted.runtimeType}($value)';
+  toString() => '$adapted($value)';
 }
 
 /// Parametrizes an Event with 2 fixed values.
@@ -60,7 +60,7 @@ class Parametrized2Event<S, V1, V2> extends Event<S> {
       value2 == other.value2;
 
   @override
-  toString() => '${adapted.runtimeType}($value1, $value2)';
+  toString() => '$adapted($value1, $value2)';
 }
 
 /// Parametrizes an Event with 3 fixed values.
@@ -70,7 +70,8 @@ class Parametrized2Event<S, V1, V2> extends Event<S> {
 /// The type parameter `V2` is the type of the 2nd value.
 /// The type parameter `V3` is the type of the 3rd value.
 class Parametrized3Event<S, V1, V2, V3> extends Event<S> {
-  Parametrized3Event(this.adapted, this.value1, this.value2, this.value3);
+  Parametrized3Event(
+      this.adapted, this.value1, this.value2, this.value3);
 
   final Event3<S, V1, V2, V3> adapted;
 
@@ -98,5 +99,5 @@ class Parametrized3Event<S, V1, V2, V3> extends Event<S> {
       value3 == other.value3;
 
   @override
-  toString() => '${adapted.runtimeType}($value1, $value2, $value3)';
+  toString() => '$adapted($value1, $value2, $value3)';
 }
