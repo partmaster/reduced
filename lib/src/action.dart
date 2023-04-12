@@ -276,6 +276,65 @@ class FutureAction1<S, R, P> extends Callable1<void, P> {
       onValue == other.onValue;
 }
 
+/// An implementation of a callback as a [Store.process](Store.process) call of an event when a future completes.
+///
+/// Or in other words, the callback carries the event with the result of the future to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the future.
+/// The type parameter `P1` is the type of the 1st parameter that is transfered form the callable to the  future creator.
+/// The type parameter `P2` is the type of the 2nd parameter that is transfered form the callable to the  future creator.
+class FutureAction2<S, R, P1, P2> extends Callable2<void, P1, P2> {
+  final EventProcessor<S> processor;
+  final FutureCreator2<R, P1, P2> creator;
+  final Event<S>? onStarted;
+  final Event1<S, R> onValue;
+  final ErrorEvent<S>? onError;
+
+  FutureAction2({
+    required this.processor,
+    this.onStarted,
+    required this.creator,
+    required this.onValue,
+    this.onError,
+  });
+
+  @override
+  call(value1, value2) {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    creator(value1, value2).then(
+      (futureValue) => processor.process(
+        Parametrized1Event(onValue, futureValue),
+      ),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onValue,
+        onError,
+      );
+
+  @override
+  operator ==(other) =>
+      other is FutureAction2<S, R, P1, P2> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onValue == other.onValue;
+}
+
 /// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
 ///
 /// Or in other words, the callback carries the events with the emitted data of the stream to the [Store].
@@ -389,6 +448,68 @@ class StreamAction1<S, R, P> extends Callable1<void, P> {
   @override
   operator ==(other) =>
       other is StreamAction1<S, R, P> &&
+      processor == other.processor &&
+      creator == other.creator &&
+      onStarted == other.onStarted &&
+      onError == other.onError &&
+      onDone == other.onDone &&
+      onData == other.onData;
+}
+
+/// An implementation of a callback as multiple [Store.process](Store.process) calls of events when a stream emits.
+///
+/// Or in other words, the callback carries the events with the emitted data of the stream to the [Store].
+///
+/// The type parameter `S` is the type of the state of the [Store].
+/// The type parameter `R` is the type of the future.
+/// The type parameter `P1` is the type of the 1st parameter that is transfered form the callable to the stream creator.
+/// The type parameter `P2` is the type of the 2nd parameter that is transfered form the callable to the stream creator.
+class StreamAction2<S, R, P1, P2> extends Callable2<void, P1, P2> {
+  final EventProcessor<S> processor;
+  final StreamCreator2<R, P1, P2> creator;
+  final Event<S>? onStarted;
+  final Event1<S, R> onData;
+  final Event<S>? onDone;
+  final ErrorEvent<S>? onError;
+
+  StreamAction2({
+    required this.processor,
+    this.onStarted,
+    required this.creator,
+    required this.onData,
+    this.onDone,
+    this.onError,
+  });
+
+  @override
+  call(P1 value1, P2 value2) {
+    if (onStarted != null) {
+      processor.process(onStarted!);
+    }
+    creator(value1, value2).listen(
+      (data) => processor.process(Parametrized1Event(onData, data)),
+      onDone: onDone == null ? null : () => processor.process(onDone!),
+      onError: onError == null
+          ? null
+          : (error, stacktrace) => processor.process(
+                Parametrized2Event(onError!, error, stacktrace),
+              ),
+    );
+  }
+
+  @override
+  get hashCode => Object.hash(
+        processor,
+        onStarted,
+        creator,
+        onData,
+        onError,
+        onDone,
+      );
+
+  @override
+  operator ==(other) =>
+      other is StreamAction2<S, R, P1, P2> &&
       processor == other.processor &&
       creator == other.creator &&
       onStarted == other.onStarted &&
