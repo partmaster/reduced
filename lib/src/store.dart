@@ -30,6 +30,9 @@ abstract class Store<S> extends EventProcessor<S> {
   /// The state is read again from the state management instance with each call.
   S get state;
 
+  /// Returns the current store data.
+  StoreData<S> get data => StoreData(state, this);
+
   @override
   toString() => '$runtimeType';
 }
