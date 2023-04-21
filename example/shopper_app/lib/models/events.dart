@@ -16,7 +16,7 @@ class ItemAdded extends Event1<AppState, int> {
 }
 
 extension ItemAdedOnEventProcessor on EventProcessor<AppState> {
-  Action<AppState> itemAdded(int value) => Action(
+  Command<AppState> itemAdded(int value) => Command(
         this,
         Parametrized1Event(ItemAdded(), value),
       );
@@ -32,7 +32,7 @@ class ItemRemoved extends Event1<AppState, int> {
 }
 
 extension ItemRemovedOnEventProcessor on EventProcessor<AppState> {
-  Action<AppState> itemRemoved(int value) => Action(
+  Command<AppState> itemRemoved(int value) => Command(
         this,
         Parametrized1Event(ItemRemoved(), value),
       );

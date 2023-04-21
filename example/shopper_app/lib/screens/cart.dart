@@ -63,13 +63,13 @@ class _CartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      ReducedConsumer(mapper: CartPropsTransformer.new, builder: builder);
+      ReducedConsumer(mapper: CartPropsMapper.new, builder: builder);
 }
 
 class _CartTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
-      ReducedConsumer(mapper: CartPropsTransformer.new, builder: builder);
+      ReducedConsumer(mapper: CartPropsMapper.new, builder: builder);
 
   Widget builder({Key? key, required CartProps props}) =>
       Builder(builder: (context) {

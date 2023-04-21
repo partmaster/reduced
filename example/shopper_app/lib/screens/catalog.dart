@@ -41,10 +41,10 @@ class _AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ReducedConsumer(
         mapper: (
-          AppState state,
-          EventProcessor<AppState> processor,
+          StoreSnapshot<AppState> snapshot,
+          String? routeName,
         ) =>
-            CatalogItemPropsMapper(state, processor, id),
+            CatalogItemPropsMapper(snapshot, id),
         builder: builder,
       );
 
@@ -87,10 +87,10 @@ class _MyListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ReducedConsumer(
         mapper: (
-          AppState state,
-          EventProcessor<AppState> processor,
+          StoreSnapshot<AppState> snapshot,
+          String? routeName,
         ) =>
-            CatalogItemPropsMapper(state, processor, id),
+            CatalogItemPropsMapper(snapshot, id),
         builder: builder,
       );
 

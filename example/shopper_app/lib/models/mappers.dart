@@ -10,30 +10,32 @@ import 'events.dart';
 
 class CatalogItemPropsMapper extends CatalogItemProps {
   CatalogItemPropsMapper(
-    AppState state,
-    EventProcessor<AppState> processor,
+    StoreSnapshot<AppState> snapshot,
     int id,
-  ) : this._(state, processor, state.getById(id));
+  ) : this._(snapshot, snapshot.state.getById(id));
 
   CatalogItemPropsMapper._(
-      AppState state, EventProcessor<AppState> processor, Item item)
-      : super(
+    StoreSnapshot<AppState> snapshot,
+    Item item,
+  ) : super(
             name: item.name,
             color: item.color,
-            onPressed: state.itemIds.contains(item.id)
+            onPressed: snapshot.state.itemIds.contains(item.id)
                 ? null
-                : processor.itemAdded(item.id));
+                : snapshot.processor.itemAdded(item.id));
 }
 
-class CartPropsTransformer extends CartProps {
-  CartPropsTransformer(AppState state, EventProcessor<AppState> processor)
-      : super(
-          totalPrice: '${state.totalPrice}',
-          items: state.itemIds
-              .map((e) => state.getById(e))
+class CartPropsMapper extends CartProps {
+  CartPropsMapper(
+    StoreSnapshot<AppState> snapshot,
+    String? routeName,
+  ) : super(
+          totalPrice: '${snapshot.state.totalPrice}',
+          items: snapshot.state.itemIds
+              .map((e) => snapshot.state.getById(e))
               .map((e) => CartItemProps(
                     name: e.name,
-                    onPressed: processor.itemRemoved(e.id),
+                    onPressed: snapshot.processor.itemRemoved(e.id),
                   ))
               .toList(),
         );

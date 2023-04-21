@@ -9,15 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reduced: 0.5.0
-#  reduced: 
-#    git: 
-#      url: https://github.com/partmaster/reduced.git
-#      ref: v0.5.0-beta.1
+#  reduced: 0.6.0
+  reduced: 
+    git:
+      url: https://github.com/partmaster/reduced.git
+      ref: '337e823'
+  provider: ^6.0.5
   reduced_bloc: 
     git: 
       url: https://github.com/partmaster/reduced_bloc.git
-      ref: v0.5.0
+      ref: '2b8b5cf'
 
 dev_dependencies:
   flutter_test:

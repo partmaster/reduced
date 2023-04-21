@@ -140,7 +140,7 @@ packages:
     source: hosted
     version: "1.8.2"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       sha256: cdbe7530b12ecd9eb455bdaa2fcb8d4dad22e80b8afb4798b41479d5ce26847f
@@ -151,20 +151,20 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.5.0-beta.1"
-      resolved-ref: "608784fdfe0d4008faafe2db13a03836c685c32a"
+      ref: "337e823"
+      resolved-ref: "337e823883cefe092792e8658cf7c3def99fec93"
       url: "https://github.com/partmaster/reduced.git"
     source: git
-    version: "0.5.0"
+    version: "0.6.0"
   reduced_bloc:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.5.0-beta.1"
-      resolved-ref: d312b35fc96f222882ae4cb9d9280b01b6f1d150
+      ref: "2b8b5cf"
+      resolved-ref: "2b8b5cffffac69af775ca4b551b0d474d1af0265"
       url: "https://github.com/partmaster/reduced_bloc.git"
     source: git
-    version: "0.5.0-beta.1"
+    version: "0.6.0"
   sky_engine:
     dependency: transitive
     description: flutter
