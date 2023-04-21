@@ -33,3 +33,13 @@ abstract class Store<S> extends EventProcessor<S> {
   @override
   toString() => '$runtimeType';
 }
+
+/// A tupel of a state and a processor.
+///
+/// The type parameter `S` is the type of the state.
+class StoreData<S> {
+  final S state;
+  final EventProcessor<S> processor;
+
+  StoreData(this.state, this.processor);
+}

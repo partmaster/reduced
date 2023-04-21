@@ -1,5 +1,7 @@
 // callable.dart
 
+import 'package:collection/collection.dart';
+
 /// An abstraction for callbacks without parameters in the form of a class to easily implement value semantics.
 ///
 /// Can be assigned to Widget callback properties without parameters, e.g. [VoidCallback]
@@ -104,4 +106,26 @@ abstract class Callable3<R, V1, V2, V3> {
 
   @override
   toString() => '$runtimeType';
+}
+
+/// A list of callables that can be used as single callable.
+class CompositeCallable extends Callable<void> {
+  const CompositeCallable(this.callables);
+
+  final List<Callable<void>> callables;
+
+  @override
+  call() {
+    for (final callable in callables) {
+      callable();
+    }
+  }
+
+  @override
+  get hashCode => Object.hashAll(callables);
+
+  @override
+  operator ==(other) =>
+      other is CompositeCallable &&
+      const ListEquality().equals(callables, other.callables);
 }

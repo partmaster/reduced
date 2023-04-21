@@ -38,13 +38,15 @@ class StoreProxy<S> extends Store<S> {
   /// Is called each time after an event is processed and the new state is stored.
   final EventListener<S>? listener;
 
+  StoreData<S> get data => StoreData(state, this);
+
   @override
   get state => _state();
 
   @override
   process(event) {
     processor(event);
-    listener?.call(state, this, event, UniqueKey());
+    listener?.call(data, event, UniqueKey());
   }
 
   /// This class delegates [hashCode] to the [identity] object.
@@ -69,14 +71,13 @@ class DistinctEventListener<S> {
   DistinctEventListener(this.decorated);
 
   void call(
-    S state,
-    EventProcessor<S> processor,
+    StoreData<S> data,
     Event<S> event,
     UniqueKey key,
   ) {
     if (key != _key) {
       _key = key;
-      decorated(state, processor, event, key);
+      decorated(data, event, key);
     }
   }
 
