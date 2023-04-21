@@ -9,15 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-#  reduced: 0.6.0
-  reduced: 
-    git:
-      url: https://github.com/partmaster/reduced.git
-      ref: '337e823'
+  reduced: 0.6.0
+#  reduced: 
+#    git:
+#      url: https://github.com/partmaster/reduced.git
+#      ref: '337e823'
   reduced_setstate: 
     git: 
       url: https://github.com/partmaster/reduced_setstate.git
-      ref: 'd689664'
+      ref: v0.6.0
 
 dev_dependencies:
   flutter_test:
