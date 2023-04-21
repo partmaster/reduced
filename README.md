@@ -70,25 +70,22 @@ All Event implementations must be derived from the ```Event``` base class.
 [*reduced/example/counter_app/lib/logic.dart#L7*](https://github.com/partmaster/reduced/blob/d010e40e9d5498148ad00a86f003d2d672b92c70/example/counter_app/lib/logic.dart#L7)
 
 
-#### 2.1 StateToPropsMapper function typedef
+#### 2.1 SnapshotToPropsMapper function typedef
 
 ```dart
-typedef StateToPropsMapper<S, P> = P Function(
-  S state,
-  EventProcessor<S> processor,
+typedef SnapshotToPropsMapper<S, P> = P Function(
+  StoreSnapshot<S> snapshot,
+  String? routeName,
 );
 ```
 
-A ```StateToPropsMapper``` is a ```Function``` that uses the ```state``` and the ```procesor``` parameters to map the current state of a store into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
-With a ```StateToPropsMapper``` function usually a ```props``` parameter for a ```WidgetFromPropsBuilder``` function is created. 
+A ```SnapshotToPropsMapper``` is a ```Function``` that uses the ```snapshot``` and the ```routeName``` parameters to map the current state of a store into a derived 'selective' state value. Only the changes to this derived 'selective' state value determine whether a rebuild of the widget is triggered. In order for changes to be detected correctly, the derived 'selective' state value must have value semantics. \
+With a ```SnapshotToPropsMapper``` function usually a ```props``` parameter for a ```WidgetFromPropsBuilder``` function is created. 
 
-*Samples of ```StateToPropsMapper``` use*
+*Samples of ```SnapshotToPropsMapper``` use*
 
-```final StateToPropsMapper<S, P1> propsBuilder1;``` \
-[*reduced_mobx/lib/src/mobx_store.dart#L45*](https://github.com/partmaster/reduced_mobx/blob/f9fb41e999f3659c2d804146bdf28cf81d5f098f/lib/src/mobx_store.dart#L45)
-
-```required StateToPropsMapper<S, P> propsBuilder,``` \
-[*reduced_bloc/lib/src/bloc_widgets.dart#L33*](https://github.com/partmaster/reduced_bloc/blob/c2e10cd045f50a69ec4b29490cab68bcdbfb28e8/lib/src/bloc_widgets.dart#L33)
+```required SnapshotToPropsMapper<S, P> mapper,``` \
+[*reduced_bloc/lib/src/bloc_widgets.dart#L33*](https://github.com/partmaster/reduced_bloc/blob/9bf52f6ee3f0bc45c3155931e64c612fc69d68c2/lib/src/bloc_widgets.dart#L33)
 
 
 #### 2.2 WidgetFromPropsBuilder function typedef
@@ -209,13 +206,13 @@ TextFormField(
 );
 ```
 
-#### 3.1 Action - Adapter implementations of Callable(s)
+#### 3.1 Command - Adapter implementations of Callable(s)
 
-An Action carries an event to an EventProcessor and let the processor process the event.
+An Command carries an event to an EventProcessor and let the processor process the event.
 
 ```dart
-class Action<S> extends Callable<void> {
-  const Action(this.processor, this.event);
+class Command<S> extends Callable<void> {
+  const Command(this.processor, this.event);
 
   final EventProcessor<S> processor;
   final Event<S> event;
@@ -227,22 +224,22 @@ class Action<S> extends Callable<void> {
 ```
 
 ```dart
-class Action1<S, V> extends Callable1<void, V> ...
+class Command1<S, V> extends Callable1<void, V> ...
 ```
 
 ```dart
-class Action2<S, V1, V2> extends Callable2<void, V1, V2> ...
+class Command2<S, V1, V2> extends Callable2<void, V1, V2> ...
 ```
 
 ```dart
-class Action3<S, V1, V2, V3> 
+class Command3<S, V1, V2, V3> 
   extends Callable3<void, V1, V2, V3> ...
 ```
 
-*Samples of ```Action``` use*
+*Samples of ```Command``` use*
 
-```onPressed: Action(processor, CounterIncremented()),```
-[*reduced/example/counter_app/lib/logic.dart#L23*](https://github.com/partmaster/reduced/blob/734d86d7256e145f53e1459544931914aabc6915/example/counter_app/lib/logic.dart#L23)
+```onPressed: Command(snapshot.processor, CounterIncremented()),```
+[*reduced/example/counter_app/lib/logic.dart#L23*](https://github.com/partmaster/reduced/blob/a6b59746d3d40e62dfd04dc20ba16643800638d2/example/counter_app/lib/logic.dart#L23)
 
 ## Getting started
 
@@ -250,11 +247,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 0.5.0
+  reduced: 0.6.0
   reduced_bloc: 
     git: 
       url: https://github.com/partmaster/reduced_bloc.git
-      ref: v0.5.0
+      ref: v0.6.0
 ```
 
 Import package 'reduced' to implement the logic.
@@ -279,35 +276,30 @@ Implementation of the counter demo app logic with the 'reduced' facade without f
 import 'package:flutter/material.dart' hide Action;
 import 'package:reduced/callbacks.dart';
 import 'package:reduced/reduced.dart';
-```
 
-```dart
 class CounterIncremented extends Event<int> {
   @override
   int call(int state) => state + 1;
 }
-```
 
-```dart
 class Props {
   const Props({required this.counterText, required this.onPressed});
 
   final String counterText;
   final VoidCallable onPressed;
 }
-```
 
-```dart
 class PropsMapper extends Props {
-  PropsMapper(int state, EventProcessor<int> processor)
+  PropsMapper(StoreSnapshot<int> snapshot, String? routeName)
       : super(
-          counterText: '$state',
-          onPressed: Action(processor, CounterIncremented()),
+          counterText: '${snapshot.state}',
+          onPressed: Command(
+            snapshot.processor,
+            CounterIncremented(),
+          ),
         );
 }
-```
 
-```dart
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.props});
 
@@ -377,7 +369,7 @@ class ReducedConsumer<S, P> extends StatelessWidget {
     required this.builder,
   }) ...
 
-  final StateToPropsMapper<S, P> mapper;
+  final SnapshotToPropsMapper<S, P> mapper;
   final WidgetFromPropsBuilder<P> builder;
   ...
 }
