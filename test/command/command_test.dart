@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:reduced/src/action.dart';
+import 'package:reduced/src/command.dart';
 import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
@@ -24,9 +24,9 @@ class MockStore extends Store<Object> {
 }
 
 void main() {
-  test('EventCarrier call test', () {
+  test('Command call test', () {
     final store = MockStore(0);
-    final objectUnterTest = Action(
+    final objectUnterTest = Command(
       store,
       MockEvent(1),
     );
@@ -34,24 +34,24 @@ void main() {
     expect(store.state, 1);
   });
 
-  test('Action hashCode test', () {
+  test('Command hashCode test', () {
     final store1 = MockStore(1);
     final reducer1 = MockEvent(1);
     final store2 = MockStore(2);
     final reducer2 = MockEvent(2);
-    final objectUnterTest11 = Action(
+    final objectUnterTest11 = Command(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Action(
+    final objectUnterTest12 = Command(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Action(
+    final objectUnterTest21 = Command(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Action(
+    final objectUnterTest22 = Command(
       store1,
       reducer1,
     );
@@ -60,24 +60,24 @@ void main() {
     expect(objectUnterTest11.hashCode, isNot(objectUnterTest21.hashCode));
     expect(objectUnterTest12.hashCode, isNot(objectUnterTest21.hashCode));
   });
-  test('Action operator== test', () {
+  test('Command operator== test', () {
     final store1 = MockStore(1);
     final reducer1 = MockEvent(1);
     final store2 = MockStore(2);
     final reducer2 = MockEvent(2);
-    final objectUnterTest11 = Action(
+    final objectUnterTest11 = Command(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Action(
+    final objectUnterTest12 = Command(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Action(
+    final objectUnterTest21 = Command(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Action(
+    final objectUnterTest22 = Command(
       store1,
       reducer1,
     );

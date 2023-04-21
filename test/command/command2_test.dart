@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reduced/src/action.dart';
+import 'package:reduced/src/command.dart';
 import 'package:reduced/src/event.dart';
 import 'package:reduced/src/store.dart';
 
@@ -23,7 +23,7 @@ class MockStore extends Store<String> {
 void main() {
   test('Action2 call test', () {
     final store = MockStore('0');
-    final objectUnterTest = Action2(
+    final objectUnterTest = Command2(
       store,
       MockEvent2(),
     );
@@ -36,19 +36,19 @@ void main() {
     final reducer1 = MockEvent2();
     final store2 = MockStore('2');
     final reducer2 = MockEvent2();
-    final objectUnterTest11 = Action2(
+    final objectUnterTest11 = Command2(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Action2(
+    final objectUnterTest12 = Command2(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Action2(
+    final objectUnterTest21 = Command2(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Action2(
+    final objectUnterTest22 = Command2(
       store1,
       reducer1,
     );
@@ -62,19 +62,19 @@ void main() {
     final reducer1 = MockEvent2();
     final store2 = MockStore('2');
     final reducer2 = MockEvent2();
-    final objectUnterTest11 = Action2(
+    final objectUnterTest11 = Command2(
       store1,
       reducer1,
     );
-    final objectUnterTest12 = Action2(
+    final objectUnterTest12 = Command2(
       store1,
       reducer2,
     );
-    final objectUnterTest21 = Action2(
+    final objectUnterTest21 = Command2(
       store2,
       reducer1,
     );
-    final objectUnterTest22 = Action2(
+    final objectUnterTest22 = Command2(
       store1,
       reducer1,
     );

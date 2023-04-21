@@ -57,5 +57,9 @@
 
 ## 0.5.1
 
-* add hashCode and operator== to action classes and event decorators
-* add StoreData and CompositeCallable
+* rename Action to Command
+* rename action.dart to command.dart
+* rename FutureAction to FutureCommand
+* rename StreamCommand to StreamCommand
+* add hashCode and operator== to command classes and event decorators
+* add StoreSnapshot and CompositeCallable

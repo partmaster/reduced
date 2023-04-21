@@ -38,7 +38,8 @@ class StoreProxy<S> extends Store<S> {
   /// Is called each time after an event is processed and the new state is stored.
   final EventListener<S>? listener;
 
-  StoreData<S> get data => StoreData(state, this);
+  @override
+  StoreSnapshot<S> get data => StoreSnapshot(state, this);
 
   @override
   get state => _state();
@@ -71,7 +72,7 @@ class DistinctEventListener<S> {
   DistinctEventListener(this.decorated);
 
   void call(
-    StoreData<S> data,
+    StoreSnapshot<S> data,
     Event<S> event,
     UniqueKey key,
   ) {
