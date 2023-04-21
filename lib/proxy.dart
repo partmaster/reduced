@@ -39,7 +39,7 @@ class StoreProxy<S> extends Store<S> {
   final EventListener<S>? listener;
 
   @override
-  StoreSnapshot<S> get data => StoreSnapshot(state, this);
+  StoreSnapshot<S> get snapshot => StoreSnapshot(state, this);
 
   @override
   get state => _state();
@@ -47,7 +47,7 @@ class StoreProxy<S> extends Store<S> {
   @override
   process(event) {
     processor(event);
-    listener?.call(data, event, UniqueKey());
+    listener?.call(snapshot, event, UniqueKey());
   }
 
   /// This class delegates [hashCode] to the [identity] object.

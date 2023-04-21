@@ -31,7 +31,7 @@ abstract class Store<S> extends EventProcessor<S> {
   S get state;
 
   /// Returns the current store data.
-  StoreSnapshot<S> get data => StoreSnapshot(state, this);
+  StoreSnapshot<S> get snapshot => StoreSnapshot(state, this);
 
   @override
   toString() => '$runtimeType';
