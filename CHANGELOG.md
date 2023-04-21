@@ -55,7 +55,7 @@
 * add StreamAction, StreamAction1
 * split parameter store of EventListener into state and processor
 
-## 0.5.1
+## 0.6.0
 
 * rename Action to Command
 * rename action.dart to command.dart
