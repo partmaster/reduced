@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart' show Key, UniqueKey;
 import 'package:flutter/widgets.dart' show Widget;
+import 'package:reduced/src/routing.dart';
 
 import 'event.dart';
 import 'store.dart';
@@ -12,7 +13,7 @@ import 'store.dart';
 /// The type parameter `P` is the return type of the function.
 typedef SnapshotToPropsMapper<S, P> = P Function(
   StoreSnapshot<S> snapshot,
-  String? routeName,
+  RoutingContext routingContext,
 );
 
 /// A function that maps double store data to props.
@@ -23,7 +24,7 @@ typedef SnapshotToPropsMapper<S, P> = P Function(
 typedef SnapshotsToPropsMapper<S1, S2, P> = P Function(
   StoreSnapshot<S1> snapshot1,
   StoreSnapshot<S2> snapshot2,
-  String? routeName,
+  RoutingContext routingContext,
 );
 
 // A function that builds a Widget from a props parameter.

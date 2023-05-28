@@ -46,8 +46,8 @@ void main() {
     final DragEndCallback dragEndCallback = callable as DragEndCallable;
     final DraggableCanceledCallback draggableCanceledCallback =
         callable as DraggableCanceledCallable;
-    final DragSelectionUpdateCallback dragSelectionUpdateCallback =
-        callable as DragSelectionUpdateCallable;
+    //  final DragSelectionUpdateCallback dragSelectionUpdateCallback =
+    //      callable as DragSelectionUpdateCallable;
     final DragTargetAccept<String> dragTargetAccept =
         callable as DragTargetAcceptCallable<String>;
     final DragTargetAcceptWithDetails<Object> dragTargetAcceptWithDetails =
@@ -192,8 +192,8 @@ void main() {
     final StateSetter stateSetter = callable as StateSetterCallable;
 // CHECK check flutter version
 //    final TapRegionCallback tapRegionCallback = callable as TapRegionCallable;
-    final TextEditingValueCallback textEditingValueCallback =
-        callable as TextEditingValueCallable;
+//    final TextEditingValueCallback textEditingValueCallback =
+//        callable as TextEditingValueCallable;
     final TweenConstructor<String> tweenConstructor =
         callable as TweenConstructorCallable<String>;
     final TweenVisitor tweenVisitor = callable as TweenVisitorCallable;

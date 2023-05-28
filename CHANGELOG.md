@@ -63,3 +63,4 @@
 * rename StreamCommand to StreamCommand
 * add hashCode and operator== to command classes and event decorators
 * add StoreSnapshot and CompositeCallable
+* add RoutingContext
