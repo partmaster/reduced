@@ -6,4 +6,5 @@ export 'src/callable.dart';
 export 'src/command.dart';
 export 'src/parametrized.dart';
 export 'src/function.dart';
+export 'src/routing.dart';
 export 'src/creator.dart';
