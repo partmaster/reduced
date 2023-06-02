@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 /// class for getting route data.
 class RoutingState {
   const RoutingState({
@@ -11,6 +13,21 @@ class RoutingState {
   final Map<String, String> pathParameters;
   final Map<String, String> queryParameters;
   final Map<String, List<String>> queryParametersAll;
+  @override
+  get hashCode => Object.hash(
+        name,
+        const MapEquality().hash(pathParameters),
+        const MapEquality().hash(queryParameters),
+        const MapEquality().hash(queryParametersAll),
+      );
+
+  @override
+  operator ==(other) =>
+      other is RoutingState &&
+      name == other.name &&
+      const MapEquality().equals(pathParameters, other.pathParameters) &&
+      const MapEquality().equals(queryParameters, other.queryParameters) &&
+      const MapEquality().equals(queryParametersAll, other.queryParametersAll);
 }
 
 /// interface for push and pop pages via routes.
@@ -41,6 +58,13 @@ class RoutingContext {
   const RoutingContext(this.state, this.stack);
   final RoutingState state;
   final RoutingStack stack;
+
+  @override
+  get hashCode => Object.hash(state, stack);
+
+  @override
+  operator ==(other) =>
+      other is RoutingContext && state == other.state && stack == other.stack;
 }
 
 class NilRoutingStack extends RoutingStack {
