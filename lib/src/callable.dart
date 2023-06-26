@@ -129,3 +129,28 @@ class CompositeCallable extends Callable<void> {
       other is CompositeCallable &&
       const ListEquality().equals(callables, other.callables);
 }
+
+/// Callable that delegates the call to a function.
+class SimpleCallable<R> extends Callable<R> {
+  final R Function() delegate;
+
+  SimpleCallable(this.delegate);
+
+  @override
+  R call() => delegate();
+}
+
+/// Callable that delegates the call to a function
+/// and hashCode and operator== to an identity object.
+class IdentityCallable<R> extends SimpleCallable<R> {
+  final Object identity;
+
+  IdentityCallable(super.delegate, this.identity);
+
+  @override
+  get hashCode => identity.hashCode;
+
+  @override
+  operator ==(other) =>
+      other is IdentityCallable<R> && identity == other.identity;
+}

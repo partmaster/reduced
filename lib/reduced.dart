@@ -8,3 +8,4 @@ export 'src/parametrized.dart';
 export 'src/function.dart';
 export 'src/routing.dart';
 export 'src/creator.dart';
+export 'src/mapping.dart';
