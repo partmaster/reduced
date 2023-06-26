@@ -18,6 +18,6 @@ class MappingContext<S1, S2, RC> {
 /// The type parameter `S2` is the type of the page [StoreSnapshot].
 /// The type parameter `RC` is the type of the routing context.
 /// The type parameter `P` is the return type of the function.
-typedef PropsMapper<S1, S2, RC, P> = P Function(
+typedef MappingContextToPropsMapper<S1, S2, RC, P> = P Function(
   MappingContext<S1, S2, RC> mappingContext,
 );
