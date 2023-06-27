@@ -27,13 +27,21 @@ typedef SnapshotsToPropsMapper<S1, S2, P> = P Function(
   RoutingContext routingContext,
 );
 
-// A function that builds a Widget from a props parameter.
+/// A function that builds a Widget from a props parameter.
 ///
 /// The type parameter `P` is the type of the parameter.
 typedef WidgetFromPropsBuilder<P> = Widget Function({
   Key? key,
   required P props,
 });
+
+/// A function that provides an InitialState from a RoutingState parameter.
+///
+/// The type parameter `IS` is the type of the InitialState result.
+/// The type parameter `RS` is the type of the RoutingState parameter.
+typedef InitialStateFromRoutingContextProvider<IS, RS> = IS Function(
+  RS routingState,
+);
 
 /// A function that can be registered as an event listener at a Store.
 ///
