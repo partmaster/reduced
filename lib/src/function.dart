@@ -35,14 +35,6 @@ typedef WidgetFromPropsBuilder<P> = Widget Function({
   required P props,
 });
 
-/// A function that provides an InitialState from a RoutingState parameter.
-///
-/// The type parameter `IS` is the type of the InitialState result.
-/// The type parameter `RS` is the type of the RoutingState parameter.
-typedef InitialStateFromRoutingContextProvider<IS, RS> = IS Function(
-  RS routingState,
-);
-
 /// A function that can be registered as an event listener at a Store.
 ///
 /// A registered listener is called by the Store at the end of each dispatch method execution.
