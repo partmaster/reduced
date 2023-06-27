@@ -1,14 +1,14 @@
 // navigator.dart
 
-import 'package:flutter/widgets.dart' show Navigator, RouteSettings;
+import 'package:flutter/widgets.dart' show NavigatorState, RouteSettings;
 
-/// RoutingContext implementation with [RouteSettings] and [Navigator].
+/// RoutingContext implementation with [RouteSettings] and [NavigatorState].
 class NavigatorContext {
-  final RouteSettings routeSetings;
-  final Navigator navigator;
+  final RouteSettings settings;
+  final NavigatorState navigator;
 
   const NavigatorContext({
-    required this.routeSetings,
+    required this.settings,
     required this.navigator,
   });
 }
